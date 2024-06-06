@@ -8,18 +8,19 @@ Update Tags on Tag Push or Release for Semantic Versions.
 
 ## Inputs
 
-| input  | required | default | description                          |
-|--------|----------|---------|--------------------------------------|
-| token  | Yes      | -       | Token from secrets.GITHUB_TOKEN      |
-| prefix | No       | v       | Tag Prefix (empty string to disable) |
-| major  | No       | true    | Update Major Tag (false to disable)  |
-| minor  | No       | true    | Update Minor Tag (false to disable)  |
-| tags   | No       | -       | Manually Specify Tags to Update      |
+| input  | required | default | description                             |
+|--------|----------|---------|-----------------------------------------|
+| token  | Yes      | -       | Token from secrets.GITHUB_TOKEN         |
+| prefix | No       | v       | Tag Prefix (empty string to disable)    |
+| major  | No       | true    | Update Major Tag (false to disable)     |
+| minor  | No       | true    | Update Minor Tag (false to disable)     |
+| tags   | No       | -       | Specify Tags to Update (newline or csv) |
 
 Major and Minor versions are parsed from the release tag. If you release version `1.0.0`
-this will update or create a reference for `v1` and `v1.0`.
+this will update or create a reference for `v1` and `v1.0`. The `prefix` is not parsed and must be specified.
 
-If you only want to update manually provided `tags` make sure to set `major` and `minor` to `false`.
+Specified tags can be a string list `"v1,v1.0"` or newline delimited `|`.
+If you only want to update specified provided `tags` make sure to set both `major` and `minor` to `false`.
 
 ```yaml
   - name: "Update Tags"
