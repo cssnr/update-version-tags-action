@@ -5,12 +5,6 @@ const { parse } = require('csv-parse/sync')
 
 ;(async () => {
     try {
-        // console.log('-'.repeat(40))
-        // console.log('process.env:', process.env)
-        // console.log('-'.repeat(40))
-        // console.log('github.context', github.context)
-        console.log('-'.repeat(40))
-
         // Check Tag
         if (!github.context.ref.startsWith('refs/tags/')) {
             core.info(`Skipping due to non-tags: ${github.context.ref}`)
@@ -21,7 +15,6 @@ const { parse } = require('csv-parse/sync')
 
         // Process Inputs
         const githubToken = core.getInput('token')
-        // console.log('token:', githubToken)
         const tagPrefix = core.getInput('prefix')
         console.log('prefix:', tagPrefix)
         const updateMajor = core.getInput('major')
@@ -76,7 +69,6 @@ const { parse } = require('csv-parse/sync')
             const ref = `tags/${tag}`
             console.log('ref', ref)
             const reference = await getRef(octokit, owner, repo, ref)
-            // console.log('reference', reference)
             if (reference) {
                 if (sha !== reference.data.object.sha) {
                     console.log(`Updating tag: "${tag}" to sha: ${sha}`)
@@ -89,8 +81,6 @@ const { parse } = require('csv-parse/sync')
                 await createRef(octokit, owner, repo, ref, sha)
             }
         }
-
-        // core.setFailed('set to always fail for job retry')
     } catch (e) {
         core.debug(e)
         core.info(e.message)
