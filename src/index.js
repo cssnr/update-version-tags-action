@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const semver = require('semver')
+const { parse } = require('csv-parse/sync')
 
 ;(async () => {
     try {
@@ -8,15 +9,15 @@ const semver = require('semver')
         // console.log('process.env:', process.env)
         // console.log('-'.repeat(40))
         // console.log('github.context', github.context)
-        // console.log('-'.repeat(40))
-        // console.log('release', github.context.payload.release)
         console.log('-'.repeat(40))
 
-        // Check Release
-        if (!github.context.payload.release) {
-            core.info(`Skipping non-release: ${github.context.eventName}`)
+        // Check Tag
+        if (!github.context.ref.startsWith('refs/tags/')) {
+            core.info(`Skipping due to non-tags: ${github.context.ref}`)
             return
         }
+        const newTag = github.context.ref.replace('refs/tags/', '')
+        console.log('newTag:', newTag)
 
         // Process Inputs
         const githubToken = core.getInput('token')
@@ -27,6 +28,8 @@ const semver = require('semver')
         console.log('major:', updateMajor)
         const updateMinor = core.getInput('minor')
         console.log('minor:', updateMinor)
+        const inputTags = core.getInput('tags')
+        console.log('tags:', inputTags)
 
         // Set Variables
         const { owner, repo } = github.context.repo
@@ -34,26 +37,37 @@ const semver = require('semver')
         console.log('repo:', repo)
         const sha = github.context.sha
         console.log('sha:', sha)
-        const tag_name = github.context.payload.release.tag_name
-        console.log('tag_name', tag_name)
-        const major = semver.major(tag_name)
+        const major = semver.major(newTag)
         console.log('major', major)
-        const minor = semver.minor(tag_name)
+        const minor = semver.minor(newTag)
         console.log('minor', minor)
 
         // Collect Tags
-        const tags = []
+        const collectedTags = []
+        if (inputTags) {
+            const parsedTags = parse(inputTags, {
+                delimiter: ',',
+                trim: true,
+                relax_column_count: true,
+            }).flat()
+            console.log('parsedTags:', parsedTags)
+            collectedTags.push(...parsedTags)
+        }
         if (updateMajor !== 'false') {
-            tags.push(`${tagPrefix}${major}`)
+            console.log(`Major Tag: ${tagPrefix}${major}`)
+            collectedTags.push(`${tagPrefix}${major}`)
         }
         if (updateMinor !== 'false') {
-            tags.push(`${tagPrefix}${major}.${minor}`)
+            console.log(`Minor Tag: ${tagPrefix}${major}`)
+            collectedTags.push(`${tagPrefix}${major}.${minor}`)
         }
-        console.log('tags', tags)
-        if (!tags.length) {
-            core.notice('Major and Minor false, nothing to do!')
+        console.log('collectedTags', collectedTags)
+        if (!collectedTags.length) {
+            core.notice('No Tags to Process!')
             return
         }
+        const tags = [...new Set(collectedTags)]
+        console.log('tags', tags)
 
         // Process Tags
         const octokit = github.getOctokit(githubToken)

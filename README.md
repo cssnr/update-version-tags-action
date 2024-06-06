@@ -1,6 +1,6 @@
 # Update Tags Action
 
-Update Tags on Release for Semantic Versions on Release.
+Update Tags on Tag Push or Release for Semantic Versions.
 
 > [!NOTE]   
 > Please submit a [Feature Request](https://github.com/cssnr/update-tags-action/discussions/categories/feature-requests)
@@ -14,9 +14,12 @@ Update Tags on Release for Semantic Versions on Release.
 | prefix | No       | v       | Tag Prefix (empty string to disable) |
 | major  | No       | true    | Update Major Tag (false to disable)  |
 | minor  | No       | true    | Update Minor Tag (false to disable)  |
+| tags   | No       | -       | Manually Specify Tags to Update      |
 
 Major and Minor versions are parsed from the release tag. If you release version `1.0.0`
 this will update or create a reference for `v1` and `v1.0`.
+
+If you only want to update manually provided `tags` make sure to set `major` and `minor` to `false`.
 
 ```yaml
   - name: "Update Tags"
@@ -26,4 +29,7 @@ this will update or create a reference for `v1` and `v1.0`.
       prefix: "v"
       major: true
       minor: true
+      tags: |
+        v1
+        v1.0
 ```
