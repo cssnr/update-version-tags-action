@@ -23,7 +23,7 @@ Major and Minor versions are parsed from the release tag. If you release version
 this will update or create a reference for `v1` and `v1.0`. The `prefix` is not parsed and must be specified.
 
 Specified tags can be a string list `"v1,v1.0"` or newline delimited `|`.
-If you only want to update specified provided `tags` make sure to set both `major` and `minor` to `false`.
+If you only want to update the provided `tags` make sure to set both `major` and `minor` to `false`.
 
 ```yaml
   - name: "Update Tags"
