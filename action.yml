@@ -1,0 +1,27 @@
+name: 'Update Tags Action'
+description: 'Update Tags on Release for Semantic Versions'
+author: 'Shane'
+branding:
+    icon: 'tag'
+    color: 'red'
+
+inputs:
+    token:
+        description: 'GitHub Token from secrets.GITHUB_TOKEN'
+        required: true
+    prefix:
+        description: 'Tag Prefix'
+        required: false
+        default: 'v'
+    major:
+        description: 'Update Major Tag'
+        required: false
+        default: 'true'
+    minor:
+        description: 'Update Minor Tag'
+        required: false
+        default: 'true'
+
+runs:
+    using: 'node20'
+    main: 'dist/index.js'
