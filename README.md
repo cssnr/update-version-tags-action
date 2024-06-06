@@ -2,6 +2,9 @@
 
 Update Tags on Tag Push or Release for Semantic Versions.
 
+This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
+For example, many GitHub Actions maintain a `v1` tag that points to the latest release of the `1.x.x` branch.
+
 > [!NOTE]   
 > Please submit a [Feature Request](https://github.com/cssnr/update-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/update-tags-action/issues) if you find any bugs.
@@ -24,7 +27,7 @@ If you only want to update specified provided `tags` make sure to set both `majo
 
 ```yaml
   - name: "Update Tags"
-    uses: cssnr/update-tags-action@master
+    uses: cssnr/update-tags-action@v1
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       prefix: "v"
