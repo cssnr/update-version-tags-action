@@ -1,5 +1,5 @@
 name: 'Update Tags Action'
-description: 'Update Tags on Release for Semantic Versions'
+description: 'Update Tags on Tag Push or Release for Semantic Versions'
 author: 'Shane'
 branding:
     icon: 'tag'
@@ -21,6 +21,9 @@ inputs:
         description: 'Update Minor Tag'
         required: false
         default: 'true'
+    tags:
+        description: 'Extra Tags'
+        required: false
 
 runs:
     using: 'node20'
