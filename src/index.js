@@ -15,6 +15,9 @@ const { parse } = require('csv-parse/sync')
 
         // Process Inputs
         const githubToken = core.getInput('token')
+        if (!githubToken) {
+            return core.setFailed('Missing: github_token')
+        }
         const tagPrefix = core.getInput('prefix')
         console.log('prefix:', tagPrefix)
         const updateMajor = core.getInput('major')
