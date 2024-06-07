@@ -1,5 +1,5 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-tags-action)
-[![Tags](https://github.com/cssnr/update-tags-action/actions/workflows/tags.yaml/badge.svg)](https://github.com/cssnr/update-tags-action/actions/workflows/tags.yaml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
+[![Tags](https://github.com/cssnr/update-version-tags-action/actions/workflows/tags.yaml/badge.svg)](https://github.com/cssnr/update-version-tags-action/actions/workflows/tags.yaml)
 # Update Version Tags Action
 
 Update Version Tags on Push or Release for Semantic Versions.
@@ -10,8 +10,8 @@ This is useful if you want to automatically update additional tags, to point to 
 For example, many GitHub Actions maintain a `v1` tag that points to the latest release of the `1.x.x` branch.
 
 > [!NOTE]   
-> Please submit a [Feature Request](https://github.com/cssnr/update-tags-action/discussions/categories/feature-requests)
-> for new features or [Open an Issue](https://github.com/cssnr/update-tags-action/issues) if you find any bugs.
+> Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
+> for new features or [Open an Issue](https://github.com/cssnr/update-version-tags-action/issues) if you find any bugs.
 
 ## Inputs
 
@@ -31,7 +31,7 @@ If you only want to update the provided `tags` make sure to set both `major` and
 
 ```yaml
   - name: "Update Tags"
-    uses: cssnr/update-tags-action@v1
+    uses: cssnr/update-version-tags-action@v1
     with:
       token: ${{ secrets.GITHUB_TOKEN }}
       prefix: "v"
@@ -61,7 +61,7 @@ jobs:
 
     steps:
       - name: "Update Tags"
-        uses: cssnr/update-tags-action@v1
+        uses: cssnr/update-version-tags-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
