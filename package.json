@@ -1,5 +1,5 @@
 {
-  "name": "update-tags-action",
+  "name": "update-version-tags-action",
   "version": "0.0.1",
   "scripts": {
     "build": "ncc build src/index.js"
