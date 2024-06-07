@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-tags-action)
+[![Tags](https://github.com/cssnr/update-tags-action/actions/workflows/tags.yaml/badge.svg)](https://github.com/cssnr/update-tags-action/actions/workflows/tags.yaml)
 # Update Tags Action
 
 Update Tags on Tag Push or Release for Semantic Versions.
@@ -36,4 +38,28 @@ If you only want to update the provided `tags` make sure to set both `major` and
       tags: |
         v1
         v1.0
+```
+
+## Simple Example
+
+This is the workflow used by this Action to update tags on release: [tags.yaml](.github%2Fworkflows%2Ftags.yaml)
+
+```yaml
+name: "Tags"
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  tags:
+    name: "Tags"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Update Tags"
+        uses: cssnr/update-tags-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 ```
