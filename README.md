@@ -4,6 +4,8 @@
 
 Update Tags on Tag Push or Release for Semantic Versions.
 
+Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
+
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
 For example, many GitHub Actions maintain a `v1` tag that points to the latest release of the `1.x.x` branch.
 
