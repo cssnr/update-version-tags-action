@@ -1,8 +1,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-tags-action)
 [![Tags](https://github.com/cssnr/update-tags-action/actions/workflows/tags.yaml/badge.svg)](https://github.com/cssnr/update-tags-action/actions/workflows/tags.yaml)
-# Update Tags Action
+# Update Version Tags Action
 
-Update Tags on Tag Push or Release for Semantic Versions.
+Update Version Tags on Push or Release for Semantic Versions.
 
 Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
 

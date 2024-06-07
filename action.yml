@@ -1,5 +1,5 @@
-name: 'Update Tags Action'
-description: 'Update Tags on Tag Push or Release for Semantic Versions'
+name: 'Update Version Tags Action'
+description: 'Update Version Tags on Push or Release for Semantic Versions'
 author: 'Shane'
 branding:
     icon: 'tag'
