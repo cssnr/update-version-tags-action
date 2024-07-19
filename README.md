@@ -1,6 +1,8 @@
 [![Tags](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/cssnr/update-version-tags-action/actions/workflows/tags.yaml)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=github)](https://github.com/cssnr/update-version-tags-action/releases/latest)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
-[![CSSNR Website](https://img.shields.io/badge/pages-website-blue?logo=github&logoColor=white&color=blue)](https://cssnr.github.io/)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/update-version-tags-action?logo=htmx&logoColor=white)](https://github.com/cssnr/update-version-tags-action)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
 # Update Version Tags Action
@@ -10,9 +12,11 @@ Update Version Tags on Push or Release for Semantic Versions.
 Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
 
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
-For example, many GitHub Actions maintain a `v1` tag that points to the latest release of the `1.x.x` branch.
+For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `1.x.x`
+branch.
 
 * [Inputs](#Inputs)
+* [Outputs](#Outputs)
 * [Examples](#Examples)
 * [Support](#Support)
 
@@ -44,6 +48,12 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
       token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+## Outputs
+
+| output | description                           |
+|--------|---------------------------------------|
+| tags   | Comma Seperated String of Parsed Tags |
+
 ## Examples
 
 This is the workflow used by this Action to update tags on release: [tags.yaml](.github%2Fworkflows%2Ftags.yaml)
@@ -68,7 +78,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Specifying the tags to update
+Specifying the tags to update:
 
 ```yaml
   - name: "Update Tags"
@@ -81,6 +91,19 @@ Specifying the tags to update
       tags: |
         v1
         v1.0
+```
+
+Using the output:
+
+```yaml
+  - name: "Update Tags"
+    uses: cssnr/update-version-tags-action@v1
+    id: tags
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  - name: "Echo Tags"
+    run: echo ${{ steps.tags.outputs.tags }}
 ```
 
 # Support

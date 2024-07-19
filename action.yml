@@ -25,6 +25,10 @@ inputs:
     description: "Extra Tags"
     required: false
 
+outputs:
+  tags:
+    description: "Parsed Tags"
+
 runs:
   using: "node20"
   main: "dist/index.js"
