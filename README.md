@@ -10,9 +10,11 @@ Update Version Tags on Push or Release for Semantic Versions.
 Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
 
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
-For example, many GitHub Actions maintain a `v1` tag that points to the latest release of the `1.x.x` branch.
+For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `1.x.x`
+branch.
 
 * [Inputs](#Inputs)
+* [Outputs](#Outputs)
 * [Examples](#Examples)
 * [Support](#Support)
 
@@ -44,6 +46,12 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
       token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+## Outputs
+
+| output | description                           |
+|--------|---------------------------------------|
+| tags   | Comma Seperated String of Parsed Tags |
+
 ## Examples
 
 This is the workflow used by this Action to update tags on release: [tags.yaml](.github%2Fworkflows%2Ftags.yaml)
@@ -68,7 +76,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Specifying the tags to update
+Specifying the tags to update:
 
 ```yaml
   - name: "Update Tags"
@@ -81,6 +89,19 @@ Specifying the tags to update
       tags: |
         v1
         v1.0
+```
+
+Using the output:
+
+```yaml
+  - name: "Update Tags"
+    uses: cssnr/update-version-tags-action@v1
+    id: tags
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  - name: "Echo Tags"
+    run: echo ${{ steps.tags.outputs.tags }}
 ```
 
 # Support

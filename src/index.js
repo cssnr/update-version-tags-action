@@ -3,6 +3,8 @@ const github = require('@actions/github')
 const semver = require('semver')
 const { parse } = require('csv-parse/sync')
 
+const Tags = require('./tags')
+
 ;(async () => {
     try {
         // Check Tag
@@ -22,8 +24,8 @@ const { parse } = require('csv-parse/sync')
         console.log('major:', major)
         const minor = core.getBooleanInput('minor')
         console.log('minor:', minor)
-        const tags = core.getInput('tags')
-        console.log('tags:', tags)
+        const inputTags = core.getInput('tags')
+        console.log('inputTags:', inputTags)
 
         // Set Variables
         const { owner, repo } = github.context.repo
@@ -38,8 +40,8 @@ const { parse } = require('csv-parse/sync')
 
         // Collect Tags
         const collectedTags = []
-        if (tags) {
-            const parsedTags = parse(tags, {
+        if (inputTags) {
+            const parsedTags = parse(inputTags, {
                 delimiter: ',',
                 trim: true,
                 relax_column_count: true,
@@ -63,73 +65,29 @@ const { parse } = require('csv-parse/sync')
         console.log('allTags:', allTags)
 
         // Process Tags
-        const octokit = github.getOctokit(token)
+        const tags = new Tags(token, owner, repo)
         for (const tag of allTags) {
-            core.info(`----- Processing tag: ${tag} -----`)
-            // Note: Some endpoints use tags/tag and others use refs/tags/tag
-            const ref = `tags/${tag}`
-            console.log('ref:', ref)
-            const reference = await getRef(octokit, owner, repo, ref)
-            // console.log('reference.data:', reference.data)
+            core.info(`--- Processing tag: ${tag}`)
+            const reference = await tags.getRef(tag)
+            // console.log('reference?.data:', reference?.data)
             if (reference) {
                 if (sha !== reference.data.object.sha) {
                     core.info(`Updating tag "${tag}" to sha ${sha}`)
-                    await updateRef(octokit, owner, repo, ref, sha)
+                    await tags.updateRef(tag, sha)
                 } else {
                     core.info(`Tag "${tag}" already points to sha ${sha}`)
                 }
             } else {
                 core.info(`Creating new tag "${tag}" to sha ${sha}`)
-                await createRef(octokit, owner, repo, ref, sha)
+                await tags.createRef(tag, sha)
             }
         }
+
+        // Set Output
+        core.setOutput('tags', allTags.join(','))
     } catch (e) {
         core.debug(e)
         core.info(e.message)
         core.setFailed(e.message)
     }
 })()
-
-async function getRef(octokit, owner, repo, ref) {
-    try {
-        return await octokit.rest.git.getRef({
-            owner,
-            repo,
-            ref,
-        })
-    } catch (e) {
-        core.debug(e)
-        core.info(e.message)
-        return null
-    }
-}
-
-async function createRef(octokit, owner, repo, ref, sha) {
-    try {
-        return await octokit.rest.git.createRef({
-            owner,
-            repo,
-            ref: `refs/${ref}`,
-            sha,
-        })
-    } catch (e) {
-        core.debug(e)
-        core.info(e.message)
-        core.error(`Failed to create tag: ${ref}`)
-    }
-}
-
-async function updateRef(octokit, owner, repo, ref, sha) {
-    try {
-        await octokit.rest.git.updateRef({
-            owner,
-            repo,
-            ref,
-            sha,
-        })
-    } catch (e) {
-        core.debug(e)
-        core.info(e.message)
-        core.error(`Failed to update tag: ${ref}`)
-    }
-}
