@@ -7,25 +7,23 @@ const { parse } = require('csv-parse/sync')
     try {
         // Check Tag
         if (!github.context.ref.startsWith('refs/tags/')) {
-            core.info(`Skipping due to non-tags: ${github.context.ref}`)
+            core.notice(`Skipping due to non-tags: ${github.context.ref}`)
             return
         }
-        const newTag = github.context.ref.replace('refs/tags/', '')
-        console.log('newTag:', newTag)
+        const tag = github.context.ref.replace('refs/tags/', '')
+        console.log('tag:', tag)
 
         // Process Inputs
-        const githubToken = core.getInput('token')
-        if (!githubToken) {
-            return core.setFailed('Missing: github_token')
-        }
-        const tagPrefix = core.getInput('prefix')
-        console.log('prefix:', tagPrefix)
-        const updateMajor = core.getInput('major')
-        console.log('major:', updateMajor)
-        const updateMinor = core.getInput('minor')
-        console.log('minor:', updateMinor)
-        const inputTags = core.getInput('tags')
-        console.log('tags:', inputTags)
+        const token = core.getInput('token', { required: true })
+        // console.log('token:', token)
+        const prefix = core.getInput('prefix')
+        console.log('prefix:', prefix)
+        const major = core.getBooleanInput('major')
+        console.log('major:', major)
+        const minor = core.getBooleanInput('minor')
+        console.log('minor:', minor)
+        const tags = core.getInput('tags')
+        console.log('tags:', tags)
 
         // Set Variables
         const { owner, repo } = github.context.repo
@@ -33,15 +31,15 @@ const { parse } = require('csv-parse/sync')
         console.log('repo:', repo)
         const sha = github.context.sha
         console.log('sha:', sha)
-        const major = semver.major(newTag)
-        console.log('major', major)
-        const minor = semver.minor(newTag)
-        console.log('minor', minor)
+        const majorVer = semver.major(tag)
+        console.log('majorVer:', majorVer)
+        const minorVer = semver.minor(tag)
+        console.log('minorVer:', minorVer)
 
         // Collect Tags
         const collectedTags = []
-        if (inputTags) {
-            const parsedTags = parse(inputTags, {
+        if (tags) {
+            const parsedTags = parse(tags, {
                 delimiter: ',',
                 trim: true,
                 relax_column_count: true,
@@ -49,38 +47,39 @@ const { parse } = require('csv-parse/sync')
             console.log('parsedTags:', parsedTags)
             collectedTags.push(...parsedTags)
         }
-        if (updateMajor !== 'false') {
-            console.log(`Major Tag: ${tagPrefix}${major}`)
-            collectedTags.push(`${tagPrefix}${major}`)
+        if (major) {
+            console.log(`Major Tag: ${prefix}${majorVer}`)
+            collectedTags.push(`${prefix}${majorVer}`)
         }
-        if (updateMinor !== 'false') {
-            console.log(`Minor Tag: ${tagPrefix}${major}`)
-            collectedTags.push(`${tagPrefix}${major}.${minor}`)
+        if (minor) {
+            console.log(`Minor Tag: ${prefix}${majorVer}.${minorVer}`)
+            collectedTags.push(`${prefix}${majorVer}.${minorVer}`)
         }
         console.log('collectedTags', collectedTags)
         if (!collectedTags.length) {
-            core.notice('No Tags to Process!')
-            return
+            return core.warning('No Tags to Process!')
         }
-        const tags = [...new Set(collectedTags)]
-        console.log('tags', tags)
+        const allTags = [...new Set(collectedTags)]
+        console.log('allTags:', allTags)
 
         // Process Tags
-        const octokit = github.getOctokit(githubToken)
-        for (const tag of tags) {
+        const octokit = github.getOctokit(token)
+        for (const tag of allTags) {
             core.info(`----- Processing tag: ${tag} -----`)
+            // Note: Some endpoints use tags/tag and others use refs/tags/tag
             const ref = `tags/${tag}`
-            console.log('ref', ref)
+            console.log('ref:', ref)
             const reference = await getRef(octokit, owner, repo, ref)
+            // console.log('reference.data:', reference.data)
             if (reference) {
                 if (sha !== reference.data.object.sha) {
-                    console.log(`Updating tag: "${tag}" to sha: ${sha}`)
+                    core.info(`Updating tag "${tag}" to sha ${sha}`)
                     await updateRef(octokit, owner, repo, ref, sha)
                 } else {
-                    console.log(`Tag: "${tag}" already points to sha: ${sha}`)
+                    core.info(`Tag "${tag}" already points to sha ${sha}`)
                 }
             } else {
-                console.log(`Creating new tag: "${tag}" to sha: ${sha}`)
+                core.info(`Creating new tag "${tag}" to sha ${sha}`)
                 await createRef(octokit, owner, repo, ref, sha)
             }
         }
@@ -99,6 +98,7 @@ async function getRef(octokit, owner, repo, ref) {
             ref,
         })
     } catch (e) {
+        core.debug(e)
         core.info(e.message)
         return null
     }
