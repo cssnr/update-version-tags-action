@@ -1,6 +1,6 @@
 [![Tags](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/cssnr/update-version-tags-action/actions/workflows/tags.yaml)
-[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=github)](https://github.com/cssnr/update-version-tags-action/releases/latest)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=github)](https://github.com/cssnr/update-version-tags-action/releases/latest)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/update-version-tags-action?logo=htmx&logoColor=white)](https://github.com/cssnr/update-version-tags-action)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
@@ -19,6 +19,7 @@ branch.
 * [Outputs](#Outputs)
 * [Examples](#Examples)
 * [Support](#Support)
+* [Contributing](#Contributing)
 
 > [!NOTE]   
 > Please submit
@@ -29,7 +30,7 @@ branch.
 
 | input  | required | default | description                   |
 |--------|----------|---------|-------------------------------|
-| token  | Yes      | -       | `${{ secrets.GITHUB_TOKEN }}` |
+| token  | **Yes**  | -       | `${{ secrets.GITHUB_TOKEN }}` |
 | prefix | No       | v       | Tag Prefix (empty to disable) |
 | major  | No       | true    | Update Major Tag *            |
 | minor  | No       | true    | Update Minor Tag *            |
@@ -119,3 +120,18 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
 - Provide General
   Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20Version%20Tags)
+
+# Contributing
+
+Currently, the best way to contribute to this project is to star this project on GitHub.
+
+Additionally, you can support other GitHub Actions I have published:
+
+- [VirusTotal Action](https://github.com/cssnr/virustotal-action)
+- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
+- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
+- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
+- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
+
+For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
