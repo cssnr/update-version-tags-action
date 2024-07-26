@@ -9,7 +9,7 @@
 
 # Update Version Tags Action
 
-Update Version Tags on Push or Release for Semantic Versions.
+Update Version Tags on Push or Release for Semantic Versions or Custom Tags.
 
 Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
 
@@ -39,7 +39,8 @@ branch.
 | tags   | No       | -       | Specify Tags to Update *      |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
-version `1.0.0` this will update or create a reference for `v1` and `v1.0`.
+version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
+both to `false` and provide your own `tags`.
 
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
@@ -56,6 +57,17 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 | output | description                           |
 |--------|---------------------------------------|
 | tags   | Comma Seperated String of Parsed Tags |
+
+```yaml
+  - name: "Update Tags"
+    uses: cssnr/update-version-tags-action@v1
+    id: tags
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  - name: "Echo Tags"
+    run: echo ${{ steps.tags.outputs.tags }}
+```
 
 ## Examples
 
@@ -94,19 +106,6 @@ Specifying the tags to update:
       tags: |
         v1
         v1.0
-```
-
-Using the output:
-
-```yaml
-  - name: "Update Tags"
-    uses: cssnr/update-version-tags-action@v1
-    id: tags
-    with:
-      token: ${{ secrets.GITHUB_TOKEN }}
-
-  - name: "Echo Tags"
-    run: echo ${{ steps.tags.outputs.tags }}
 ```
 
 # Support
