@@ -1,13 +1,15 @@
 [![Tags](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/cssnr/update-version-tags-action/actions/workflows/tags.yaml)
+[![Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=github)](https://github.com/cssnr/update-version-tags-action/releases/latest)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/update-version-tags-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/update-version-tags-action/graphs/commit-activity)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/update-version-tags-action?logo=htmx&logoColor=white)](https://github.com/cssnr/update-version-tags-action)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
 # Update Version Tags Action
 
-Update Version Tags on Push or Release for Semantic Versions.
+Update Version Tags on Push or Release for Semantic Versions or Custom Tags.
 
 Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
 
@@ -37,7 +39,8 @@ branch.
 | tags   | No       | -       | Specify Tags to Update *      |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
-version `1.0.0` this will update or create a reference for `v1` and `v1.0`.
+version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
+both to `false` and provide your own `tags`.
 
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
@@ -54,6 +57,17 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 | output | description                           |
 |--------|---------------------------------------|
 | tags   | Comma Seperated String of Parsed Tags |
+
+```yaml
+  - name: "Update Tags"
+    uses: cssnr/update-version-tags-action@v1
+    id: tags
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  - name: "Echo Tags"
+    run: echo ${{ steps.tags.outputs.tags }}
+```
 
 ## Examples
 
@@ -92,19 +106,6 @@ Specifying the tags to update:
       tags: |
         v1
         v1.0
-```
-
-Using the output:
-
-```yaml
-  - name: "Update Tags"
-    uses: cssnr/update-version-tags-action@v1
-    id: tags
-    with:
-      token: ${{ secrets.GITHUB_TOKEN }}
-
-  - name: "Echo Tags"
-    run: echo ${{ steps.tags.outputs.tags }}
 ```
 
 # Support

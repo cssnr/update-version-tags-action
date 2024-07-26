@@ -35017,21 +35017,13 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
-const semver = __nccwpck_require__(1383)
 const { parse } = __nccwpck_require__(4393)
+const semver = __nccwpck_require__(1383)
 
 const Tags = __nccwpck_require__(1123)
 
 ;(async () => {
     try {
-        // Check Tag
-        if (!github.context.ref.startsWith('refs/tags/')) {
-            core.notice(`Skipping due to non-tags: ${github.context.ref}`)
-            return
-        }
-        const tag = github.context.ref.replace('refs/tags/', '')
-        console.log('tag:', tag)
-
         // Process Inputs
         const token = core.getInput('token', { required: true })
         // console.log('token:', token)
@@ -35044,16 +35036,28 @@ const Tags = __nccwpck_require__(1123)
         const inputTags = core.getInput('tags')
         console.log('inputTags:', inputTags)
 
+        // Check Tag
+        if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
+            core.notice(`Skipping due to non-tags: ${github.context.ref}`)
+            return
+        }
+        const tag = github.context.ref.replace('refs/tags/', '')
+        console.log('tag:', tag)
+
         // Set Variables
         const { owner, repo } = github.context.repo
         console.log('owner:', owner)
         console.log('repo:', repo)
         const sha = github.context.sha
         console.log('sha:', sha)
-        const majorVer = semver.major(tag)
-        console.log('majorVer:', majorVer)
-        const minorVer = semver.minor(tag)
-        console.log('minorVer:', minorVer)
+        let parsed
+        if (major || minor) {
+            parsed = semver.parse(tag)
+            console.log('parsed:', parsed)
+            if (!parsed) {
+                return core.setFailed(`Unable to parse ${tag} to a semver.`)
+            }
+        }
 
         // Collect Tags
         const collectedTags = []
@@ -35067,12 +35071,12 @@ const Tags = __nccwpck_require__(1123)
             collectedTags.push(...parsedTags)
         }
         if (major) {
-            console.log(`Major Tag: ${prefix}${majorVer}`)
-            collectedTags.push(`${prefix}${majorVer}`)
+            console.log(`Major Tag: ${prefix}${parsed.major}`)
+            collectedTags.push(`${prefix}${parsed.major}`)
         }
         if (minor) {
-            console.log(`Minor Tag: ${prefix}${majorVer}.${minorVer}`)
-            collectedTags.push(`${prefix}${majorVer}.${minorVer}`)
+            console.log(`Minor Tag: ${prefix}${parsed.major}.${parsed.minor}`)
+            collectedTags.push(`${prefix}${parsed.major}.${parsed.minor}`)
         }
         console.log('collectedTags', collectedTags)
         if (!collectedTags.length) {
@@ -35089,19 +35093,23 @@ const Tags = __nccwpck_require__(1123)
             // console.log('reference?.data:', reference?.data)
             if (reference) {
                 if (sha !== reference.data.object.sha) {
-                    core.info(`Updating tag "${tag}" to sha ${sha}`)
+                    core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                     await tags.updateRef(tag, sha)
                 } else {
-                    core.info(`Tag "${tag}" already points to sha ${sha}`)
+                    core.info(
+                        `\u001b[36mTag "${tag}" already points to sha: ${sha}`
+                    )
                 }
             } else {
-                core.info(`Creating new tag "${tag}" to sha ${sha}`)
+                core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
                 await tags.createRef(tag, sha)
             }
         }
 
         // Set Output
         core.setOutput('tags', allTags.join(','))
+
+        core.info(`\u001b[32;1mFinished Success`)
     } catch (e) {
         core.debug(e)
         core.info(e.message)
