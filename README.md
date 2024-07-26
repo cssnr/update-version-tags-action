@@ -11,7 +11,8 @@
 
 Update Version Tags on Push or Release for Semantic Versions or Custom Tags.
 
-Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
+Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags. For GitHub Actions you can just copy and paste this
+workflow: [tags.yaml](.github/workflows/tags.yaml)
 
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
 For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `1.x.x`

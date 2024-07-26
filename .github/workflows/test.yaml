@@ -3,8 +3,6 @@ name: "Test"
 on:
   workflow_dispatch:
   push:
-    paths:
-      - "src/**"
 
 jobs:
   test:
@@ -25,7 +23,7 @@ jobs:
           minor: false
           tags: test-tag
 
-      - name: "Echo Outputs"
+      - name: "Validate Outputs"
         run: |
           echo '${{ steps.test.outputs.tags }}'
           if [ -z '${{ steps.test.outputs.tags }}' ];then
