@@ -23,7 +23,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           major: false
           minor: false
-          tags: test
+          tags: test-tag
 
       - name: "Echo Outputs"
         run: |
