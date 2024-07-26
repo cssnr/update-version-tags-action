@@ -1,0 +1,84 @@
+name: "Test"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+
+jobs:
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Test Local Action"
+        id: test
+        uses: ./
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          major: false
+          minor: false
+          tags: test
+
+      - name: "Echo Outputs"
+        run: |
+          echo '${{ steps.test.outputs.tags }}'
+          if [ -z '${{ steps.test.outputs.tags }}' ];then
+            echo "No Output"
+            exit 1
+          fi
+
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: "ESLint"
+        run: |
+          npm install
+          npm run lint
+
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: "Build"
+        run: |
+          npm install
+          npm run build
+
+      - name: "Verify"
+        run: |
+          git status --porcelain dist/
+          if [ ! -d "dist" ];then
+            echo "Missing dist directory, run: npm build"
+            exit 1
+          fi
+          if [ -n "$(git status --porcelain dist)" ];then
+            echo "Build was not run, run: npm build"
+            exit 1
+          fi
