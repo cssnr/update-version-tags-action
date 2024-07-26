@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "src/**"
+      - ".github/workflows/test.yaml"
 
 jobs:
   test:
@@ -32,6 +33,9 @@ jobs:
             echo "No Output"
             exit 1
           fi
+
+      - name: "Cleanup Tag"
+        run: git push origin :refs/tags/test
 
   lint:
     name: "Lint"
