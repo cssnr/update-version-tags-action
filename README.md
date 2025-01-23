@@ -54,7 +54,7 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
       token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-> [!WARNING]  
+> [!IMPORTANT]  
 > This action requires **content write permissions** to push tags.
 > See [Examples](#Examples) below for details on how to add permissions into your workflow.
 
