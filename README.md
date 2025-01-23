@@ -54,6 +54,9 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
       token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+**Important:** This action requires content write permissions to push tags.
+See [Examples](#Examples) below for details on how to add that in your workflow.
+
 ## Outputs
 
 | output | description                           |
@@ -87,6 +90,8 @@ jobs:
         name: 'Tags'
         runs-on: ubuntu-latest
         timeout-minutes: 5
+        permissions:
+            contents: write
 
         steps:
             - name: 'Update Tags'
