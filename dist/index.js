@@ -36231,14 +36231,16 @@ const Tags = __nccwpck_require__(800)
 ;(async () => {
     try {
         // DEBUG
-        console.log('github.context:', github.context)
-        console.log(`github.context.token: "${github.context.token}"`)
-        console.log(`process.env.GITHUB_TOKEN: "${process.env.GITHUB_TOKEN}"`)
+        console.log('github:', github)
+        // console.log('github.context:', github.context)
+        console.log(`github.token: "${github.token}"`)
+        // console.log(`github.context.token: "${github.context.token}"`)
+        // console.log(`process.env.GITHUB_TOKEN: "${process.env.GITHUB_TOKEN}"`)
         console.log('getInput.token:', core.getInput('token') || 'NO TOKEN')
 
         // Process Inputs
         // const token = core.getInput('token') || `${github.context.token}`
-        const token = core.getInput('token') || `${process.env.GITHUB_TOKEN}`
+        const token = core.getInput('token') || github.token
         console.log('token:', token)
         const prefix = core.getInput('prefix')
         console.log('prefix:', prefix)
