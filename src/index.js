@@ -7,9 +7,16 @@ const Tags = require('./tags')
 
 ;(async () => {
     try {
+        // DEBUG
+        console.log('github.context:', github.context)
+        console.log(`github.context.token: "${github.context.token}"`)
+        console.log(`process.env.GITHUB_TOKEN: "${process.env.GITHUB_TOKEN}"`)
+        console.log('getInput.token:', core.getInput('token') || 'NO TOKEN')
+
         // Process Inputs
-        const token = core.getInput('token', { required: true })
-        // console.log('token:', token)
+        // const token = core.getInput('token') || `${github.context.token}`
+        const token = core.getInput('token') || `${process.env.GITHUB_TOKEN}`
+        console.log('token:', token)
         const prefix = core.getInput('prefix')
         console.log('prefix:', prefix)
         const major = core.getBooleanInput('major')
@@ -35,7 +42,7 @@ const Tags = require('./tags')
         console.log('sha:', sha)
         let parsed
         if (major || minor) {
-            parsed = semver.parse(tag)
+            parsed = semver.parse(tag, {})
             console.log('parsed:', parsed)
             if (!parsed) {
                 return core.setFailed(`Unable to parse ${tag} to a semver.`)
