@@ -19,11 +19,11 @@ This is useful if you want to automatically update additional tags, to point to 
 For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `1.x.x`
 branch.
 
--   [Inputs](#Inputs)
--   [Outputs](#Outputs)
--   [Examples](#Examples)
--   [Support](#Support)
--   [Contributing](#Contributing)
+- [Inputs](#Inputs)
+- [Outputs](#Outputs)
+- [Examples](#Examples)
+- [Support](#Support)
+- [Contributing](#Contributing)
 
 > [!NOTE]  
 > Please submit
@@ -51,7 +51,7 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
   with:
-      token: ${{ secrets.GITHUB_TOKEN }}
+    token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 > [!IMPORTANT]  
@@ -69,7 +69,7 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
   uses: cssnr/update-version-tags-action@v1
   id: tags
   with:
-      token: ${{ secrets.GITHUB_TOKEN }}
+    token: ${{ secrets.GITHUB_TOKEN }}
 
 - name: 'Echo Tags'
   run: echo ${{ steps.tags.outputs.tags }}
@@ -83,22 +83,22 @@ This is the workflow used by this Action to update tags on release: [tags.yaml](
 name: 'Tags'
 
 on:
-    release:
-        types: [published]
+  release:
+    types: [published]
 
 jobs:
-    tags:
-        name: 'Tags'
-        runs-on: ubuntu-latest
-        timeout-minutes: 5
-        permissions:
-            contents: write
+  tags:
+    name: 'Tags'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
 
-        steps:
-            - name: 'Update Tags'
-              uses: cssnr/update-version-tags-action@v1
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: 'Update Tags'
+        uses: cssnr/update-version-tags-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 Specifying the tags to update:
@@ -107,28 +107,28 @@ Specifying the tags to update:
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
   with:
-      token: ${{ secrets.GITHUB_TOKEN }}
-      prefix: 'v'
-      major: false
-      minor: false
-      tags: |
-          v1
-          v1.0
+    token: ${{ secrets.GITHUB_TOKEN }}
+    prefix: 'v'
+    major: false
+    minor: false
+    tags: |
+      v1
+      v1.0
 ```
 
 # Support
 
 For general help or to request a feature, see:
 
--   Q&A Discussion: https://github.com/cssnr/update-version-tags-action/discussions/categories/q-a
--   Request a Feature: https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests
+- Q&A Discussion: https://github.com/cssnr/update-version-tags-action/discussions/categories/q-a
+- Request a Feature: https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests
 
 If you are experiencing an issue/bug or getting unexpected results, you can:
 
--   Report an Issue: https://github.com/cssnr/update-version-tags-action/issues
--   Chat with us on Discord: https://discord.gg/wXy6m2X8wY
--   Provide General
-    Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20Version%20Tags)
+- Report an Issue: https://github.com/cssnr/update-version-tags-action/issues
+- Chat with us on Discord: https://discord.gg/wXy6m2X8wY
+- Provide General
+  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20Version%20Tags)
 
 # Contributing
 
@@ -136,12 +136,13 @@ Currently, the best way to contribute to this project is to star this project on
 
 Additionally, you can support other GitHub Actions I have published:
 
--   [VirusTotal Action](https://github.com/cssnr/virustotal-action)
--   [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
--   [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
--   [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
--   [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action)
--   [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
--   [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
+- [VirusTotal Action](https://github.com/cssnr/virustotal-action)
+- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
+- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
+- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
+- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action)
+- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action)
+- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
