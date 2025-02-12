@@ -36239,22 +36239,46 @@ const Tags = __nccwpck_require__(800)
         console.log('minor:', minor)
         const inputTags = core.getInput('tags')
         console.log('inputTags:', inputTags)
+        const target = core.getInput('target')
+        console.log('target:', target)
+        const summary = core.getBooleanInput('summary')
+        console.log('summary:', summary)
         const token = core.getInput('token', { required: true })
         // console.log('token:', token)
 
         // Check Tag
-        if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
-            core.notice(`Skipping due to non-tags: ${github.context.ref}`)
-            return
+        let tag
+        if (target) {
+            tag = target
+        } else {
+            if (
+                !github.context.ref.startsWith('refs/tags/') &&
+                (major || minor)
+            ) {
+                core.notice(`Skipping due to non-tags: ${github.context.ref}`)
+                return
+            }
+            tag = github.context.ref.replace('refs/tags/', '')
         }
-        const tag = github.context.ref.replace('refs/tags/', '')
         console.log('tag:', tag)
 
         // Set Variables
         const { owner, repo } = github.context.repo
         console.log('owner:', owner)
         console.log('repo:', repo)
-        const sha = github.context.sha
+        const tags = new Tags(token, owner, repo)
+        let sha
+        if (target) {
+            const reference = await tags.getRef(target)
+            if (!reference) {
+                return core.setFailed(
+                    `Unable to parse ref from target: ${target}`
+                )
+            }
+            sha = reference.data.object.sha
+        } else {
+            sha = github.context.sha
+        }
         console.log('sha:', sha)
         let parsed
         if (major || minor) {
@@ -36292,7 +36316,8 @@ const Tags = __nccwpck_require__(800)
         console.log('allTags:', allTags)
 
         // Process Tags
-        const tags = new Tags(token, owner, repo)
+        // const tags = new Tags(token, owner, repo)
+        const results = []
         for (const tag of allTags) {
             core.info(`--- Processing tag: ${tag}`)
             const reference = await tags.getRef(tag)
@@ -36310,10 +36335,20 @@ const Tags = __nccwpck_require__(800)
                 core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
                 await tags.createRef(tag, sha)
             }
+            results.push(`**${tag}**`)
         }
 
         // Set Output
+        core.setOutput('sha', sha)
         core.setOutput('tags', allTags.join(','))
+
+        // Add Summary
+        if (summary) {
+            console.log('results:', results)
+            core.summary.addHeading('Update Version Tags', '1')
+            core.summary.addRaw(`**${tag}** \`${sha}\``, true)
+            core.summary.addList(results)
+        }
 
         core.info(`✅ \u001b[32;1mFinished Success`)
     } catch (e) {
