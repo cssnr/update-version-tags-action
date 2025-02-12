@@ -36231,8 +36231,6 @@ const Tags = __nccwpck_require__(800)
 ;(async () => {
     try {
         // Process Inputs
-        const token = core.getInput('token', { required: true })
-        // console.log('token:', token)
         const prefix = core.getInput('prefix')
         console.log('prefix:', prefix)
         const major = core.getBooleanInput('major')
@@ -36241,6 +36239,8 @@ const Tags = __nccwpck_require__(800)
         console.log('minor:', minor)
         const inputTags = core.getInput('tags')
         console.log('inputTags:', inputTags)
+        const token = core.getInput('token', { required: true })
+        // console.log('token:', token)
 
         // Check Tag
         if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
@@ -36258,7 +36258,7 @@ const Tags = __nccwpck_require__(800)
         console.log('sha:', sha)
         let parsed
         if (major || minor) {
-            parsed = semver.parse(tag)
+            parsed = semver.parse(tag, {})
             console.log('parsed:', parsed)
             if (!parsed) {
                 return core.setFailed(`Unable to parse ${tag} to a semver.`)
@@ -36315,7 +36315,7 @@ const Tags = __nccwpck_require__(800)
         // Set Output
         core.setOutput('tags', allTags.join(','))
 
-        core.info(`\u001b[32;1mFinished Success`)
+        core.info(`✅ \u001b[32;1mFinished Success`)
     } catch (e) {
         core.debug(e)
         core.info(e.message)
