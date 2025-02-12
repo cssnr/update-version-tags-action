@@ -32,13 +32,15 @@ branch.
 
 ## Inputs
 
-| input  | required | default        | description                      |
-| ------ | -------- | -------------- | -------------------------------- |
-| prefix | No       | v              | Tag Prefix (empty to disable)    |
-| major  | No       | true           | Update Major Tag \*              |
-| minor  | No       | true           | Update Minor Tag \*              |
-| tags   | No       | -              | Specify Tags to Update \*        |
-| token  | No       | `github.token` | Only for backwards comaptiblity. |
+| input   | required | default        | description                      |
+| ------- | -------- | -------------- | -------------------------------- |
+| prefix  | No       | v              | Tag Prefix (empty to disable)    |
+| major   | No       | true           | Update Major Tag \*              |
+| minor   | No       | true           | Update Minor Tag \*              |
+| tags    | No       | -              | Specify Tags to Update \*        |
+| target  | No       | -              | Override Target Tag \*           |
+| summary | No       | true           | Add Summary to Job \*            |
+| token   | No       | `github.token` | Only for backwards comaptiblity. |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -46,6 +48,9 @@ both to `false` and provide your own `tags`.
 
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
+
+**target** - Setting a `target` tag will override tag parsing and use the supplied `target`.
+This is useful in a workflow-dispatch trigger to roll back or manually set tags to a `target` version.
 
 ```yaml
 - name: 'Update Tags'

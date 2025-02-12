@@ -3,6 +3,26 @@ name: "Tags"
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Target Tag"
+        type: string
+        required: true
+      tags:
+        description: "Extra Tags"
+        type: string
+        required: true
+      major:
+        description: "Parse Major"
+        type: boolean
+        required: true
+        default: true
+      minor:
+        description: "Parse Minor"
+        type: boolean
+        required: true
+        default: true
 
 jobs:
   tags:
@@ -15,3 +35,8 @@ jobs:
     steps:
       - name: "Update Tags"
         uses: cssnr/update-version-tags-action@v1
+        with:
+          target: ${{ inputs.target }}
+          tags: ${{ inputs.tags }}
+          major: "${{ inputs.major != '' && inputs.major || true }}"
+          minor: "${{ inputs.minor != '' && inputs.minor || true }}"

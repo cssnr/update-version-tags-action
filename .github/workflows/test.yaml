@@ -28,9 +28,14 @@ jobs:
 
       - name: "Validate Outputs"
         run: |
+          echo '${{ steps.test.outputs.sha }}'
+          if [ -z '${{ steps.test.outputs.sha }}' ];then
+            echo "No outputs.sha"
+            exit 1
+          fi
           echo '${{ steps.test.outputs.tags }}'
           if [ -z '${{ steps.test.outputs.tags }}' ];then
-            echo "No Output"
+            echo "No outputs.tags"
             exit 1
           fi
 
