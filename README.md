@@ -32,13 +32,13 @@ branch.
 
 ## Inputs
 
-| input  | required | default | description                   |
-| ------ | -------- | ------- | ----------------------------- |
-| token  | **Yes**  | -       | `${{ secrets.GITHUB_TOKEN }}` |
-| prefix | No       | v       | Tag Prefix (empty to disable) |
-| major  | No       | true    | Update Major Tag \*           |
-| minor  | No       | true    | Update Minor Tag \*           |
-| tags   | No       | -       | Specify Tags to Update \*     |
+| input  | required | default        | description                      |
+| ------ | -------- | -------------- | -------------------------------- |
+| prefix | No       | v              | Tag Prefix (empty to disable)    |
+| major  | No       | true           | Update Major Tag \*              |
+| minor  | No       | true           | Update Minor Tag \*              |
+| tags   | No       | -              | Specify Tags to Update \*        |
+| token  | No       | `github.token` | Only for backwards comaptiblity. |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -50,8 +50,6 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 ```yaml
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
-  with:
-    token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 > [!IMPORTANT]  
@@ -68,8 +66,6 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
   id: tags
-  with:
-    token: ${{ secrets.GITHUB_TOKEN }}
 
 - name: 'Echo Tags'
   run: echo ${{ steps.tags.outputs.tags }}
@@ -97,8 +93,6 @@ jobs:
     steps:
       - name: 'Update Tags'
         uses: cssnr/update-version-tags-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 Specifying the tags to update:
@@ -107,7 +101,6 @@ Specifying the tags to update:
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
   with:
-    token: ${{ secrets.GITHUB_TOKEN }}
     prefix: 'v'
     major: false
     minor: false

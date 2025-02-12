@@ -6,9 +6,6 @@ branding:
   color: "red"
 
 inputs:
-  token:
-    description: "GitHub Token from secrets.GITHUB_TOKEN"
-    required: true
   prefix:
     description: "Tag Prefix"
     required: false
@@ -24,6 +21,10 @@ inputs:
   tags:
     description: "Extra Tags"
     required: false
+  token:
+    description: "GitHub Token"
+    required: false
+    default: ${{ github.token }}
 
 outputs:
   tags:
