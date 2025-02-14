@@ -53,9 +53,14 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
   uses: cssnr/update-version-tags-action@v1
 ```
 
-> [!IMPORTANT]  
-> This action requires **content write permissions** to push tags.
-> See [Examples](#Examples) below for details on how to add permissions into your workflow.
+### Permissions
+
+This action requires the following permissions:
+
+```yaml
+permissions:
+  contents: write
+```
 
 ## Outputs
 
