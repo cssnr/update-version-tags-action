@@ -32,13 +32,14 @@ branch.
 
 ## Inputs
 
-| input  | required | default        | description                      |
-| ------ | -------- | -------------- | -------------------------------- |
-| prefix | No       | v              | Tag Prefix (empty to disable)    |
-| major  | No       | true           | Update Major Tag \*              |
-| minor  | No       | true           | Update Minor Tag \*              |
-| tags   | No       | -              | Specify Tags to Update \*        |
-| token  | No       | `github.token` | Only for backwards comaptiblity. |
+| input  | required | default        | description                              |
+| ------ | -------- | -------------- | ---------------------------------------- |
+| prefix | No       | v              | Tag Prefix (empty to disable)            |
+| major  | No       | true           | Update Major Tag \*                      |
+| minor  | No       | true           | Update Minor Tag \*                      |
+| tags   | No       | -              | Specify Tags to Update \*                |
+| write  | No       | true           | Disable to not create tags (output only) |
+| token  | No       | `github.token` | Only for backwards comaptiblity          |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set

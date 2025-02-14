@@ -21,6 +21,10 @@ inputs:
   tags:
     description: "Extra Tags"
     required: false
+  write:
+    description: "Create or Edit Tags"
+    required: false
+    default: "true"
   token:
     description: "GitHub Token"
     required: false

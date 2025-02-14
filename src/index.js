@@ -16,6 +16,8 @@ const Tags = require('./tags')
         console.log('minor:', minor)
         const inputTags = core.getInput('tags')
         console.log('inputTags:', inputTags)
+        const write = core.getBooleanInput('write')
+        console.log('write:', write)
         const token = core.getInput('token', { required: true })
         // console.log('token:', token)
 
@@ -69,24 +71,9 @@ const Tags = require('./tags')
         console.log('allTags:', allTags)
 
         // Process Tags
-        const tags = new Tags(token, owner, repo)
-        for (const tag of allTags) {
-            core.info(`--- Processing tag: ${tag}`)
-            const reference = await tags.getRef(tag)
-            // console.log('reference?.data:', reference?.data)
-            if (reference) {
-                if (sha !== reference.data.object.sha) {
-                    core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
-                    await tags.updateRef(tag, sha)
-                } else {
-                    core.info(
-                        `\u001b[36mTag "${tag}" already points to sha: ${sha}`
-                    )
-                }
-            } else {
-                core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
-                await tags.createRef(tag, sha)
-            }
+        if (write) {
+            const tags = new Tags(token, owner, repo)
+            await processTags(tags, allTags, sha)
         }
 
         // Set Output
@@ -99,3 +86,24 @@ const Tags = require('./tags')
         core.setFailed(e.message)
     }
 })()
+
+async function processTags(tags, allTags, sha) {
+    for (const tag of allTags) {
+        core.info(`--- Processing tag: ${tag}`)
+        const reference = await tags.getRef(tag)
+        // console.log('reference?.data:', reference?.data)
+        if (reference) {
+            if (sha !== reference.data.object.sha) {
+                core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
+                await tags.updateRef(tag, sha)
+            } else {
+                core.info(
+                    `\u001b[36mTag "${tag}" already points to sha: ${sha}`
+                )
+            }
+        } else {
+            core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
+            await tags.createRef(tag, sha)
+        }
+    }
+}
