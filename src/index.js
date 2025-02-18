@@ -26,10 +26,13 @@ const Tags = require('./tags')
         // console.log('token:', token)
 
         // Check Tag
-        if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
-            return core.notice(`Skipping event: ${github.context.eventName}`)
-        }
-        const tag = github.context.ref.replace('refs/tags/', '')
+        // if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
+        //     return core.notice(`Skipping event: ${github.context.eventName}`)
+        // }
+        // const tag = github.context.ref.replace('refs/tags/', '')
+        // TODO: DEBUG: UNCOMMENT ABOVE REMOVE BELOW
+        const tag = 't1.0.0'
+
         core.info(`tag: \u001b[32;1m${tag}`)
 
         // Set Variables
@@ -42,6 +45,7 @@ const Tags = require('./tags')
         if (major || minor) {
             parsed = semver.parse(tag, {})
             console.log('parsed:', parsed)
+            console.log('JSON:', JSON.stringify(parsed))
             if (!parsed) {
                 return core.setFailed(`Unable to parse ${tag} to a semver.`)
             }
@@ -106,6 +110,13 @@ const Tags = require('./tags')
             // core.summary.addRaw('TODO: Add details about generated tags.\n')
             core.summary.addRaw(`**Tags:**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
+            if (parsed) {
+                detailsSummary('SemVer', JSON.stringify(parsed, null, 2))
+                core.summary.addDetails(
+                    'SemVer',
+                    `\n\n${JSON.stringify(parsed, null, 2)}\n\n`
+                )
+            }
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
                 '\n[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | '
@@ -169,4 +180,14 @@ function inputsTable(inputs) {
         table.push(`<tr><td>${key}</td><td>${value}</td></tr>`)
     }
     return table.join('') + '</table></details>'
+}
+
+/**
+ * @function detailsSummary
+ * @param {String} summary
+ * @param {String} details
+ * @return String
+ */
+function detailsSummary(summary, details) {
+    return `<details><summary>\n\n${summary}\n\n</summary>\n\n${details}\n\n</details>\n`
 }
