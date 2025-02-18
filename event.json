@@ -1,0 +1,31 @@
+{
+  "ref": "refs/tags/v1.0.0",
+  "ref_name": "v1.0.0",
+
+  "release": {
+    "tag_name": "v1.0.0",
+    "id": "163692606",
+    "prerelease": true,
+    "draft": false
+  },
+
+  "number": 1,
+  "pull_request": {
+    "base": {
+      "ref": "master"
+    },
+    "head": {
+      "ref": "feature-1"
+    }
+  },
+
+  "repository": {
+    "name": "repository-name",
+    "description": "Example Repository Description",
+    "html_url": "https://github.com/cssnr/update-version-tags-action",
+    "license": {
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0"
+    }
+  }
+}

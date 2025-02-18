@@ -2,8 +2,6 @@ name: "Mirror"
 
 on:
   workflow_dispatch:
-  release:
-    types: ["published"]
   push:
     branches: ["**"]
     tags: ["**"]
@@ -24,5 +22,6 @@ jobs:
         uses: cssnr/mirror-repository-action@v1
         with:
           host: https://codeberg.org
-          username: shaner
+          create: true
+          username: "shaner"
           password: ${{ secrets.CODEBERG_TOKEN }}

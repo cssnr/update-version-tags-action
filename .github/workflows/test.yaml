@@ -28,9 +28,9 @@ jobs:
 
       - name: "Validate Outputs"
         run: |
-          echo '${{ steps.test.outputs.tags }}'
+          echo "tags: '${{ steps.test.outputs.tags }}'"
           if [ -z '${{ steps.test.outputs.tags }}' ];then
-            echo "No Output"
+            echo "No Output: tags"
             exit 1
           fi
 
@@ -46,7 +46,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: "Setup Node 20"
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -65,7 +65,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: "Setup Node 20"
         uses: actions/setup-node@v4
         with:
           node-version: 20

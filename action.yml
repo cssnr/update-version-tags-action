@@ -21,6 +21,10 @@ inputs:
   tags:
     description: "Extra Tags"
     required: false
+  dry_run:
+    description: "Dry Run"
+    required: false
+    default: "false"
   token:
     description: "GitHub Token"
     required: false

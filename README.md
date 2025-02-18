@@ -10,20 +10,21 @@
 
 # Update Version Tags Action
 
-Update Version Tags on Push or Release for Semantic Versions or Custom Tags.
-
-Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags. For GitHub Actions you can just copy and paste this
-workflow: [tags.yaml](.github/workflows/tags.yaml)
-
-This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
-For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `1.x.x`
-branch.
-
 - [Inputs](#Inputs)
+  - [Permissions](#Permissions)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Support](#Support)
 - [Contributing](#Contributing)
+
+Update Version Tags on Push or Release for Semantic Versions or Custom Tags.
+
+Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
+
+This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
+For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `v1.x.x` branch.
+
+For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.github/workflows/tags.yaml)
 
 > [!NOTE]  
 > Please submit
@@ -32,13 +33,14 @@ branch.
 
 ## Inputs
 
-| input  | required | default        | description                      |
-| ------ | -------- | -------------- | -------------------------------- |
-| prefix | No       | v              | Tag Prefix (empty to disable)    |
-| major  | No       | true           | Update Major Tag \*              |
-| minor  | No       | true           | Update Minor Tag \*              |
-| tags   | No       | -              | Specify Tags to Update \*        |
-| token  | No       | `github.token` | Only for backwards comaptiblity. |
+| input   | required | default        | description                     |
+| ------- | -------- | -------------- | ------------------------------- |
+| prefix  | No       | `v`            | Tag Prefix (empty to disable)   |
+| major   | No       | `true`         | Update Major Tag \*             |
+| minor   | No       | `true`         | Update Minor Tag \*             |
+| tags    | No       | -              | Additional Tags to Update \*    |
+| dry_run | No       | `false`        | Do not create tags, outout only |
+| token   | No       | `github.token` | Only for external tokens        |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -47,14 +49,21 @@ both to `false` and provide your own `tags`.
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
+For semantic versions, simply add this step to your release workflow:
+
 ```yaml
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
 ```
 
-> [!IMPORTANT]  
-> This action requires **content write permissions** to push tags.
-> See [Examples](#Examples) below for details on how to add permissions into your workflow.
+### Permissions
+
+This action requires the following permissions:
+
+```yaml
+permissions:
+  contents: write
+```
 
 ## Outputs
 
@@ -73,7 +82,7 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 
 ## Examples
 
-This is the workflow used by this Action to update tags on release: [tags.yaml](.github%2Fworkflows%2Ftags.yaml)
+This is the workflow used by this Action to update tags on release: [tags.yaml](.github/workflows/tags.yaml)
 
 ```yaml
 name: 'Tags'
