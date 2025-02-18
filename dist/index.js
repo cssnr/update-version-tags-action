@@ -36322,12 +36322,12 @@ const Tags = __nccwpck_require__(800)
                 dry_run: dry_run,
             })
             core.summary.addRaw('### Update Version Tags Action\n')
-            core.summary.addRaw(`Target hash: \`${sha}\`\n`)
+            core.summary.addRaw(`Target hash: \`${sha}\`\n\n`)
             if (dry_run) {
                 core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
             }
             // core.summary.addRaw('TODO: Add details about generated tags.\n')
-            core.summary.addRaw(`Tags:\n`)
+            core.summary.addRaw(`**Tags:**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
@@ -36384,7 +36384,7 @@ async function processTags(tags, allTags, sha) {
  */
 function inputsTable(inputs) {
     const table = [
-        '<details><summary>Inputs</summary>',
+        '<details><summary><strong>Inputs</strong></summary>',
         '<table><tr><th>Input</th><th>Value</th></tr>',
     ]
     for (const [key, object] of Object.entries(inputs)) {

@@ -127,7 +127,6 @@ Specifying the tags to update:
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
   with:
-    prefix: 'v'
     major: false
     minor: false
     tags: |
