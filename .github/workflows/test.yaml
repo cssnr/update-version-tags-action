@@ -22,9 +22,7 @@ jobs:
         id: test
         uses: ./
         with:
-          major: false
-          minor: false
-          tags: test-tag
+          dry_run: true
 
       - name: "Validate Outputs"
         run: |
