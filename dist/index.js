@@ -36254,7 +36254,7 @@ const Tags = __nccwpck_require__(800)
         // }
         // const tag = github.context.ref.replace('refs/tags/', '')
         // TODO: DEBUG: UNCOMMENT ABOVE REMOVE BELOW
-        const tag = 't1.0.0'
+        const tag = '1.0.0'
 
         core.info(`tag: \u001b[32;1m${tag}`)
 
