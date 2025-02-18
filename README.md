@@ -56,11 +56,34 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 
 ---
 
-Tags **2**
+sha: `317442b7ca03e5edb918cba5f2f49249011834f6`
+
+**Tags:**
 
 <pre lang="plain"><code>v1
 v1.0</code></pre>
-<details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td>v</td></tr><tr><td>major</td><td>true</td></tr><tr><td>minor</td><td>true</td></tr><tr><td>tags</td><td>-</td></tr><tr><td>summary</td><td>true</td></tr><tr><td>dry_run</td><td>false</td></tr></table></details>
+<details><summary><strong>Results</strong></summary><table><tr><th>Tag</th><th>Result</th></tr><tr><td>v1</td><td><code>Updated</code></td></tr><tr><td>v1.0</td><td><code>Created</code></td></tr></table></details>
+<details><summary><strong>SemVer</strong></summary>
+
+```json
+{
+  "options": {},
+  "loose": false,
+  "includePrerelease": false,
+  "raw": "1.0.0",
+  "major": 1,
+  "minor": 0,
+  "patch": 0,
+  "prerelease": [],
+  "build": [],
+  "version": "1.0.0"
+}
+```
+
+</details>
+<details><summary><strong>Inputs</strong></summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td><code>t</code></td></tr><tr><td>major</td><td><code>true</code></td></tr><tr><td>minor</td><td><code>true</code></td></tr><tr><td>tags</td><td><code>v1,v1.0</code></td></tr><tr><td>summary</td><td><code>true</code></td></tr><tr><td>dry_run</td><td><code>true</code></td></tr></table></details>
+
+[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | [Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)
 
 ---
 

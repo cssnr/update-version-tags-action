@@ -26,13 +26,10 @@ const Tags = require('./tags')
         // console.log('token:', token)
 
         // Check Tag
-        // if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
-        //     return core.notice(`Skipping event: ${github.context.eventName}`)
-        // }
-        // const tag = github.context.ref.replace('refs/tags/', '')
-        // TODO: DEBUG: UNCOMMENT ABOVE REMOVE BELOW
-        const tag = '1.0.0'
-
+        if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
+            return core.notice(`Skipping event: ${github.context.eventName}`)
+        }
+        const tag = github.context.ref.replace('refs/tags/', '')
         core.info(`tag: \u001b[32;1m${tag}`)
 
         // Set Variables
@@ -87,8 +84,6 @@ const Tags = require('./tags')
         } else {
             core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
         }
-        // TODO: DEBUG: REMOVE BELOW
-        results = { t1: 'Updated', 't1.0': 'Created' }
 
         // Set Output
         core.info('📩 Setting Outputs')
