@@ -111,11 +111,19 @@ const Tags = require('./tags')
             core.summary.addRaw(`**Tags:**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
             if (parsed) {
-                detailsSummary('SemVer', JSON.stringify(parsed, null, 2))
+                core.summary.addEOL()
+                core.summary.addRaw(
+                    detailsSummary(
+                        'SemVer',
+                        `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
+                    )
+                )
+                core.summary.addEOL()
                 core.summary.addDetails(
                     'SemVer',
-                    `\n\n${JSON.stringify(parsed, null, 2)}\n\n`
+                    `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
                 )
+                core.summary.addEOL()
             }
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
