@@ -111,19 +111,10 @@ const Tags = require('./tags')
             core.summary.addRaw(`**Tags:**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
             if (parsed) {
-                core.summary.addEOL()
-                core.summary.addRaw(
-                    detailsSummary(
-                        'SemVer',
-                        `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
-                    )
-                )
-                core.summary.addEOL()
                 core.summary.addDetails(
                     'SemVer',
                     `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
                 )
-                core.summary.addEOL()
             }
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
@@ -188,14 +179,4 @@ function inputsTable(inputs) {
         table.push(`<tr><td>${key}</td><td>${value}</td></tr>`)
     }
     return table.join('') + '</table></details>'
-}
-
-/**
- * @function detailsSummary
- * @param {String} summary
- * @param {String} details
- * @return String
- */
-function detailsSummary(summary, details) {
-    return `<details><summary>\n\n${summary}\n\n</summary>\n\n${details}\n\n</details>\n`
 }
