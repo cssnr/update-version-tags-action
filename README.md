@@ -33,15 +33,15 @@ For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.githu
 
 ## Inputs
 
-| input   | required | default        | description                     |
-| ------- | -------- | -------------- | ------------------------------- |
-| prefix  | No       | `v`            | Tag Prefix (empty to disable)   |
-| major   | No       | `true`         | Update Major Tag \*             |
-| minor   | No       | `true`         | Update Minor Tag \*             |
-| tags    | No       | -              | Additional Tags to Update \*    |
-| summary | No       | `true`         | Add Summary to Job              |
-| dry_run | No       | `false`        | Do not create tags, outout only |
-| token   | No       | `github.token` | Only for external tokens        |
+| input   | required | default        | description                      |
+| ------- | -------- | -------------- | -------------------------------- |
+| prefix  | No       | `v`            | Tag Prefix for Semantic Versions |
+| major   | No       | `true`         | Update Major Tag \*              |
+| minor   | No       | `true`         | Update Minor Tag \*              |
+| tags    | No       | -              | Additional Tags to Update \*     |
+| summary | No       | `true`         | Add Summary to Job               |
+| dry_run | No       | `false`        | Do not create tags, outout only  |
+| token   | No       | `github.token` | Only for external tokens         |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -56,7 +56,11 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 
 ---
 
-Coming Soon...
+Tags **2**
+
+<pre lang="plain"><code>v1
+v1.0</code></pre>
+<details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td>v</td></tr><tr><td>major</td><td>true</td></tr><tr><td>minor</td><td>true</td></tr><tr><td>tags</td><td>-</td></tr><tr><td>summary</td><td>true</td></tr><tr><td>dry_run</td><td>false</td></tr></table></details>
 
 ---
 
