@@ -36322,8 +36322,8 @@ const Tags = __nccwpck_require__(800)
                 dry_run: dry_run,
             })
             core.summary.addRaw('### Update Version Tags Action\n')
-            core.summary.addRaw(`Generated **${allTags.length}** Tag(s).\n\n`)
-            core.summary.addRaw(`Tags ${allTags.length}\n`)
+            // core.summary.addRaw('TODO: Add details about generated tags.\n')
+            core.summary.addRaw(`Tags **${allTags.length}**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
