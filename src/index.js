@@ -80,9 +80,10 @@ const Tags = require('./tags')
         console.log('allTags:', allTags)
 
         // Process Tags
+        let results
         if (!dry_run) {
             const tags = new Tags(token, owner, repo)
-            await processTags(tags, allTags, sha)
+            results = await processTags(tags, allTags, sha)
         } else {
             core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
         }
@@ -94,7 +95,7 @@ const Tags = require('./tags')
         // Summary
         if (summary) {
             core.info('📝 Writing Job Summary')
-            const inputs_table = inputsTable({
+            const inputs_table = detailsTable('Inputs', 'Input', 'Value', {
                 prefix: prefix,
                 major: major,
                 minor: minor,
@@ -107,9 +108,11 @@ const Tags = require('./tags')
             if (dry_run) {
                 core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
             }
-            // core.summary.addRaw('TODO: Add details about generated tags.\n')
             core.summary.addRaw(`**Tags:**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
+            if (results) {
+                detailsTable('Results', 'Tag', 'Result', results)
+            }
             if (parsed) {
                 core.summary.addDetails(
                     'SemVer',
@@ -141,9 +144,11 @@ const Tags = require('./tags')
  * @param {Tags} tags
  * @param {String[]} allTags
  * @param {String} sha
+ * @return {Object}
  * TODO: Return results for summary
  */
 async function processTags(tags, allTags, sha) {
+    const results = {}
     for (const tag of allTags) {
         core.info(`--- Processing tag: ${tag}`)
         const reference = await tags.getRef(tag)
@@ -152,31 +157,38 @@ async function processTags(tags, allTags, sha) {
             if (sha !== reference.data.object.sha) {
                 core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                 await tags.updateRef(tag, sha)
+                results[tag] = 'Updated'
             } else {
                 core.info(
                     `\u001b[36mTag "${tag}" already points to sha: ${sha}`
                 )
+                results[tag] = 'Unchanged'
             }
         } else {
             core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
             await tags.createRef(tag, sha)
+            results[tag] = 'Created'
         }
     }
+    return results
 }
 
 /**
  * @function inputsTable
- * @param {Object} inputs
+ * @param {String} summary
+ * @param {String} h1
+ * @param {String} h2
+ * @param {Object} details
  * @return String
  */
-function inputsTable(inputs) {
+function detailsTable(summary, h1, h2, details) {
     const table = [
-        '<details><summary><strong>Inputs</strong></summary>',
-        '<table><tr><th>Input</th><th>Value</th></tr>',
+        '<details><summary><strong>${summary}</strong></summary>',
+        '<table><tr><th>${h1}</th><th>${h2}</th></tr>',
     ]
-    for (const [key, object] of Object.entries(inputs)) {
+    for (const [key, object] of Object.entries(details)) {
         const value = object.toString() || '-'
-        table.push(`<tr><td>${key}</td><td>${value}</td></tr>`)
+        table.push(`<tr><td>${key}</td><td>\`${value}\`</td></tr>`)
     }
     return table.join('') + '</table></details>'
 }
