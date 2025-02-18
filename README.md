@@ -39,6 +39,7 @@ For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.githu
 | major   | No       | `true`         | Update Major Tag \*             |
 | minor   | No       | `true`         | Update Minor Tag \*             |
 | tags    | No       | -              | Additional Tags to Update \*    |
+| summary | No       | `true`         | Add Summary to Job              |
 | dry_run | No       | `false`        | Do not create tags, outout only |
 | token   | No       | `github.token` | Only for external tokens        |
 
@@ -48,6 +49,16 @@ both to `false` and provide your own `tags`.
 
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
+
+**summary** - Write a Summary for the job. To disable this set to `false`.
+
+<details><summary>📜 View Example Summary</summary>
+
+---
+
+---
+
+</details>
 
 For semantic versions, simply add this step to your release workflow:
 
