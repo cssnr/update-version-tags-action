@@ -36343,7 +36343,7 @@ const Tags = __nccwpck_require__(800)
             }
             if (parsed) {
                 core.summary.addDetails(
-                    'SemVer',
+                    '<strong>SemVer</strong>',
                     `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
                 )
             }
@@ -36416,7 +36416,7 @@ function detailsTable(summary, h1, h2, details) {
     ]
     for (const [key, object] of Object.entries(details)) {
         const value = object.toString() || '-'
-        table.push(`<tr><td>${key}</td><td>\n\`${value}\`\n</td></tr>`)
+        table.push(`<tr><td>${key}</td><td><code>${value}</code></td></tr>`)
     }
     return table.join('') + '</table></details>'
 }
