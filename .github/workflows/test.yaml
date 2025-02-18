@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 env:
-  TAGS: t1,t1.0
+  TAGS: test-tag
 
 jobs:
   test:
@@ -25,9 +25,8 @@ jobs:
         id: test
         uses: ./
         with:
-          #          minor: false
-          #          major: false
-          prefix: "t"
+          minor: false
+          major: false
           dry_run: true
           tags: ${{ env.TAGS }}
 

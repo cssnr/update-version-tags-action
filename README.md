@@ -83,8 +83,6 @@ v1.0</code></pre>
 </details>
 <details><summary><strong>Inputs</strong></summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td><code>t</code></td></tr><tr><td>major</td><td><code>true</code></td></tr><tr><td>minor</td><td><code>true</code></td></tr><tr><td>tags</td><td><code>v1,v1.0</code></td></tr><tr><td>summary</td><td><code>true</code></td></tr><tr><td>dry_run</td><td><code>true</code></td></tr></table></details>
 
-[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | [Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)
-
 ---
 
 </details>
