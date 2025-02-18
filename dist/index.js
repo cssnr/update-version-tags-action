@@ -36336,9 +36336,9 @@ const Tags = __nccwpck_require__(800)
             core.summary.addRaw(`**Tags:**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
             if (results) {
-                core.summary.addDetails(
-                    'SemVer',
-                    `\n\n${detailsTable('Results', 'Tag', 'Result', results)}\n\n`
+                core.summary.addRaw(
+                    detailsTable('Results', 'Tag', 'Result', results),
+                    true
                 )
             }
             if (parsed) {
@@ -36416,7 +36416,7 @@ function detailsTable(summary, h1, h2, details) {
     ]
     for (const [key, object] of Object.entries(details)) {
         const value = object.toString() || '-'
-        table.push(`<tr><td>${key}</td><td>\`${value}\`</td></tr>`)
+        table.push(`<tr><td>${key}</td><td>\n\`${value}\`\n</td></tr>`)
     }
     return table.join('') + '</table></details>'
 }
