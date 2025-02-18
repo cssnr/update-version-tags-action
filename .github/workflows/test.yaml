@@ -6,6 +6,9 @@ on:
   push:
     branches: [master]
 
+env:
+  TAGS: test-tag
+
 jobs:
   test:
     name: "Test"
@@ -22,9 +25,10 @@ jobs:
         id: test
         uses: ./
         with:
-          major: false
           minor: false
-          tags: test-tag
+          major: false
+          dry_run: true
+          tags: ${{ env.TAGS }}
 
       - name: "Validate Outputs"
         run: |
@@ -34,8 +38,8 @@ jobs:
             exit 1
           fi
 
-      - name: "Cleanup Tag"
-        run: git push origin :refs/tags/test-tag
+      #- name: "Cleanup Tag"
+      #  run: git push origin :refs/tags/test-tag
 
   lint:
     name: "Lint"

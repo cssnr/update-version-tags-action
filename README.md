@@ -33,14 +33,15 @@ For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.githu
 
 ## Inputs
 
-| input   | required | default        | description                     |
-| ------- | -------- | -------------- | ------------------------------- |
-| prefix  | No       | `v`            | Tag Prefix (empty to disable)   |
-| major   | No       | `true`         | Update Major Tag \*             |
-| minor   | No       | `true`         | Update Minor Tag \*             |
-| tags    | No       | -              | Additional Tags to Update \*    |
-| dry_run | No       | `false`        | Do not create tags, outout only |
-| token   | No       | `github.token` | Only for external tokens        |
+| input   | required | default        | description                      |
+| ------- | -------- | -------------- | -------------------------------- |
+| prefix  | No       | `v`            | Tag Prefix for Semantic Versions |
+| major   | No       | `true`         | Update Major Tag \*              |
+| minor   | No       | `true`         | Update Minor Tag \*              |
+| tags    | No       | -              | Additional Tags to Update \*     |
+| summary | No       | `true`         | Add Summary to Job               |
+| dry_run | No       | `false`        | Do not create tags, outout only  |
+| token   | No       | `github.token` | Only for external tokens         |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -48,6 +49,43 @@ both to `false` and provide your own `tags`.
 
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
+
+**summary** - Write a Summary for the job. To disable this set to `false`.
+
+<details><summary>📜 View Example Summary</summary>
+
+---
+
+sha: `317442b7ca03e5edb918cba5f2f49249011834f6`
+
+**Tags:**
+
+<pre lang="plain"><code>v1
+v1.0</code></pre>
+<details><summary><strong>Results</strong></summary><table><tr><th>Tag</th><th>Result</th></tr><tr><td>v1</td><td><code>Updated</code></td></tr><tr><td>v1.0</td><td><code>Created</code></td></tr></table></details>
+<details><summary><strong>SemVer</strong></summary>
+
+```json
+{
+  "options": {},
+  "loose": false,
+  "includePrerelease": false,
+  "raw": "1.0.0",
+  "major": 1,
+  "minor": 0,
+  "patch": 0,
+  "prerelease": [],
+  "build": [],
+  "version": "1.0.0"
+}
+```
+
+</details>
+<details><summary><strong>Inputs</strong></summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td><code>t</code></td></tr><tr><td>major</td><td><code>true</code></td></tr><tr><td>minor</td><td><code>true</code></td></tr><tr><td>tags</td><td><code>v1,v1.0</code></td></tr><tr><td>summary</td><td><code>true</code></td></tr><tr><td>dry_run</td><td><code>true</code></td></tr></table></details>
+
+---
+
+</details>
 
 For semantic versions, simply add this step to your release workflow:
 
@@ -110,7 +148,6 @@ Specifying the tags to update:
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
   with:
-    prefix: 'v'
     major: false
     minor: false
     tags: |
