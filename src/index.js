@@ -99,7 +99,7 @@ const Tags = require('./tags')
                 dry_run: dry_run,
             })
             core.summary.addRaw('### Update Version Tags Action\n')
-            core.summary.addRaw(`Target hash: \`${sha}\`\n\n`)
+            core.summary.addRaw(`sha: \`${sha}\`\n\n`)
             if (dry_run) {
                 core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
             }
