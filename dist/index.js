@@ -36310,6 +36310,8 @@ const Tags = __nccwpck_require__(800)
         } else {
             core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
         }
+        // TODO: DEBUG: REMOVE BELOW
+        results = { t1: 'Updated', 't1.0': 'Created' }
 
         // Set Output
         core.info('📩 Setting Outputs')
@@ -36406,8 +36408,8 @@ async function processTags(tags, allTags, sha) {
  */
 function detailsTable(summary, h1, h2, details) {
     const table = [
-        '<details><summary><strong>${summary}</strong></summary>',
-        '<table><tr><th>${h1}</th><th>${h2}</th></tr>',
+        `<details><summary><strong>${summary}</strong></summary>`,
+        `<table><tr><th>${h1}</th><th>${h2}</th></tr>`,
     ]
     for (const [key, object] of Object.entries(details)) {
         const value = object.toString() || '-'
