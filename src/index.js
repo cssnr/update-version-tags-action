@@ -99,8 +99,12 @@ const Tags = require('./tags')
                 dry_run: dry_run,
             })
             core.summary.addRaw('### Update Version Tags Action\n')
+            core.summary.addRaw(`Target hash: \`${sha}\`\n`)
+            if (dry_run) {
+                core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
+            }
             // core.summary.addRaw('TODO: Add details about generated tags.\n')
-            core.summary.addRaw(`Tags **${allTags.length}**\n`)
+            core.summary.addRaw(`Tags:\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
             core.summary.addRaw(inputs_table, true)
             core.summary.addRaw(
