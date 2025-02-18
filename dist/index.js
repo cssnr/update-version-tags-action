@@ -36336,7 +36336,10 @@ const Tags = __nccwpck_require__(800)
             core.summary.addRaw(`**Tags:**\n`)
             core.summary.addCodeBlock(allTags.join('\n'), 'plain')
             if (results) {
-                detailsTable('Results', 'Tag', 'Result', results)
+                core.summary.addDetails(
+                    'SemVer',
+                    `\n\n${detailsTable('Results', 'Tag', 'Result', results)}\n\n`
+                )
             }
             if (parsed) {
                 core.summary.addDetails(
