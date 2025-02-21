@@ -11,7 +11,7 @@ const Tags = require('./tags')
 
         // Process Inputs
         const inputs = parseInputs()
-        core.startGroup('Inputs')
+        core.startGroup('Parse Inputs')
         console.log(inputs)
         core.endGroup() // Inputs
 
@@ -93,41 +93,7 @@ const Tags = require('./tags')
         // Job Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            const inputs_table = detailsTable('Inputs', 'Input', 'Value', {
-                prefix: inputs.prefix,
-                major: inputs.major,
-                minor: inputs.minor,
-                tags: inputs.tags.replaceAll('\n', ','),
-                summary: inputs.summary,
-                dry_run: inputs.dry_run,
-            })
-            core.summary.addRaw('### Update Version Tags Action\n')
-            core.summary.addRaw(`sha: \`${sha}\`\n\n`)
-            if (inputs.dry_run) {
-                core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
-            }
-            core.summary.addRaw(`**Tags:**\n`)
-            core.summary.addCodeBlock(allTags.join('\n'), 'text')
-            if (results) {
-                core.summary.addRaw(
-                    detailsTable('Results', 'Tag', 'Result', results),
-                    true
-                )
-            }
-            if (parsed) {
-                core.summary.addDetails(
-                    '<strong>SemVer</strong>',
-                    `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
-                )
-            }
-            core.summary.addRaw(inputs_table, true)
-            core.summary.addRaw(
-                '\n[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | '
-            )
-            core.summary.addRaw(
-                '[Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)'
-            )
-            await core.summary.write()
+            await writeSummary(inputs, sha, results, parsed, allTags)
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -172,26 +138,6 @@ async function processTags(tags, allTags, sha) {
 }
 
 /**
- * @function inputsTable
- * @param {String} summary
- * @param {String} h1
- * @param {String} h2
- * @param {Object} details
- * @return String
- */
-function detailsTable(summary, h1, h2, details) {
-    const table = [
-        `<details><summary><strong>${summary}</strong></summary>`,
-        `<table><tr><th>${h1}</th><th>${h2}</th></tr>`,
-    ]
-    for (const [key, object] of Object.entries(details)) {
-        const value = object.toString() || '-'
-        table.push(`<tr><td>${key}</td><td><code>${value}</code></td></tr>`)
-    }
-    return table.join('') + '</table></details>'
-}
-
-/**
  * @function parseInputs
  * @return {{
  *   prefix: string,
@@ -213,4 +159,75 @@ function parseInputs() {
         dry_run: core.getBooleanInput('dry_run'),
         token: core.getInput('token', { required: true }),
     }
+}
+
+/**
+ * @function writeSummary
+ * @param {Object} inputs
+ * @param {String} sha
+ * @param {Object} results
+ * @param {String} parsed
+ * @param {Array} allTags
+ * @return {Promise<void>}
+ */
+async function writeSummary(inputs, sha, results, parsed, allTags) {
+    core.summary.addRaw('## Update Version Tags Action\n')
+    core.summary.addRaw(`sha: \`${sha}\`\n\n`)
+
+    if (inputs.dry_run) {
+        core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
+    }
+
+    core.summary.addRaw(`**Tags:**\n`)
+    core.summary.addCodeBlock(allTags.join('\n'), 'text')
+
+    if (results) {
+        const results_table = []
+        for (const [key, object] of Object.entries(results)) {
+            results_table.push([
+                { data: key },
+                { data: `<code>${object.toString() || '-'}</code>` },
+            ])
+        }
+        core.summary.addRaw('<details><summary>Results</summary>')
+        core.summary.addTable([
+            [
+                { data: 'Tag', header: true },
+                { data: 'Result', header: true },
+            ],
+            ...results_table,
+        ])
+        core.summary.addRaw('</details>\n')
+    }
+
+    if (parsed) {
+        core.summary.addDetails(
+            '<strong>SemVer</strong>',
+            `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
+        )
+    }
+
+    // core.summary.addRaw(inputs_table, true)
+    core.summary.addRaw('<details><summary>Inputs</summary>')
+    core.summary.addTable([
+        [
+            { data: 'Input', header: true },
+            { data: 'Value', header: true },
+        ],
+        [{ data: 'prefix' }, { data: `<code>${inputs.prefix}</code>` }],
+        [{ data: 'major' }, { data: `<code>${inputs.major}</code>` }],
+        [{ data: 'minor' }, { data: `<code>${inputs.minor}</code>` }],
+        [
+            { data: 'tags' },
+            { data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>` },
+        ],
+        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
+        [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
+    ])
+    core.summary.addRaw('</details>\n')
+
+    const text = 'View Documentation, Report Issues or Request Features'
+    const link = 'https://github.com/cssnr/update-version-tags-action'
+    core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
+    await core.summary.write()
 }
