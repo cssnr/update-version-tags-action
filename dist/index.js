@@ -36234,7 +36234,7 @@ const Tags = __nccwpck_require__(800)
 
         // Process Inputs
         const inputs = parseInputs()
-        core.startGroup('Parse Inputs')
+        core.startGroup('Parsed Inputs')
         console.log(inputs)
         core.endGroup() // Inputs
 
@@ -36337,7 +36337,7 @@ const Tags = __nccwpck_require__(800)
 async function processTags(tags, allTags, sha) {
     const results = {}
     for (const tag of allTags) {
-        core.info(`--- Processing tag: ${tag}`)
+        core.info(`Processing tag: \u001b[36m${tag}`)
         const reference = await tags.getRef(tag)
         // console.log('reference?.data:', reference?.data)
         if (reference) {
@@ -36347,7 +36347,7 @@ async function processTags(tags, allTags, sha) {
                 results[tag] = 'Updated'
             } else {
                 core.info(
-                    `\u001b[36mTag "${tag}" already points to sha: ${sha}`
+                    `\u001b[35mTag "${tag}" already points to sha: ${sha}`
                 )
                 results[tag] = 'Unchanged'
             }
