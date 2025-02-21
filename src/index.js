@@ -10,23 +10,16 @@ const Tags = require('./tags')
         core.info('🏳️ Starting Update Version Tags Action')
 
         // Process Inputs
-        const prefix = core.getInput('prefix')
-        console.log('prefix:', prefix)
-        const major = core.getBooleanInput('major')
-        console.log('major:', major)
-        const minor = core.getBooleanInput('minor')
-        console.log('minor:', minor)
-        const inputTags = core.getInput('tags')
-        console.log('inputTags:', inputTags)
-        const summary = core.getBooleanInput('summary')
-        console.log('summary:', summary)
-        const dry_run = core.getBooleanInput('dry_run')
-        console.log('dry_run:', dry_run)
-        const token = core.getInput('token', { required: true })
-        // console.log('token:', token)
+        const inputs = parseInputs()
+        core.startGroup('Inputs')
+        console.log(inputs)
+        core.endGroup() // Inputs
 
         // Check Tag
-        if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
+        if (
+            !github.context.ref.startsWith('refs/tags/') &&
+            (inputs.major || inputs.minor)
+        ) {
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
         const tag = github.context.ref.replace('refs/tags/', '')
@@ -34,25 +27,27 @@ const Tags = require('./tags')
 
         // Set Variables
         const { owner, repo } = github.context.repo
-        console.log('owner:', owner)
-        console.log('repo:', repo)
+        // console.log('owner:', owner)
+        // console.log('repo:', repo)
         const sha = github.context.sha
         core.info(`sha: \u001b[32;1m${sha}`)
         let parsed
-        if (major || minor) {
+        if (inputs.major || inputs.minor) {
+            core.startGroup('Parsed SemVer')
             parsed = semver.parse(tag, {})
-            console.log('parsed:', parsed)
+            console.log(parsed)
+            core.endGroup() // SemVer
             if (!parsed) {
                 return core.setFailed(`Unable to parse ${tag} to a semver.`)
             }
         }
 
-        core.info('⌛ Processing Tags')
-
         // Collect Tags
+        // core.info('⌛ Processing Tags')
+        core.startGroup('Processing Tags')
         const collectedTags = []
-        if (inputTags) {
-            const parsedTags = parse(inputTags, {
+        if (inputs.tags) {
+            const parsedTags = parse(inputs.tags, {
                 delimiter: ',',
                 trim: true,
                 relax_column_count: true,
@@ -60,26 +55,32 @@ const Tags = require('./tags')
             console.log('parsedTags:', parsedTags)
             collectedTags.push(...parsedTags)
         }
-        if (major) {
-            console.log(`Major Tag: ${prefix}${parsed.major}`)
-            collectedTags.push(`${prefix}${parsed.major}`)
+        if (inputs.major) {
+            console.log(`Major Tag: ${inputs.prefix}${parsed.major}`)
+            collectedTags.push(`${inputs.prefix}${parsed.major}`)
         }
-        if (minor) {
-            console.log(`Minor Tag: ${prefix}${parsed.major}.${parsed.minor}`)
-            collectedTags.push(`${prefix}${parsed.major}.${parsed.minor}`)
+        if (inputs.minor) {
+            console.log(
+                `Minor Tag: ${inputs.prefix}${parsed.major}.${parsed.minor}`
+            )
+            collectedTags.push(
+                `${inputs.prefix}${parsed.major}.${parsed.minor}`
+            )
         }
         console.log('collectedTags', collectedTags)
         if (!collectedTags.length) {
             return core.warning('No Tags to Process!')
         }
+        core.endGroup() // Processing
+
         const allTags = [...new Set(collectedTags)]
         console.log('allTags:', allTags)
 
         // Process Tags
         /** @type {Object} */
         let results
-        if (!dry_run) {
-            const tags = new Tags(token, owner, repo)
+        if (!inputs.dry_run) {
+            const tags = new Tags(inputs.token, owner, repo)
             results = await processTags(tags, allTags, sha)
         } else {
             core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
@@ -90,19 +91,19 @@ const Tags = require('./tags')
         core.setOutput('tags', allTags.join(','))
 
         // Job Summary
-        if (summary) {
+        if (inputs.summary) {
             core.info('📝 Writing Job Summary')
             const inputs_table = detailsTable('Inputs', 'Input', 'Value', {
-                prefix: prefix,
-                major: major,
-                minor: minor,
-                tags: inputTags.replaceAll('\n', ','),
-                summary: summary,
-                dry_run: dry_run,
+                prefix: inputs.prefix,
+                major: inputs.major,
+                minor: inputs.minor,
+                tags: inputs.tags.replaceAll('\n', ','),
+                summary: inputs.summary,
+                dry_run: inputs.dry_run,
             })
             core.summary.addRaw('### Update Version Tags Action\n')
             core.summary.addRaw(`sha: \`${sha}\`\n\n`)
-            if (dry_run) {
+            if (inputs.dry_run) {
                 core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
             }
             core.summary.addRaw(`**Tags:**\n`)
@@ -127,8 +128,6 @@ const Tags = require('./tags')
                 '[Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)'
             )
             await core.summary.write()
-        } else {
-            core.info('⏩ Skipping Job Summary')
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -190,4 +189,28 @@ function detailsTable(summary, h1, h2, details) {
         table.push(`<tr><td>${key}</td><td><code>${value}</code></td></tr>`)
     }
     return table.join('') + '</table></details>'
+}
+
+/**
+ * @function parseInputs
+ * @return {{
+ *   prefix: string,
+ *   major: boolean,
+ *   minor: boolean,
+ *   tags: string,
+ *   summary: boolean,
+ *   dry_run: boolean,
+ *   token: string
+ * }}
+ */
+function parseInputs() {
+    return {
+        prefix: core.getInput('prefix'),
+        major: core.getBooleanInput('major'),
+        minor: core.getBooleanInput('minor'),
+        tags: core.getInput('tags'),
+        summary: core.getBooleanInput('summary'),
+        dry_run: core.getBooleanInput('dry_run'),
+        token: core.getInput('token', { required: true }),
+    }
 }
