@@ -52,7 +52,7 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
-<details><summary>📜 View Example Summary</summary>
+<details><summary>📜 View Example Job Summary</summary>
 
 ---
 
@@ -60,7 +60,7 @@ sha: `317442b7ca03e5edb918cba5f2f49249011834f6`
 
 **Tags:**
 
-<pre lang="plain"><code>v1
+<pre lang="text"><code>v1
 v1.0</code></pre>
 <details><summary><strong>Results</strong></summary><table><tr><th>Tag</th><th>Result</th></tr><tr><td>v1</td><td><code>Updated</code></td></tr><tr><td>v1.0</td><td><code>Created</code></td></tr></table></details>
 <details><summary><strong>SemVer</strong></summary>
@@ -108,6 +108,14 @@ permissions:
 | output | description                           |
 | ------ | ------------------------------------- |
 | tags   | Comma Seperated String of Parsed Tags |
+
+Example output:
+
+```text
+v1,v1.0
+```
+
+Using the outputs:
 
 ```yaml
 - name: 'Update Tags'
@@ -175,13 +183,15 @@ Currently, the best way to contribute to this project is to star this project on
 
 Additionally, you can support other GitHub Actions I have published:
 
-- [VirusTotal Action](https://github.com/cssnr/virustotal-action)
-- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
-- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
-- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
-- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action)
-- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action)
-- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
-- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
+- [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
+- [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
+- [VirusTotal Action](https://github.com/cssnr/virustotal-action?tab=readme-ov-file#readme)
+- [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action?tab=readme-ov-file#readme)
+- [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
+- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action?tab=readme-ov-file#readme)
+- [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action?tab=readme-ov-file#readme)
+- [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
+- [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)

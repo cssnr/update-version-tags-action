@@ -36265,7 +36265,6 @@ const Tags = __nccwpck_require__(800)
         if (major || minor) {
             parsed = semver.parse(tag, {})
             console.log('parsed:', parsed)
-            console.log('JSON:', JSON.stringify(parsed))
             if (!parsed) {
                 return core.setFailed(`Unable to parse ${tag} to a semver.`)
             }
@@ -36300,6 +36299,7 @@ const Tags = __nccwpck_require__(800)
         console.log('allTags:', allTags)
 
         // Process Tags
+        /** @type {Object} */
         let results
         if (!dry_run) {
             const tags = new Tags(token, owner, repo)
@@ -36312,7 +36312,7 @@ const Tags = __nccwpck_require__(800)
         core.info('📩 Setting Outputs')
         core.setOutput('tags', allTags.join(','))
 
-        // Summary
+        // Job Summary
         if (summary) {
             core.info('📝 Writing Job Summary')
             const inputs_table = detailsTable('Inputs', 'Input', 'Value', {
@@ -36329,7 +36329,7 @@ const Tags = __nccwpck_require__(800)
                 core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
             }
             core.summary.addRaw(`**Tags:**\n`)
-            core.summary.addCodeBlock(allTags.join('\n'), 'plain')
+            core.summary.addCodeBlock(allTags.join('\n'), 'text')
             if (results) {
                 core.summary.addRaw(
                     detailsTable('Results', 'Tag', 'Result', results),
@@ -36368,7 +36368,6 @@ const Tags = __nccwpck_require__(800)
  * @param {String[]} allTags
  * @param {String} sha
  * @return {Object}
- * TODO: Return results for summary
  */
 async function processTags(tags, allTags, sha) {
     const results = {}
