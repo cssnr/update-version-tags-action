@@ -23,14 +23,14 @@ const Tags = require('./tags')
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
         const tag = github.context.ref.replace('refs/tags/', '')
-        core.info(`tag: \u001b[32;1m${tag}`)
+        core.info(`tag: \u001b[32m${tag}`)
 
         // Set Variables
         const { owner, repo } = github.context.repo
         // console.log('owner:', owner)
         // console.log('repo:', repo)
         const sha = github.context.sha
-        core.info(`sha: \u001b[32;1m${sha}`)
+        core.info(`sha: \u001b[32m${sha}`)
         let parsed
         if (inputs.major || inputs.minor) {
             core.startGroup('Parsed SemVer')
@@ -123,7 +123,7 @@ async function processTags(tags, allTags, sha) {
         const reference = await tags.getRef(tag)
         if (reference) {
             core.info(`Tag found: ${reference.data.object.sha}`)
-            console.log('reference:', reference.data)
+            // console.log('reference:', reference.data)
             if (sha !== reference.data.object.sha) {
                 // core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                 await tags.updateRef(tag, sha)
