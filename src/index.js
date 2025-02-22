@@ -122,24 +122,24 @@ async function processTags(tags, allTags, sha) {
         core.startGroup(`Processing tag: \u001b[36m${tag}`)
         const reference = await tags.getRef(tag)
         if (reference) {
-            core.info(`Current:   ${reference.data.object.sha}`)
+            core.info(`Current:    ${reference.data.object.sha}`)
             // console.log('reference:', reference.data)
             if (sha !== reference.data.object.sha) {
                 // core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                 await tags.updateRef(tag, sha)
-                core.info(`Updated:   ${sha}`)
+                core.info(`Updated:    ${sha}`)
                 results[tag] = 'Updated'
             } else {
                 // core.info(`\u001b[35mTag "${tag}" already points to sha: ${sha}`)
-                core.info(`Unchanged: ${sha}`)
+                core.info(`No Change:  ${sha}`)
                 results[tag] = 'No Change'
             }
         } else {
             // core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
-            core.info(`Tag not found, creating...`)
+            core.info(`Tag not found...`)
             await tags.createRef(tag, sha)
             results[tag] = 'Created'
-            core.info(`Created: ${sha}`)
+            core.info(`Creating:   ${sha}`)
         }
         core.endGroup() // Tag
     }
