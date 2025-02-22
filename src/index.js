@@ -10,50 +10,44 @@ const Tags = require('./tags')
         core.info('🏳️ Starting Update Version Tags Action')
 
         // Process Inputs
-        const prefix = core.getInput('prefix')
-        console.log('prefix:', prefix)
-        const major = core.getBooleanInput('major')
-        console.log('major:', major)
-        const minor = core.getBooleanInput('minor')
-        console.log('minor:', minor)
-        const inputTags = core.getInput('tags')
-        console.log('inputTags:', inputTags)
-        const summary = core.getBooleanInput('summary')
-        console.log('summary:', summary)
-        const dry_run = core.getBooleanInput('dry_run')
-        console.log('dry_run:', dry_run)
-        const token = core.getInput('token', { required: true })
-        // console.log('token:', token)
+        const inputs = parseInputs()
+        core.startGroup('Parsed Inputs')
+        console.log(inputs)
+        core.endGroup() // Inputs
 
         // Check Tag
-        if (!github.context.ref.startsWith('refs/tags/') && (major || minor)) {
+        if (
+            !github.context.ref.startsWith('refs/tags/') &&
+            (inputs.major || inputs.minor)
+        ) {
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
         const tag = github.context.ref.replace('refs/tags/', '')
-        core.info(`tag: \u001b[32;1m${tag}`)
+        core.info(`tag: \u001b[32m${tag}`)
 
         // Set Variables
         const { owner, repo } = github.context.repo
-        console.log('owner:', owner)
-        console.log('repo:', repo)
+        // console.log('owner:', owner)
+        // console.log('repo:', repo)
         const sha = github.context.sha
-        core.info(`sha: \u001b[32;1m${sha}`)
+        core.info(`sha: \u001b[32m${sha}`)
         let parsed
-        if (major || minor) {
+        if (inputs.major || inputs.minor) {
+            core.startGroup('Parsed SemVer')
             parsed = semver.parse(tag, {})
-            console.log('parsed:', parsed)
-            console.log('JSON:', JSON.stringify(parsed))
+            console.log(parsed)
+            core.endGroup() // SemVer
             if (!parsed) {
                 return core.setFailed(`Unable to parse ${tag} to a semver.`)
             }
         }
 
-        core.info('⌛ Processing Tags')
-
         // Collect Tags
+        // core.info('⌛ Processing Tags')
+        core.startGroup('Processing Tags')
         const collectedTags = []
-        if (inputTags) {
-            const parsedTags = parse(inputTags, {
+        if (inputs.tags) {
+            const parsedTags = parse(inputs.tags, {
                 delimiter: ',',
                 trim: true,
                 relax_column_count: true,
@@ -61,26 +55,37 @@ const Tags = require('./tags')
             console.log('parsedTags:', parsedTags)
             collectedTags.push(...parsedTags)
         }
-        if (major) {
-            console.log(`Major Tag: ${prefix}${parsed.major}`)
-            collectedTags.push(`${prefix}${parsed.major}`)
+        if (inputs.major) {
+            console.log(`Major Tag: ${inputs.prefix}${parsed.major}`)
+            collectedTags.push(`${inputs.prefix}${parsed.major}`)
         }
-        if (minor) {
-            console.log(`Minor Tag: ${prefix}${parsed.major}.${parsed.minor}`)
-            collectedTags.push(`${prefix}${parsed.major}.${parsed.minor}`)
+        if (inputs.minor) {
+            console.log(
+                `Minor Tag: ${inputs.prefix}${parsed.major}.${parsed.minor}`
+            )
+            collectedTags.push(
+                `${inputs.prefix}${parsed.major}.${parsed.minor}`
+            )
         }
         console.log('collectedTags', collectedTags)
         if (!collectedTags.length) {
             return core.warning('No Tags to Process!')
         }
+        core.endGroup() // Processing
+
         const allTags = [...new Set(collectedTags)]
         console.log('allTags:', allTags)
 
         // Process Tags
+        /** @type {Object} */
         let results
-        if (!dry_run) {
-            const tags = new Tags(token, owner, repo)
+        if (!inputs.dry_run) {
+            const tags = new Tags(inputs.token, owner, repo)
             results = await processTags(tags, allTags, sha)
+
+            core.startGroup('Results')
+            console.log(results)
+            core.endGroup() // Results
         } else {
             core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
         }
@@ -89,46 +94,10 @@ const Tags = require('./tags')
         core.info('📩 Setting Outputs')
         core.setOutput('tags', allTags.join(','))
 
-        // Summary
-        if (summary) {
+        // Job Summary
+        if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            const inputs_table = detailsTable('Inputs', 'Input', 'Value', {
-                prefix: prefix,
-                major: major,
-                minor: minor,
-                tags: inputTags.replaceAll('\n', ','),
-                summary: summary,
-                dry_run: dry_run,
-            })
-            core.summary.addRaw('### Update Version Tags Action\n')
-            core.summary.addRaw(`sha: \`${sha}\`\n\n`)
-            if (dry_run) {
-                core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
-            }
-            core.summary.addRaw(`**Tags:**\n`)
-            core.summary.addCodeBlock(allTags.join('\n'), 'plain')
-            if (results) {
-                core.summary.addRaw(
-                    detailsTable('Results', 'Tag', 'Result', results),
-                    true
-                )
-            }
-            if (parsed) {
-                core.summary.addDetails(
-                    '<strong>SemVer</strong>',
-                    `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
-                )
-            }
-            core.summary.addRaw(inputs_table, true)
-            core.summary.addRaw(
-                '\n[View Documentation](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme) | '
-            )
-            core.summary.addRaw(
-                '[Report an Issue or Request a Feature](https://github.com/cssnr/docker-tags-action/issues)'
-            )
-            await core.summary.write()
-        } else {
-            core.info('⏩ Skipping Job Summary')
+            await writeSummary(inputs, sha, results, parsed, allTags)
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -145,50 +114,129 @@ const Tags = require('./tags')
  * @param {String[]} allTags
  * @param {String} sha
  * @return {Object}
- * TODO: Return results for summary
  */
 async function processTags(tags, allTags, sha) {
     const results = {}
     for (const tag of allTags) {
-        core.info(`--- Processing tag: ${tag}`)
+        // core.info(`Processing tag: \u001b[36m${tag}`)
+        core.startGroup(`Processing tag: \u001b[36m${tag}`)
         const reference = await tags.getRef(tag)
-        // console.log('reference?.data:', reference?.data)
         if (reference) {
+            core.info(`Current:    ${reference.data.object.sha}`)
+            // console.log('reference:', reference.data)
             if (sha !== reference.data.object.sha) {
-                core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
+                // core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                 await tags.updateRef(tag, sha)
+                core.info(`Updated:    ${sha}`)
                 results[tag] = 'Updated'
             } else {
-                core.info(
-                    `\u001b[36mTag "${tag}" already points to sha: ${sha}`
-                )
-                results[tag] = 'Unchanged'
+                // core.info(`\u001b[35mTag "${tag}" already points to sha: ${sha}`)
+                core.info(`No Change:  ${sha}`)
+                results[tag] = 'No Change'
             }
         } else {
-            core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
+            // core.info(`\u001b[33mCreating new tag "${tag}" to sha: ${sha}`)
+            core.info(`Tag not found...`)
             await tags.createRef(tag, sha)
             results[tag] = 'Created'
+            core.info(`Creating:   ${sha}`)
         }
+        core.endGroup() // Tag
     }
     return results
 }
 
 /**
- * @function inputsTable
- * @param {String} summary
- * @param {String} h1
- * @param {String} h2
- * @param {Object} details
- * @return String
+ * @function parseInputs
+ * @return {{
+ *   prefix: string,
+ *   major: boolean,
+ *   minor: boolean,
+ *   tags: string,
+ *   summary: boolean,
+ *   dry_run: boolean,
+ *   token: string
+ * }}
  */
-function detailsTable(summary, h1, h2, details) {
-    const table = [
-        `<details><summary><strong>${summary}</strong></summary>`,
-        `<table><tr><th>${h1}</th><th>${h2}</th></tr>`,
-    ]
-    for (const [key, object] of Object.entries(details)) {
-        const value = object.toString() || '-'
-        table.push(`<tr><td>${key}</td><td><code>${value}</code></td></tr>`)
+function parseInputs() {
+    return {
+        prefix: core.getInput('prefix'),
+        major: core.getBooleanInput('major'),
+        minor: core.getBooleanInput('minor'),
+        tags: core.getInput('tags'),
+        summary: core.getBooleanInput('summary'),
+        dry_run: core.getBooleanInput('dry_run'),
+        token: core.getInput('token', { required: true }),
     }
-    return table.join('') + '</table></details>'
+}
+
+/**
+ * @function writeSummary
+ * @param {Object} inputs
+ * @param {String} sha
+ * @param {Object} results
+ * @param {String} parsed
+ * @param {Array} allTags
+ * @return {Promise<void>}
+ */
+async function writeSummary(inputs, sha, results, parsed, allTags) {
+    core.summary.addRaw('## Update Version Tags Action\n')
+    core.summary.addRaw(`sha: \`${sha}\`\n\n`)
+
+    if (inputs.dry_run) {
+        core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
+    }
+
+    core.summary.addRaw(`**Tags:**\n`)
+    core.summary.addCodeBlock(allTags.join('\n'), 'text')
+
+    if (results) {
+        const results_table = []
+        for (const [key, object] of Object.entries(results)) {
+            results_table.push([
+                { data: `<code>${key}</code>` },
+                { data: object.toString() || 'Report as Bug' },
+            ])
+        }
+        core.summary.addRaw('<details><summary>Results</summary>')
+        core.summary.addTable([
+            [
+                { data: 'Tag', header: true },
+                { data: 'Result', header: true },
+            ],
+            ...results_table,
+        ])
+        core.summary.addRaw('</details>\n')
+    }
+
+    if (parsed) {
+        core.summary.addDetails(
+            '<strong>SemVer</strong>',
+            `\n\n\`\`\`json\n${JSON.stringify(parsed, null, 2)}\n\`\`\`\n\n`
+        )
+    }
+
+    // core.summary.addRaw(inputs_table, true)
+    core.summary.addRaw('<details><summary>Inputs</summary>')
+    core.summary.addTable([
+        [
+            { data: 'Input', header: true },
+            { data: 'Value', header: true },
+        ],
+        [{ data: 'prefix' }, { data: `<code>${inputs.prefix}</code>` }],
+        [{ data: 'major' }, { data: `<code>${inputs.major}</code>` }],
+        [{ data: 'minor' }, { data: `<code>${inputs.minor}</code>` }],
+        [
+            { data: 'tags' },
+            { data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>` },
+        ],
+        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
+        [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
+    ])
+    core.summary.addRaw('</details>\n')
+
+    const text = 'View Documentation, Report Issues or Request Features'
+    const link = 'https://github.com/cssnr/update-version-tags-action'
+    core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
+    await core.summary.write()
 }
