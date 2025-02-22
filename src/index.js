@@ -194,8 +194,8 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
         const results_table = []
         for (const [key, object] of Object.entries(results)) {
             results_table.push([
-                { data: key },
-                { data: `<code>${object.toString() || '-'}</code>` },
+                { data: `<code>${key}</code>` },
+                { data: object.toString() || 'Report as Bug' },
             ])
         }
         core.summary.addRaw('<details><summary>Results</summary>')
