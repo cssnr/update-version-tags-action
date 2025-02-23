@@ -78,7 +78,7 @@ const Tags = require('./tags')
         core.endGroup() // Processing
 
         const allTags = [...new Set(collectedTags)]
-        console.log('allTags:', allTags)
+        console.log('Tags:', allTags)
 
         // Process Tags
         /** @type {Object} */

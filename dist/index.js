@@ -36300,7 +36300,7 @@ const Tags = __nccwpck_require__(800)
         core.endGroup() // Processing
 
         const allTags = [...new Set(collectedTags)]
-        console.log('allTags:', allTags)
+        console.log('Tags:', allTags)
 
         // Process Tags
         /** @type {Object} */
