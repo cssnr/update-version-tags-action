@@ -3,7 +3,8 @@
   "scripts": {
     "build": "ncc build src/index.js",
     "build:watch": "npm run build -- --watch",
-    "lint": "npx eslint src"
+    "lint": "npx eslint src",
+    "prettier": "npx prettier --check ."
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
@@ -17,6 +18,6 @@
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
-    "prettier": "^3.5.1"
+    "prettier": "^3.5.2"
   }
 }
