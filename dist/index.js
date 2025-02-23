@@ -36237,14 +36237,9 @@ const Tags = __nccwpck_require__(800)
         console.log(inputs)
         core.endGroup() // Inputs
 
-        // Set Variables
-        const { owner, repo } = github.context.repo
-        // console.log('owner:', owner)
-        // console.log('repo:', repo)
-        const sha = github.context.sha
-        core.info(`Target sha: \u001b[32m${sha}`)
+        const tags = new Tags(inputs.token, ...github.context.repo)
 
-        // Set Tag
+        // Set Tag - used to parse semver
         if (
             !github.context.ref.startsWith('refs/tags/') &&
             (inputs.major || inputs.minor) &&
@@ -36252,12 +36247,20 @@ const Tags = __nccwpck_require__(800)
         ) {
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
+
         const tag = inputs.manual
             ? inputs.manual
             : github.context.ref.replace('refs/tags/', '')
         core.info(`Target tag: \u001b[32m${tag}`)
 
-        // Set SemVer
+        // Set Sha - target sha for allTags
+        const sha = !inputs.manual
+            ? github.context.sha
+            : tags.getRef(inputs.manual).reference.data.object.sha
+        // const sha = github.context.sha
+        core.info(`Target sha: \u001b[32m${sha}`)
+
+        // Set SemVer - if major or minor is true
         let parsed
         if (inputs.major || inputs.minor) {
             core.startGroup('Parsed SemVer')
@@ -36269,7 +36272,7 @@ const Tags = __nccwpck_require__(800)
             }
         }
 
-        // Collect Tags
+        // Collect Tags - allTags
         core.startGroup('Processing Tags')
         const collectedTags = []
         if (inputs.tags) {
@@ -36306,7 +36309,6 @@ const Tags = __nccwpck_require__(800)
         /** @type {Object} */
         let results
         if (!inputs.dry_run) {
-            const tags = new Tags(inputs.token, owner, repo)
             results = await processTags(tags, allTags, sha)
 
             core.startGroup('Results')
