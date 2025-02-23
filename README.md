@@ -34,14 +34,15 @@ For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.githu
 ## Inputs
 
 | input   | required | default        | description                      |
-| ------- | -------- | -------------- | -------------------------------- |
-| prefix  | No       | `v`            | Tag Prefix for Semantic Versions |
-| major   | No       | `true`         | Update Major Tag \*              |
-| minor   | No       | `true`         | Update Minor Tag \*              |
-| tags    | No       | -              | Additional Tags to Update \*     |
-| summary | No       | `true`         | Add Summary to Job               |
-| dry_run | No       | `false`        | Do not create tags, outout only  |
-| token   | No       | `github.token` | Only for external tokens         |
+| ------- | :------: | -------------- | -------------------------------- |
+| prefix  |    -     | `v`            | Tag Prefix for Semantic Versions |
+| major   |    -     | `true`         | Update Major Tag \*              |
+| minor   |    -     | `true`         | Update Minor Tag \*              |
+| tags    |    -     | -              | Additional Tags to Update \*     |
+| manual  |    -     | -              | Manually Set Target Tag \*       |
+| summary |    -     | `true`         | Add Summary to Job               |
+| dry_run |    -     | `false`        | Do not create tags, outout only  |
+| token   |    -     | `github.token` | Only for external tokens         |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -49,6 +50,8 @@ both to `false` and provide your own `tags`.
 
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
+
+**manual** - If set will this as the target tag for updating/creating tags.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 

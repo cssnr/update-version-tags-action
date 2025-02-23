@@ -15,22 +15,27 @@ const Tags = require('./tags')
         console.log(inputs)
         core.endGroup() // Inputs
 
-        // Check Tag
-        if (
-            !github.context.ref.startsWith('refs/tags/') &&
-            (inputs.major || inputs.minor)
-        ) {
-            return core.notice(`Skipping event: ${github.context.eventName}`)
-        }
-        const tag = github.context.ref.replace('refs/tags/', '')
-        core.info(`tag: \u001b[32m${tag}`)
-
         // Set Variables
         const { owner, repo } = github.context.repo
         // console.log('owner:', owner)
         // console.log('repo:', repo)
         const sha = github.context.sha
-        core.info(`sha: \u001b[32m${sha}`)
+        core.info(`Target sha: \u001b[32m${sha}`)
+
+        // Set Tag
+        if (
+            !github.context.ref.startsWith('refs/tags/') &&
+            (inputs.major || inputs.minor) &&
+            !inputs.manual
+        ) {
+            return core.notice(`Skipping event: ${github.context.eventName}`)
+        }
+        const tag = inputs.manual
+            ? inputs.manual
+            : github.context.ref.replace('refs/tags/', '')
+        core.info(`Target tag: \u001b[32m${tag}`)
+
+        // Set SemVer
         let parsed
         if (inputs.major || inputs.minor) {
             core.startGroup('Parsed SemVer')
@@ -43,7 +48,6 @@ const Tags = require('./tags')
         }
 
         // Collect Tags
-        // core.info('⌛ Processing Tags')
         core.startGroup('Processing Tags')
         const collectedTags = []
         if (inputs.tags) {
@@ -219,7 +223,7 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
 
 /**
  * @function parseInputs
- * @return {{prefix: string, major: boolean, minor: boolean, tags: string, summary: boolean, dry_run: boolean, token: string}}
+ * @return {{prefix: string, major: boolean, minor: boolean, tags: string, manual: string, summary: boolean, dry_run: boolean, token: string}}
  */
 function parseInputs() {
     return {
@@ -227,6 +231,7 @@ function parseInputs() {
         major: core.getBooleanInput('major'),
         minor: core.getBooleanInput('minor'),
         tags: core.getInput('tags'),
+        manual: core.getInput('manual'),
         summary: core.getBooleanInput('summary'),
         dry_run: core.getBooleanInput('dry_run'),
         token: core.getInput('token', { required: true }),
