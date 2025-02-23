@@ -36369,30 +36369,6 @@ async function processTags(tags, allTags, sha) {
 }
 
 /**
- * @function parseInputs
- * @return {{
- *   prefix: string,
- *   major: boolean,
- *   minor: boolean,
- *   tags: string,
- *   summary: boolean,
- *   dry_run: boolean,
- *   token: string
- * }}
- */
-function parseInputs() {
-    return {
-        prefix: core.getInput('prefix'),
-        major: core.getBooleanInput('major'),
-        minor: core.getBooleanInput('minor'),
-        tags: core.getInput('tags'),
-        summary: core.getBooleanInput('summary'),
-        dry_run: core.getBooleanInput('dry_run'),
-        token: core.getInput('token', { required: true }),
-    }
-}
-
-/**
  * @function writeSummary
  * @param {Object} inputs
  * @param {String} sha
@@ -36461,6 +36437,22 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
     const link = 'https://github.com/cssnr/update-version-tags-action'
     core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
     await core.summary.write()
+}
+
+/**
+ * @function parseInputs
+ * @return {{prefix: string, major: boolean, minor: boolean, tags: string, summary: boolean, dry_run: boolean, token: string}}
+ */
+function parseInputs() {
+    return {
+        prefix: core.getInput('prefix'),
+        major: core.getBooleanInput('major'),
+        minor: core.getBooleanInput('minor'),
+        tags: core.getInput('tags'),
+        summary: core.getBooleanInput('summary'),
+        dry_run: core.getBooleanInput('dry_run'),
+        token: core.getInput('token', { required: true }),
+    }
 }
 
 module.exports = __webpack_exports__;
