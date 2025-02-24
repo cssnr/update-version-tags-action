@@ -51,19 +51,17 @@ class Tags {
      * Update tag to sha
      * @param {string} tag
      * @param {string} sha
-     * @param {boolean} force
      * @return {Promise<object>}
      */
-    async updateRef(tag, sha, force = false) {
-        console.log(`ref: refs/tags/${tag}`)
+    async updateRef(tag, sha) {
+        console.log(`ref: tags/${tag}`)
         console.log(`sha: ${sha}`)
-        console.log('force:', force)
+        // console.log('force:', force)
         await this.octokit.rest.git.updateRef({
             owner: this.owner,
             repo: this.repo,
-            ref: `refs/tags/${tag}`,
+            ref: `tags/${tag}`,
             sha,
-            force,
         })
     }
 }
