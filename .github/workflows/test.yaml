@@ -43,7 +43,7 @@ jobs:
           fi
 
       - name: "Test 2 Manual, Target"
-        if: ${{ always() }}
+        if: ${{ always() && !github.event.act }}
         id: test2
         uses: ./
         with:
@@ -54,7 +54,7 @@ jobs:
           tag: "v1.0.0"
 
       - name: "Validate 2 Manual, Target"
-        if: ${{ always() }}
+        if: ${{ always() && !github.event.act }}
         run: |
           echo "tags: '${{ steps.test2.outputs.tags }}'"
           if [ '${{ steps.test2.outputs.tags }}' != '${{ env.TAGS }}' ];then
@@ -81,7 +81,7 @@ jobs:
           fi
 
       - name: "Test 4 Parsing"
-        if: ${{ always() }}
+        if: ${{ always() && !github.event.act }}
         id: test4
         uses: ./
         with:
@@ -89,7 +89,7 @@ jobs:
           tag: "v1.0.0"
 
       - name: "Validate 4 Parsing"
-        if: ${{ always() }}
+        if: ${{ always() && !github.event.act }}
         run: |
           echo "tags: '${{ steps.test4.outputs.tags }}'"
           if [ '${{ steps.test4.outputs.tags }}' != 'v1,v1.0' ];then
