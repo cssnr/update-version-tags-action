@@ -14,6 +14,7 @@
   - [Permissions](#Permissions)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
+  - [Rolling Back](#rolling-back)
 - [Support](#Support)
 - [Contributing](#Contributing)
 
@@ -24,7 +25,7 @@ Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
 For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `v1.x.x` branch.
 
-For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.github/workflows/tags.yaml)
+For GitHub Actions, you can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
 
 > [!NOTE]  
 > Please submit
@@ -33,16 +34,16 @@ For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.githu
 
 ## Inputs
 
-| input   | required | default           | description                      |
-| ------- | :------: | ----------------- | -------------------------------- |
-| prefix  |    -     | `v`               | Tag Prefix for Semantic Versions |
-| major   |    -     | `true`            | Update Major Tag \*              |
-| minor   |    -     | `true`            | Update Minor Tag \*              |
-| tags    |    -     | -                 | Additional Tags to Update \*     |
-| tag     |    -     | `github.ref_name` | Manually Set Target Tag \*\*     |
-| summary |    -     | `true`            | Add Summary to Job               |
-| dry_run |    -     | `false`           | Do not create tags, outout only  |
-| token   |    -     | `github.token`    | Only for PAT for rollback \*     |
+| input   | required | default           | description                       |
+| ------- | :------: | ----------------- | --------------------------------- |
+| prefix  |    -     | `v`               | Tag Prefix for Semantic Versions  |
+| major   |    -     | `true`            | Update Major Tag \*               |
+| minor   |    -     | `true`            | Update Minor Tag \*               |
+| tags    |    -     | -                 | Additional Tags to Update \*      |
+| tag     |    -     | `github.ref_name` | Manually Set Target Tag \*\*      |
+| summary |    -     | `true`            | Add Summary to Job \*             |
+| dry_run |    -     | `false`           | Do not create tags, outout only   |
+| token   |    -     | `github.token`    | For use with a PAT to rollback \* |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -51,13 +52,12 @@ both to `false` and provide your own `tags`.
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
-**tag** - The target tag and sha is parsed from the tag that triggered the workflow.
-To override this behavior you can specify a target tag here from which the target sha will be parsed.
+**tag** - The target tag the `sha` is parsed from. Defaults to the tag that triggered the workflow.
+To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
+This is the `sha` that all parsed or provided `tags` are updated too.
+If you plan on rolling back you need to use a PAT. See [Rolling Back](#rolling-back).
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
-
-**token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
-To do this you must create a PAT with the `repo` permissions and use that.
 
 <details><summary>📜 View Example Job Summary</summary>
 
@@ -96,6 +96,10 @@ dry_run: false
 ---
 
 </details>
+
+**token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
+To do this you must create a PAT with the `repo` and `workflow` permissions, add it to secrets, and use it.
+See [Rolling Back](#rolling-back) for more information and an example.
 
 For semantic versions, simply add this step to your release workflow:
 
@@ -160,7 +164,7 @@ jobs:
         uses: cssnr/update-version-tags-action@v1
 ```
 
-Specifying the tags to update:
+Specifying the tags to update or create:
 
 ```yaml
 - name: 'Update Tags'
@@ -173,7 +177,7 @@ Specifying the tags to update:
       v1.0
 ```
 
-Specifying the tag to update too (target tag):
+Specifying the target tag to update too:
 
 ```yaml
 - name: 'Update Tags'
@@ -182,7 +186,10 @@ Specifying the tag to update too (target tag):
     tag: v1.0.1
 ```
 
+### Rolling Back
+
 To rollback tags you must use a PAT with the `repo` permission.
+The target `sha` will be parsed from the target `tag` provided in the UI.
 
 This is the workflow used by this Action to roll back tags: [tags.yaml](.github/workflows/tags.yaml)
 
@@ -192,8 +199,9 @@ name: 'Tags'
 on:
   workflow_dispatch:
     inputs:
-      target:
+      tag:
         description: 'Target Tag'
+        required: true
 
 jobs:
   tags:
@@ -205,9 +213,9 @@ jobs:
 
     steps:
       - name: 'Update Tags'
-        uses: cssnr/update-version-tags-action@manual
+        uses: cssnr/update-version-tags-action@v1
         with:
-          tag: ${{ inputs.target }}
+          tag: ${{ inputs.tag }}
           token: ${{ secrets.GH_PAT }}
 ```
 

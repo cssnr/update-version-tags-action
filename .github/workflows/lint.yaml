@@ -27,12 +27,10 @@ jobs:
           npm install
 
       - name: "ESLint"
-        if: ${{ always() }}
         run: |
           npm run lint
 
       - name: "Prettier"
-        if: ${{ always() }}
         run: |
           npm run prettier
 
