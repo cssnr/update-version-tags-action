@@ -177,9 +177,6 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
         core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
     }
 
-    // core.summary.addRaw(`**Tags:**\n`)
-    // core.summary.addCodeBlock(allTags.join('\n'), 'text')
-
     core.summary.addRaw('<details><summary><strong>Tags</strong></summary>\n\n')
     core.summary.addCodeBlock(allTags.join('\n'), 'text')
     core.summary.addRaw('\n</details>\n')
