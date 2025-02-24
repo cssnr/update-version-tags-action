@@ -24,7 +24,6 @@ inputs:
   tag:
     description: "Target Tag"
     required: false
-    default: "${{ github.ref_name }}"
   summary:
     description: "Add Summary to Job"
     required: false

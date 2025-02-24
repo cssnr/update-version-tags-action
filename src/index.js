@@ -31,10 +31,8 @@ const Tags = require('./tags')
         console.log('ref1:', github.context.ref)
         console.log('ref2:', github.context.ref.replace('refs/tags/', ''))
 
+        const tag = inputs.tag || github.context.ref.replace('refs/tags/', '')
         // const tag = inputs.tag
-        //     ? inputs.tag
-        //     : github.context.ref.replace('refs/tags/', '')
-        const tag = inputs.tag
         core.info(`Target tag: \u001b[32m${tag}`)
 
         // DEBUG
