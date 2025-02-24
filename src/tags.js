@@ -3,8 +3,8 @@ const github = require('@actions/github')
 class Tags {
     /**
      * Create Tags instance
-     * @param {string} token - github.token
-     * @param {{ owner: string, repo: string }} repo - github.context.repo
+     * @param {string} token
+     * @param {{ owner: string, repo: string }} repo
      */
     constructor(token, repo) {
         this.owner = repo.owner
@@ -54,9 +54,6 @@ class Tags {
      * @return {Promise<object>}
      */
     async updateRef(tag, sha) {
-        console.log(`ref: tags/${tag}`)
-        console.log(`sha: ${sha}`)
-        // console.log('force:', force)
         await this.octokit.rest.git.updateRef({
             owner: this.owner,
             repo: this.repo,

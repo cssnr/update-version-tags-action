@@ -130,10 +130,9 @@ async function processTags(tags, allTags, sha) {
         // core.info(`Processing tag: \u001b[36m${tag}`)
         core.startGroup(`Processing tag: \u001b[36m${tag}`)
         const reference = await tags.getRef(tag)
-        console.log('reference:', reference)
+        // console.log('reference:', reference)
         if (reference) {
             core.info(`Current:    ${reference.data.object.sha}`)
-            // console.log('reference:', reference.data)
             if (sha !== reference.data.object.sha) {
                 // core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                 await tags.updateRef(tag, sha)

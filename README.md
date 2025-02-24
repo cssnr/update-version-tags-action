@@ -33,16 +33,16 @@ For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.githu
 
 ## Inputs
 
-| input   | required | default           | description                       |
-| ------- | :------: | ----------------- | --------------------------------- |
-| prefix  |    -     | `v`               | Tag Prefix for Semantic Versions  |
-| major   |    -     | `true`            | Update Major Tag \*               |
-| minor   |    -     | `true`            | Update Minor Tag \*               |
-| tags    |    -     | -                 | Additional Tags to Update \*      |
-| tag     |    -     | `github.ref_name` | Manually Set Target Tag \*\*      |
-| summary |    -     | `true`            | Add Summary to Job                |
-| dry_run |    -     | `false`           | Do not create tags, outout only   |
-| token   |    -     | `github.token`    | To provide a PAT for force update |
+| input   | required | default           | description                      |
+| ------- | :------: | ----------------- | -------------------------------- |
+| prefix  |    -     | `v`               | Tag Prefix for Semantic Versions |
+| major   |    -     | `true`            | Update Major Tag \*              |
+| minor   |    -     | `true`            | Update Minor Tag \*              |
+| tags    |    -     | -                 | Additional Tags to Update \*     |
+| tag     |    -     | `github.ref_name` | Manually Set Target Tag \*\*     |
+| summary |    -     | `true`            | Add Summary to Job               |
+| dry_run |    -     | `false`           | Do not create tags, outout only  |
+| token   |    -     | `github.token`    | Only for PAT for rollback \*     |
 
 **major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -55,6 +55,9 @@ delimited `|`. If you only want to update the specified `tags` make sure to set 
 To override this behavior you can specify a target tag here from which the target sha will be parsed.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
+
+**token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
+To do this you must create a PAT with the `repo` permissions and use that.
 
 <details><summary>📜 View Example Job Summary</summary>
 

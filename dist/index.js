@@ -32482,8 +32482,8 @@ const github = __nccwpck_require__(3228)
 class Tags {
     /**
      * Create Tags instance
-     * @param {string} token - github.token
-     * @param {{ owner: string, repo: string }} repo - github.context.repo
+     * @param {string} token
+     * @param {{ owner: string, repo: string }} repo
      */
     constructor(token, repo) {
         this.owner = repo.owner
@@ -32533,9 +32533,6 @@ class Tags {
      * @return {Promise<object>}
      */
     async updateRef(tag, sha) {
-        console.log(`ref: tags/${tag}`)
-        console.log(`sha: ${sha}`)
-        // console.log('force:', force)
         await this.octokit.rest.git.updateRef({
             owner: this.owner,
             repo: this.repo,
@@ -36377,10 +36374,9 @@ async function processTags(tags, allTags, sha) {
         // core.info(`Processing tag: \u001b[36m${tag}`)
         core.startGroup(`Processing tag: \u001b[36m${tag}`)
         const reference = await tags.getRef(tag)
-        console.log('reference:', reference)
+        // console.log('reference:', reference)
         if (reference) {
             core.info(`Current:    ${reference.data.object.sha}`)
-            // console.log('reference:', reference.data)
             if (sha !== reference.data.object.sha) {
                 // core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                 await tags.updateRef(tag, sha)
