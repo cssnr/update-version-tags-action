@@ -21,8 +21,8 @@ inputs:
   tags:
     description: "Extra Tags"
     required: false
-  manual:
-    description: "Manual Target"
+  tag:
+    description: "Target Tag"
     required: false
   summary:
     description: "Add Summary to Job"

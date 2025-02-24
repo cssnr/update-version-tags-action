@@ -39,7 +39,7 @@ For GitHub Actions you can just copy and paste this workflow: [tags.yaml](.githu
 | major   |    -     | `true`         | Update Major Tag \*              |
 | minor   |    -     | `true`         | Update Minor Tag \*              |
 | tags    |    -     | -              | Additional Tags to Update \*     |
-| manual  |    -     | -              | Manually Set Target Tag \*       |
+| tag     |    -     | -              | Manually Set Target Tag \*       |
 | summary |    -     | `true`         | Add Summary to Job               |
 | dry_run |    -     | `false`        | Do not create tags, outout only  |
 | token   |    -     | `github.token` | Only for external tokens         |
@@ -51,7 +51,7 @@ both to `false` and provide your own `tags`.
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
-**manual** - If set will this as the target tag for updating/creating tags.
+**tag** - If set will this as the target tag for updating/creating tags.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 

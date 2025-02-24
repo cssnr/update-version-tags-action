@@ -36265,34 +36265,34 @@ const Tags = __nccwpck_require__(800)
         if (
             !github.context.ref.startsWith('refs/tags/') &&
             (inputs.major || inputs.minor) &&
-            !inputs.manual
+            !inputs.tag
         ) {
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
 
-        const tag = inputs.manual
-            ? inputs.manual
+        const tag = inputs.tag
+            ? inputs.tag
             : github.context.ref.replace('refs/tags/', '')
         core.info(`Target tag: \u001b[32m${tag}`)
 
         // DEBUG
-        // const ref = await tags.getRef(inputs.manual)
+        // const ref = await tags.getRef(inputs.tag)
         // console.log('ref:', ref)
 
         // Set Sha - target sha for allTags
         let sha = github.context.sha
-        if (inputs.manual) {
-            core.info(`Getting sha for ref: \u001b[33m${inputs.manual}`)
-            const ref = await tags.getRef(inputs.manual)
+        if (inputs.tag) {
+            core.info(`Getting sha for ref: \u001b[33m${inputs.tag}`)
+            const ref = await tags.getRef(inputs.tag)
             // console.log('ref:', ref)
             if (!ref) {
-                return core.setFailed(`Ref not found: ${inputs.manual}`)
+                return core.setFailed(`Ref not found: ${inputs.tag}`)
             }
             sha = ref.data.object.sha
         }
-        // const sha = !inputs.manual
+        // const sha = !inputs.tag
         //     ? github.context.sha
-        //     : tags.getRef(inputs.manual).data.object.sha
+        //     : tags.getRef(inputs.tag).data.object.sha
         // // const sha = github.context.sha
         core.info(`Target sha: \u001b[32m${sha}`)
 
@@ -36483,7 +36483,7 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
 
 /**
  * Get inputs
- * @return {{prefix: string, major: boolean, minor: boolean, tags: string, manual: string, summary: boolean, dry_run: boolean, token: string}}
+ * @return {{prefix: string, major: boolean, minor: boolean, tags: string, tag: string, summary: boolean, dry_run: boolean, token: string}}
  */
 function parseInputs() {
     return {
@@ -36491,7 +36491,7 @@ function parseInputs() {
         major: core.getBooleanInput('major'),
         minor: core.getBooleanInput('minor'),
         tags: core.getInput('tags'),
-        manual: core.getInput('manual'),
+        tag: core.getInput('tag'),
         summary: core.getBooleanInput('summary'),
         dry_run: core.getBooleanInput('dry_run'),
         token: core.getInput('token', { required: true }),
