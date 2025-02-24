@@ -44835,8 +44835,8 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484)
 const github = __nccwpck_require__(3228)
 const { parse } = __nccwpck_require__(1110)
-const semver = __nccwpck_require__(2088)
 const { stringify } = __nccwpck_require__(8815)
+const semver = __nccwpck_require__(2088)
 
 const Tags = __nccwpck_require__(800)
 
@@ -45001,13 +45001,7 @@ async function processTags(tags, allTags, sha) {
  * @return {Promise<void>}
  */
 async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
-    console.log('allTags:', allTags)
-
     core.summary.addRaw('## Update Version Tags Action\n')
-
-    // core.summary.addRaw(`Target tag: \`${tag}\`  \n`)
-    // core.summary.addRaw(`Target sha: \`${sha}\`  \n`)
-    // core.summary.addRaw(`Tags: \`${allTags.join(',')}\`\n\n`)
 
     if (inputs.dry_run) {
         core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
@@ -45053,9 +45047,6 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
     delete inputs.token
     const yaml = stringify(inputs)
 
-    core.summary.addRaw('<details><summary>Inputs</summary>')
-    core.summary.addCodeBlock(yaml, 'yaml')
-    core.summary.addRaw('</details>\n')
     // core.summary.addRaw('<details><summary>Inputs</summary>')
     // core.summary.addTable([
     //     [
@@ -45073,6 +45064,9 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
     //     [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
     // ])
     // core.summary.addRaw('</details>\n')
+    core.summary.addRaw('<details><summary>Inputs</summary>')
+    core.summary.addCodeBlock(yaml, 'yaml')
+    core.summary.addRaw('</details>\n')
 
     const text = 'View Documentation, Report Issues or Request Features'
     const link = 'https://github.com/cssnr/update-version-tags-action'
