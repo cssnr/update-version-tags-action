@@ -32480,12 +32480,22 @@ function wrappy (fn, cb) {
 const github = __nccwpck_require__(3228)
 
 class Tags {
-    constructor(token, owner, repo) {
-        this.owner = owner
-        this.repo = repo
+    /**
+     * Create Tags instance
+     * @param {string} token - github.token
+     * @param {{ owner: string, repo: string }} repo - github.context.repo
+     */
+    constructor(token, repo) {
+        this.owner = repo.owner
+        this.repo = repo.repo
         this.octokit = github.getOctokit(token)
     }
 
+    /**
+     * Get ref by tag
+     * @param {string} tag
+     * @return {Promise<object|null>}
+     */
     async getRef(tag) {
         try {
             return await this.octokit.rest.git.getRef({
@@ -32501,6 +32511,12 @@ class Tags {
         }
     }
 
+    /**
+     * Create tag to sha
+     * @param {string} tag
+     * @param {string} sha
+     * @return {Promise<object>}
+     */
     async createRef(tag, sha) {
         return await this.octokit.rest.git.createRef({
             owner: this.owner,
@@ -32510,6 +32526,12 @@ class Tags {
         })
     }
 
+    /**
+     * Update tag to sha
+     * @param {string} tag
+     * @param {string} sha
+     * @return {Promise<object>}
+     */
     async updateRef(tag, sha) {
         await this.octokit.rest.git.updateRef({
             owner: this.owner,
@@ -36237,7 +36259,7 @@ const Tags = __nccwpck_require__(800)
         console.log(inputs)
         core.endGroup() // Inputs
 
-        const tags = new Tags(inputs.token, ...github.context.repo)
+        const tags = new Tags(inputs.token, github.context.repo)
 
         // Set Tag - used to parse semver
         if (
@@ -36337,7 +36359,7 @@ const Tags = __nccwpck_require__(800)
 })()
 
 /**
- * @function processTags
+ * Process Tags
  * @param {Tags} tags
  * @param {String[]} allTags
  * @param {String} sha
@@ -36375,7 +36397,7 @@ async function processTags(tags, allTags, sha) {
 }
 
 /**
- * @function writeSummary
+ * Write Job Summary
  * @param {Object} inputs
  * @param {String} sha
  * @param {Object} results
@@ -36446,7 +36468,7 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
 }
 
 /**
- * @function parseInputs
+ * Get inputs
  * @return {{prefix: string, major: boolean, minor: boolean, tags: string, manual: string, summary: boolean, dry_run: boolean, token: string}}
  */
 function parseInputs() {

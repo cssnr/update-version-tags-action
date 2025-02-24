@@ -15,7 +15,7 @@ const Tags = require('./tags')
         console.log(inputs)
         core.endGroup() // Inputs
 
-        const tags = new Tags(inputs.token, ...github.context.repo)
+        const tags = new Tags(inputs.token, github.context.repo)
 
         // Set Tag - used to parse semver
         if (
@@ -115,7 +115,7 @@ const Tags = require('./tags')
 })()
 
 /**
- * @function processTags
+ * Process Tags
  * @param {Tags} tags
  * @param {String[]} allTags
  * @param {String} sha
@@ -153,7 +153,7 @@ async function processTags(tags, allTags, sha) {
 }
 
 /**
- * @function writeSummary
+ * Write Job Summary
  * @param {Object} inputs
  * @param {String} sha
  * @param {Object} results
@@ -224,7 +224,7 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
 }
 
 /**
- * @function parseInputs
+ * Get inputs
  * @return {{prefix: string, major: boolean, minor: boolean, tags: string, manual: string, summary: boolean, dry_run: boolean, token: string}}
  */
 function parseInputs() {
