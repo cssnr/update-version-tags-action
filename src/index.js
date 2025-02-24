@@ -174,15 +174,15 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
     // core.summary.addRaw(`Target sha: \`${sha}\`  \n`)
     // core.summary.addRaw(`Tags: \`${allTags.join(',')}\`\n\n`)
 
-    core.summary.addTable([
-        [{ data: 'Tag' }, { data: `\`${tag}\`` }],
-        [{ data: 'Sha' }, { data: `\`${sha}\`` }],
-        [{ data: 'Tags' }, { data: `\`${allTags.join(',')}\`` }],
-    ])
-
     if (inputs.dry_run) {
         core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
     }
+
+    core.summary.addTable([
+        [{ data: 'Tag' }, { data: `<code>${tag}</code>` }],
+        [{ data: 'Sha' }, { data: `<code>${sha}</code>` }],
+        [{ data: 'Tags' }, { data: `<code>${allTags.join(',')}</code>` }],
+    ])
 
     core.summary.addRaw('<details><summary><strong>Tags</strong></summary>\n\n')
     core.summary.addCodeBlock(allTags.join('\n'), 'text')
