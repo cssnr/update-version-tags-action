@@ -158,22 +158,34 @@ async function processTags(tags, allTags, sha) {
 /**
  * Write Job Summary
  * @param {Object} inputs
+ * @param {String} tag
  * @param {String} sha
  * @param {Object} results
  * @param {String} parsed
  * @param {Array} allTags
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, sha, results, parsed, allTags) {
+async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
     core.summary.addRaw('## Update Version Tags Action\n')
-    core.summary.addRaw(`sha: \`${sha}\`\n\n`)
+    core.summary.addRaw(`Target tag: \`${tag}\`  \n`)
+    core.summary.addRaw(`Target sha: \`${sha}\`  \n`)
+    core.summary.addRaw(`Processed tags: \`${allTags.join(',')}\`\n\n`)
 
     if (inputs.dry_run) {
         core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
     }
 
-    core.summary.addRaw(`**Tags:**\n`)
+    // core.summary.addRaw(`**Tags:**\n`)
+    // core.summary.addCodeBlock(allTags.join('\n'), 'text')
+
+    core.summary.addRaw('<details><summary>Tags</summary>\n\n')
     core.summary.addCodeBlock(allTags.join('\n'), 'text')
+    core.summary.addRaw('\n\n</details>\n')
+
+    core.summary.addDetails(
+        '<strong>Tags</strong>',
+        `\n\n\`\`\`text\n${allTags.join('\n')}\n\`\`\`\n\n`
+    )
 
     if (results) {
         const results_table = []
