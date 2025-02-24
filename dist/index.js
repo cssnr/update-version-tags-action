@@ -36282,7 +36282,7 @@ const Tags = __nccwpck_require__(800)
         // Set Sha - target sha for allTags
         let sha = github.context.sha
         if (inputs.manual) {
-            core.info(`Manual ref: \u001b[33m${inputs.manual}`)
+            core.info(`Getting sha for ref: \u001b[33m${inputs.manual}`)
             const ref = await tags.getRef(inputs.manual)
             // console.log('ref:', ref)
             if (!ref) {
