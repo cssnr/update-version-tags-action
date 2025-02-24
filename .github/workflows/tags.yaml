@@ -3,8 +3,9 @@ name: "Tags"
 on:
   workflow_dispatch:
     inputs:
-      target:
+      tag:
         description: "Target Tag"
+        required: true
 
 jobs:
   tags:
@@ -18,5 +19,5 @@ jobs:
       - name: "Update Tags"
         uses: cssnr/update-version-tags-action@v1
         with:
-          tag: ${{ inputs.target }}
+          tag: ${{ inputs.tag }}
           token: ${{ secrets.GH_PAT }}
