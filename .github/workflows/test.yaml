@@ -23,17 +23,37 @@ jobs:
       #  run: |
       #    cat "${GITHUB_EVENT_PATH}"
 
-      - name: "Test Local Action 1"
+      - name: "Test Manual"
         if: ${{ always() }}
         id: test
         uses: ./
         with:
           dry_run: true
-          tags: ${{ env.TAGS }}
           minor: false
           major: false
+          tags: ${{ env.TAGS }}
 
-      - name: "Validate Outputs"
+      - name: "Validate Manual"
+        if: ${{ always() }}
+        run: |
+          echo "tags: '${{ steps.test.outputs.tags }}'"
+          if [ '${{ steps.test.outputs.tags }}' != '${{ env.TAGS }}' ];then
+            echo "Invalid Output: tags"
+            exit 1
+          fi
+
+      - name: "Test Manual, Target"
+        if: ${{ always() }}
+        uses: ./
+        with:
+          dry_run: true
+          minor: false
+          major: false
+          tags: ${{ env.TAGS }}
+          tag: "v1.0.0"
+
+      - name: "Validate Manual, Target"
+        if: ${{ always() }}
         run: |
           echo "tags: '${{ steps.test.outputs.tags }}'"
           if [ -z '${{ steps.test.outputs.tags }}' ];then
@@ -41,23 +61,39 @@ jobs:
             exit 1
           fi
 
-      - name: "Test Local Action 2"
+      - name: "Test Manual, Target, Parsing"
         if: ${{ always() }}
         uses: ./
         with:
           dry_run: true
           tags: ${{ env.TAGS }}
-          minor: false
-          major: false
           tag: "v1.0.0"
 
-      - name: "Test Local Action 3"
+      - name: "Validate Manual, Target, Parsing"
+        if: ${{ always() }}
+        run: |
+          echo "tags: '${{ steps.test.outputs.tags }}'"
+          if [ -z '${{ steps.test.outputs.tags }}' ];then
+            echo "Invalid Output: tags"
+            exit 1
+          fi
+
+      - name: "Test Parsing"
         if: ${{ always() }}
         uses: ./
         with:
           dry_run: true
           tags: ${{ env.TAGS }}
           tag: "v1.0.0"
+
+      - name: "Validate Parsing"
+        if: ${{ always() }}
+        run: |
+          echo "tags: '${{ steps.test.outputs.tags }}'"
+          if [ -z '${{ steps.test.outputs.tags }}' ];then
+            echo "Invalid Output: tags"
+            exit 1
+          fi
 
       #- name: "Cleanup Tag"
       #  run: git push origin :refs/tags/test-tag
