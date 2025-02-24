@@ -24,6 +24,7 @@ jobs:
       #    cat "${GITHUB_EVENT_PATH}"
 
       - name: "Test Local Action 1"
+        if: ${{ always() }}
         id: test
         uses: ./
         with:
@@ -32,8 +33,16 @@ jobs:
           minor: false
           major: false
 
+      - name: "Validate Outputs"
+        run: |
+          echo "tags: '${{ steps.test.outputs.tags }}'"
+          if [ -z '${{ steps.test.outputs.tags }}' ];then
+            echo "Invalid Output: tags"
+            exit 1
+          fi
+
       - name: "Test Local Action 2"
-        id: test
+        if: ${{ always() }}
         uses: ./
         with:
           dry_run: true
@@ -43,20 +52,12 @@ jobs:
           tag: "v1.0.0"
 
       - name: "Test Local Action 3"
-        id: test
+        if: ${{ always() }}
         uses: ./
         with:
           dry_run: true
           tags: ${{ env.TAGS }}
           tag: "v1.0.0"
-
-      - name: "Validate Outputs"
-        run: |
-          echo "tags: '${{ steps.test.outputs.tags }}'"
-          if [ -z '${{ steps.test.outputs.tags }}' ];then
-            echo "Invalid Output: tags"
-            exit 1
-          fi
 
       #- name: "Cleanup Tag"
       #  run: git push origin :refs/tags/test-tag
