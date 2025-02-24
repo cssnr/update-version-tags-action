@@ -36269,19 +36269,8 @@ const Tags = __nccwpck_require__(800)
         ) {
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
-
-        // DEBUG
-        console.log('inputs.tag:', inputs.tag)
-        console.log('ref1:', github.context.ref)
-        console.log('ref2:', github.context.ref.replace('refs/tags/', ''))
-
         const tag = inputs.tag || github.context.ref.replace('refs/tags/', '')
-        // const tag = inputs.tag
         core.info(`Target tag: \u001b[32m${tag}`)
-
-        // DEBUG
-        // const ref = await tags.getRef(inputs.tag)
-        // console.log('ref:', ref)
 
         // Set Sha - target sha for allTags
         let sha = github.context.sha
@@ -36294,10 +36283,6 @@ const Tags = __nccwpck_require__(800)
             }
             sha = ref.data.object.sha
         }
-        // const sha = !inputs.tag
-        //     ? github.context.sha
-        //     : tags.getRef(inputs.tag).data.object.sha
-        // // const sha = github.context.sha
         core.info(`Target sha: \u001b[32m${sha}`)
 
         // Set SemVer - if major or minor is true
