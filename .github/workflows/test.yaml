@@ -25,7 +25,7 @@ jobs:
 
       - name: "Test Manual"
         if: ${{ always() }}
-        id: test
+        id: test1
         uses: ./
         with:
           dry_run: true
@@ -36,14 +36,15 @@ jobs:
       - name: "Validate Manual"
         if: ${{ always() }}
         run: |
-          echo "tags: '${{ steps.test.outputs.tags }}'"
-          if [ '${{ steps.test.outputs.tags }}' != '${{ env.TAGS }}' ];then
+          echo "tags: '${{ steps.test1.outputs.tags }}'"
+          if [ '${{ steps.test1.outputs.tags }}' != '${{ env.TAGS }}' ];then
             echo "Invalid Output: tags"
             exit 1
           fi
 
       - name: "Test Manual, Target"
         if: ${{ always() }}
+        id: test2
         uses: ./
         with:
           dry_run: true
@@ -55,14 +56,15 @@ jobs:
       - name: "Validate Manual, Target"
         if: ${{ always() }}
         run: |
-          echo "tags: '${{ steps.test.outputs.tags }}'"
-          if [ -z '${{ steps.test.outputs.tags }}' ];then
+          echo "tags: '${{ steps.test2.outputs.tags }}'"
+          if [ -z '${{ steps.test2.outputs.tags }}' ];then
             echo "Invalid Output: tags"
             exit 1
           fi
 
       - name: "Test Manual, Target, Parsing"
         if: ${{ always() }}
+        id: test3
         uses: ./
         with:
           dry_run: true
@@ -72,14 +74,15 @@ jobs:
       - name: "Validate Manual, Target, Parsing"
         if: ${{ always() }}
         run: |
-          echo "tags: '${{ steps.test.outputs.tags }}'"
-          if [ -z '${{ steps.test.outputs.tags }}' ];then
+          echo "tags: '${{ steps.test3.outputs.tags }}'"
+          if [ -z '${{ steps.test3.outputs.tags }}' ];then
             echo "Invalid Output: tags"
             exit 1
           fi
 
       - name: "Test Parsing"
         if: ${{ always() }}
+        id: test4
         uses: ./
         with:
           dry_run: true
@@ -89,8 +92,8 @@ jobs:
       - name: "Validate Parsing"
         if: ${{ always() }}
         run: |
-          echo "tags: '${{ steps.test.outputs.tags }}'"
-          if [ -z '${{ steps.test.outputs.tags }}' ];then
+          echo "tags: '${{ steps.test4.outputs.tags }}'"
+          if [ -z '${{ steps.test4.outputs.tags }}' ];then
             echo "Invalid Output: tags"
             exit 1
           fi
