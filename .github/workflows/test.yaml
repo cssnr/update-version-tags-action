@@ -23,15 +23,32 @@ jobs:
       #  run: |
       #    cat "${GITHUB_EVENT_PATH}"
 
-      - name: "Test Local Action"
+      - name: "Test Local Action 1"
         id: test
         uses: ./
         with:
-          minor: false
-          major: false
           dry_run: true
           tags: ${{ env.TAGS }}
-          tag: "v1.1.1"
+          minor: false
+          major: false
+
+      - name: "Test Local Action 2"
+        id: test
+        uses: ./
+        with:
+          dry_run: true
+          tags: ${{ env.TAGS }}
+          minor: false
+          major: false
+          tag: "v1.0.0"
+
+      - name: "Test Local Action 3"
+        id: test
+        uses: ./
+        with:
+          dry_run: true
+          tags: ${{ env.TAGS }}
+          tag: "v1.0.0"
 
       - name: "Validate Outputs"
         run: |
