@@ -63,7 +63,7 @@ To do this you must create a PAT with the `repo` permissions and use that.
 
 ---
 
-<table><tr><td>Tag</td><td><code>v1.0.1</code></td></tr><tr><td>Sha</td><td><code>18141a903df47d330633e252b8c122c4469f3a4e</code></td></tr><tr><td>Tags</td><td><code>v1,v1.0</code></td></tr></table>
+<table><tr><td>Tag</td><td><code>v1.0.1</code></td></tr><tr><td>Sha</td><td><code>9b5d1797561610366c63dcd48b0764f4cdd91761</code></td></tr><tr><td>Tags</td><td><code>v1,v1.0</code></td></tr></table>
 <details><summary><strong>Tags</strong></summary><pre lang="text"><code>v1
 v1.0</code></pre></details><details><summary>Results</summary><table><tr><th>Tag</th><th>Result</th></tr><tr><td><code>v1</code></td><td>Updated</td></tr><tr><td><code>v1.0</code></td><td>Updated</td></tr></table></details><details><summary><strong>SemVer</strong></summary>
 
@@ -82,7 +82,16 @@ v1.0</code></pre></details><details><summary>Results</summary><table><tr><th>Tag
 }
 ```
 
-</details><details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td><code>v</code></td></tr><tr><td>major</td><td><code>true</code></td></tr><tr><td>minor</td><td><code>true</code></td></tr><tr><td>tags</td><td><code></code></td></tr><tr><td>summary</td><td><code>true</code></td></tr><tr><td>dry_run</td><td><code>false</code></td></tr></table></details>
+</details>
+<details><summary>Inputs</summary><pre lang="yaml"><code>prefix: v
+major: true
+minor: true
+tags: ""
+tag: ""
+summary: true
+dry_run: false
+</code></pre>
+</details>
 
 ---
 
