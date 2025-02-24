@@ -184,7 +184,7 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
 
     core.summary.addRaw('<details><summary><strong>Tags</strong></summary>\n\n')
     core.summary.addCodeBlock(allTags.join('\n'), 'text')
-    core.summary.addRaw('\n</details>\n')
+    core.summary.addRaw('</details>\n')
 
     if (results) {
         const results_table = []
