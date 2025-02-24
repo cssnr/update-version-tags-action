@@ -31,7 +31,7 @@ jobs:
           major: false
           dry_run: true
           tags: ${{ env.TAGS }}
-          #manual: "0.5.19"
+          manual: "v1.1.1"
 
       - name: "Validate Outputs"
         run: |
