@@ -36413,9 +36413,16 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
     console.log('allTags:', allTags)
 
     core.summary.addRaw('## Update Version Tags Action\n')
-    core.summary.addRaw(`Target tag: \`${tag}\`  \n`)
-    core.summary.addRaw(`Target sha: \`${sha}\`  \n`)
-    core.summary.addRaw(`Tags: \`${allTags.join(',')}\`\n\n`)
+
+    // core.summary.addRaw(`Target tag: \`${tag}\`  \n`)
+    // core.summary.addRaw(`Target sha: \`${sha}\`  \n`)
+    // core.summary.addRaw(`Tags: \`${allTags.join(',')}\`\n\n`)
+
+    core.summary.addTable([
+        [{ data: 'Tag' }, { data: `\`${tag}\`` }],
+        [{ data: 'Sha' }, { data: `\`${sha}\`` }],
+        [{ data: 'Tags' }, { data: `\`${allTags.join(',')}\`` }],
+    ])
 
     if (inputs.dry_run) {
         core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
