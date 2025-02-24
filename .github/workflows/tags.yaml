@@ -18,4 +18,4 @@ jobs:
       - name: "Update Tags"
         uses: cssnr/update-version-tags-action@manual
         with:
-          manual: ${{ inputs.target }}
+          tag: ${{ inputs.target }}
