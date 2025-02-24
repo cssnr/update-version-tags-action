@@ -1,4 +1,4 @@
-[![Tags](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/cssnr/update-version-tags-action/actions/workflows/tags.yaml)
+[![Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=github)](https://github.com/cssnr/update-version-tags-action/releases/latest)
@@ -129,18 +129,18 @@ Using the outputs:
 
 ## Examples
 
-This is the workflow used by this Action to update tags on release: [tags.yaml](.github/workflows/tags.yaml)
+This is the workflow used by this Action to update tags on release: [release.yaml](.github/workflows/release.yaml)
 
 ```yaml
-name: 'Tags'
+name: 'Release'
 
 on:
   release:
     types: [published]
 
 jobs:
-  tags:
-    name: 'Tags'
+  release:
+    name: 'Release'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -162,6 +162,44 @@ Specifying the tags to update:
     tags: |
       v1
       v1.0
+```
+
+Specifying the tag to update too (target tag):
+
+```yaml
+- name: 'Update Tags'
+  uses: cssnr/update-version-tags-action@v1
+  with:
+    tag: v1.0.1
+```
+
+To rollback tags you must use a PAT with the `repo` permission.
+
+This is the workflow used by this Action to roll back tags: [tags.yaml](.github/workflows/tags.yaml)
+
+```yaml
+name: 'Tags'
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target Tag'
+
+jobs:
+  tags:
+    name: 'Tags'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - name: 'Update Tags'
+        uses: cssnr/update-version-tags-action@manual
+        with:
+          tag: ${{ inputs.target }}
+          token: ${{ secrets.GH_PAT }}
 ```
 
 # Support

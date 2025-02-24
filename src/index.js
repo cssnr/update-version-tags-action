@@ -2,6 +2,7 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const { parse } = require('csv-parse/sync')
 const semver = require('semver')
+const { stringify } = require('yaml')
 
 const Tags = require('./tags')
 
@@ -214,24 +215,30 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
         )
     }
 
-    // core.summary.addRaw(inputs_table, true)
+    // inputs.token = '***'
+    delete inputs.token
+    const yaml = stringify(inputs)
+
     core.summary.addRaw('<details><summary>Inputs</summary>')
-    core.summary.addTable([
-        [
-            { data: 'Input', header: true },
-            { data: 'Value', header: true },
-        ],
-        [{ data: 'prefix' }, { data: `<code>${inputs.prefix}</code>` }],
-        [{ data: 'major' }, { data: `<code>${inputs.major}</code>` }],
-        [{ data: 'minor' }, { data: `<code>${inputs.minor}</code>` }],
-        [
-            { data: 'tags' },
-            { data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>` },
-        ],
-        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
-        [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
-    ])
+    core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
+    // core.summary.addRaw('<details><summary>Inputs</summary>')
+    // core.summary.addTable([
+    //     [
+    //         { data: 'Input', header: true },
+    //         { data: 'Value', header: true },
+    //     ],
+    //     [{ data: 'prefix' }, { data: `<code>${inputs.prefix}</code>` }],
+    //     [{ data: 'major' }, { data: `<code>${inputs.major}</code>` }],
+    //     [{ data: 'minor' }, { data: `<code>${inputs.minor}</code>` }],
+    //     [
+    //         { data: 'tags' },
+    //         { data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>` },
+    //     ],
+    //     [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
+    //     [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
+    // ])
+    // core.summary.addRaw('</details>\n')
 
     const text = 'View Documentation, Report Issues or Request Features'
     const link = 'https://github.com/cssnr/update-version-tags-action'
