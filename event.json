@@ -1,4 +1,6 @@
 {
+  "act": true,
+
   "ref": "refs/tags/v1.0.0",
   "ref_name": "v1.0.0",
 

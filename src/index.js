@@ -1,13 +1,17 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const { parse } = require('csv-parse/sync')
+const { stringify } = require('yaml')
 const semver = require('semver')
 
 const Tags = require('./tags')
 
 ;(async () => {
     try {
-        core.info('🏳️ Starting Update Version Tags Action')
+        const version = process.env.GITHUB_ACTION_REF
+            ? `\u001b[35;1m${process.env.GITHUB_ACTION_REF}`
+            : '\u001b[34;1mLocal Version'
+        core.info(`🏳️ Starting Update Version Tags Action - ${version}`)
 
         // Process Inputs
         const inputs = parseInputs()
@@ -15,22 +19,33 @@ const Tags = require('./tags')
         console.log(inputs)
         core.endGroup() // Inputs
 
-        // Check Tag
+        const tags = new Tags(inputs.token, github.context.repo)
+
+        // Set Tag - used to parse semver
         if (
             !github.context.ref.startsWith('refs/tags/') &&
-            (inputs.major || inputs.minor)
+            (inputs.major || inputs.minor) &&
+            !inputs.tag
         ) {
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
-        const tag = github.context.ref.replace('refs/tags/', '')
-        core.info(`tag: \u001b[32m${tag}`)
+        const tag = inputs.tag || github.context.ref.replace('refs/tags/', '')
+        core.info(`Target tag: \u001b[32m${tag}`)
 
-        // Set Variables
-        const { owner, repo } = github.context.repo
-        // console.log('owner:', owner)
-        // console.log('repo:', repo)
-        const sha = github.context.sha
-        core.info(`sha: \u001b[32m${sha}`)
+        // Set Sha - target sha for allTags
+        let sha = github.context.sha
+        if (inputs.tag) {
+            core.info(`Getting sha for ref: \u001b[33m${inputs.tag}`)
+            const ref = await tags.getRef(inputs.tag)
+            // console.log('ref:', ref)
+            if (!ref) {
+                return core.setFailed(`Ref not found: ${inputs.tag}`)
+            }
+            sha = ref.data.object.sha
+        }
+        core.info(`Target sha: \u001b[32m${sha}`)
+
+        // Set SemVer - if major or minor is true
         let parsed
         if (inputs.major || inputs.minor) {
             core.startGroup('Parsed SemVer')
@@ -42,8 +57,7 @@ const Tags = require('./tags')
             }
         }
 
-        // Collect Tags
-        // core.info('⌛ Processing Tags')
+        // Collect Tags - allTags
         core.startGroup('Processing Tags')
         const collectedTags = []
         if (inputs.tags) {
@@ -74,13 +88,12 @@ const Tags = require('./tags')
         core.endGroup() // Processing
 
         const allTags = [...new Set(collectedTags)]
-        console.log('allTags:', allTags)
+        console.log('Tags:', allTags)
 
         // Process Tags
         /** @type {Object} */
         let results
         if (!inputs.dry_run) {
-            const tags = new Tags(inputs.token, owner, repo)
             results = await processTags(tags, allTags, sha)
 
             core.startGroup('Results')
@@ -97,7 +110,7 @@ const Tags = require('./tags')
         // Job Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, sha, results, parsed, allTags)
+            await writeSummary(inputs, tag, sha, results, parsed, allTags)
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -109,7 +122,7 @@ const Tags = require('./tags')
 })()
 
 /**
- * @function processTags
+ * Process Tags
  * @param {Tags} tags
  * @param {String[]} allTags
  * @param {String} sha
@@ -121,9 +134,9 @@ async function processTags(tags, allTags, sha) {
         // core.info(`Processing tag: \u001b[36m${tag}`)
         core.startGroup(`Processing tag: \u001b[36m${tag}`)
         const reference = await tags.getRef(tag)
+        // console.log('reference:', reference)
         if (reference) {
             core.info(`Current:    ${reference.data.object.sha}`)
-            // console.log('reference:', reference.data)
             if (sha !== reference.data.object.sha) {
                 // core.info(`\u001b[32mUpdating tag "${tag}" to sha: ${sha}`)
                 await tags.updateRef(tag, sha)
@@ -147,24 +160,31 @@ async function processTags(tags, allTags, sha) {
 }
 
 /**
- * @function writeSummary
+ * Write Job Summary
  * @param {Object} inputs
+ * @param {String} tag
  * @param {String} sha
  * @param {Object} results
  * @param {String} parsed
  * @param {Array} allTags
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, sha, results, parsed, allTags) {
+async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
     core.summary.addRaw('## Update Version Tags Action\n')
-    core.summary.addRaw(`sha: \`${sha}\`\n\n`)
 
     if (inputs.dry_run) {
         core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
     }
 
-    core.summary.addRaw(`**Tags:**\n`)
+    core.summary.addTable([
+        [{ data: 'Tag' }, { data: `<code>${tag}</code>` }],
+        [{ data: 'Sha' }, { data: `<code>${sha}</code>` }],
+        [{ data: 'Tags' }, { data: `<code>${allTags.join(',')}</code>` }],
+    ])
+
+    core.summary.addRaw('<details><summary><strong>Tags</strong></summary>\n\n')
     core.summary.addCodeBlock(allTags.join('\n'), 'text')
+    core.summary.addRaw('</details>\n')
 
     if (results) {
         const results_table = []
@@ -192,23 +212,29 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
         )
     }
 
-    // core.summary.addRaw(inputs_table, true)
+    // inputs.token = '***'
+    delete inputs.token
+    const yaml = stringify(inputs)
+
+    // core.summary.addRaw('<details><summary>Inputs</summary>')
+    // core.summary.addTable([
+    //     [
+    //         { data: 'Input', header: true },
+    //         { data: 'Value', header: true },
+    //     ],
+    //     [{ data: 'prefix' }, { data: `<code>${inputs.prefix}</code>` }],
+    //     [{ data: 'major' }, { data: `<code>${inputs.major}</code>` }],
+    //     [{ data: 'minor' }, { data: `<code>${inputs.minor}</code>` }],
+    //     [
+    //         { data: 'tags' },
+    //         { data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>` },
+    //     ],
+    //     [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
+    //     [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
+    // ])
+    // core.summary.addRaw('</details>\n')
     core.summary.addRaw('<details><summary>Inputs</summary>')
-    core.summary.addTable([
-        [
-            { data: 'Input', header: true },
-            { data: 'Value', header: true },
-        ],
-        [{ data: 'prefix' }, { data: `<code>${inputs.prefix}</code>` }],
-        [{ data: 'major' }, { data: `<code>${inputs.major}</code>` }],
-        [{ data: 'minor' }, { data: `<code>${inputs.minor}</code>` }],
-        [
-            { data: 'tags' },
-            { data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>` },
-        ],
-        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
-        [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
-    ])
+    core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
 
     const text = 'View Documentation, Report Issues or Request Features'
@@ -218,8 +244,8 @@ async function writeSummary(inputs, sha, results, parsed, allTags) {
 }
 
 /**
- * @function parseInputs
- * @return {{prefix: string, major: boolean, minor: boolean, tags: string, summary: boolean, dry_run: boolean, token: string}}
+ * Get inputs
+ * @return {{prefix: string, major: boolean, minor: boolean, tags: string, tag: string, summary: boolean, dry_run: boolean, token: string}}
  */
 function parseInputs() {
     return {
@@ -227,6 +253,7 @@ function parseInputs() {
         major: core.getBooleanInput('major'),
         minor: core.getBooleanInput('minor'),
         tags: core.getInput('tags'),
+        tag: core.getInput('tag'),
         summary: core.getBooleanInput('summary'),
         dry_run: core.getBooleanInput('dry_run'),
         token: core.getInput('token', { required: true }),

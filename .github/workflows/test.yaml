@@ -23,19 +23,76 @@ jobs:
       #  run: |
       #    cat "${GITHUB_EVENT_PATH}"
 
-      - name: "Test Local Action"
-        id: test
+      - name: "Test 1 Manual"
+        if: ${{ always() }}
+        id: test1
         uses: ./
         with:
+          dry_run: true
           minor: false
           major: false
-          dry_run: true
           tags: ${{ env.TAGS }}
 
-      - name: "Validate Outputs"
+      - name: "Validate 1 Manual"
+        if: ${{ always() }}
         run: |
-          echo "tags: '${{ steps.test.outputs.tags }}'"
-          if [ -z '${{ steps.test.outputs.tags }}' ];then
+          echo "tags: '${{ steps.test1.outputs.tags }}'"
+          if [ '${{ steps.test1.outputs.tags }}' != '${{ env.TAGS }}' ];then
+            echo "Invalid Output: tags"
+            exit 1
+          fi
+
+      - name: "Test 2 Manual, Target"
+        if: ${{ always() && !github.event.act }}
+        id: test2
+        uses: ./
+        with:
+          dry_run: true
+          minor: false
+          major: false
+          tags: ${{ env.TAGS }}
+          tag: "v1.0.0"
+
+      - name: "Validate 2 Manual, Target"
+        if: ${{ always() && !github.event.act }}
+        run: |
+          echo "tags: '${{ steps.test2.outputs.tags }}'"
+          if [ '${{ steps.test2.outputs.tags }}' != '${{ env.TAGS }}' ];then
+            echo "Invalid Output: tags"
+            exit 1
+          fi
+
+      - name: "Test 3 Manual, Target, Parsing"
+        if: ${{ always() }}
+        id: test3
+        uses: ./
+        with:
+          dry_run: true
+          tags: ${{ env.TAGS }}
+          tag: "v1.0.0"
+
+      - name: "Validate 3 Manual, Target, Parsing"
+        if: ${{ always() }}
+        run: |
+          echo "tags: '${{ steps.test3.outputs.tags }}'"
+          if [ '${{ steps.test3.outputs.tags }}' != 'test-tag,v1,v1.0' ];then
+            echo "Invalid Output: tags"
+            exit 1
+          fi
+
+      - name: "Test 4 Parsing"
+        if: ${{ always() && !github.event.act }}
+        id: test4
+        uses: ./
+        with:
+          dry_run: true
+          tag: "v1.0.0"
+
+      - name: "Validate 4 Parsing"
+        if: ${{ always() && !github.event.act }}
+        run: |
+          echo "tags: '${{ steps.test4.outputs.tags }}'"
+          if [ '${{ steps.test4.outputs.tags }}' != 'v1,v1.0' ];then
             echo "Invalid Output: tags"
             exit 1
           fi

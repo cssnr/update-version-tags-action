@@ -21,6 +21,9 @@ inputs:
   tags:
     description: "Extra Tags"
     required: false
+  tag:
+    description: "Target Tag"
+    required: false
   summary:
     description: "Add Summary to Job"
     required: false
@@ -32,7 +35,7 @@ inputs:
   token:
     description: "GitHub Token"
     required: false
-    default: ${{ github.token }}
+    default: "${{ github.token }}"
 
 outputs:
   tags:
