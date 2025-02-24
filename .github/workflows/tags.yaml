@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: "Update Tags"
-        uses: cssnr/update-version-tags-action@manual
+        uses: cssnr/update-version-tags-action@v1
         with:
           tag: ${{ inputs.target }}
           token: ${{ secrets.GH_PAT }}

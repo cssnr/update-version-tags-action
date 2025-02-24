@@ -8,7 +8,8 @@ const Tags = require('./tags')
 
 ;(async () => {
     try {
-        core.info('🏳️ Starting Update Version Tags Action')
+        const ver = process.env.GITHUB_ACTION_REF || 'local'
+        core.info(`🏳️ Starting Update Version Tags Action @\u001b[35;1m${ver}`)
 
         // Process Inputs
         const inputs = parseInputs()
