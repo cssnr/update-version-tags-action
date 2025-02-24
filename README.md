@@ -164,7 +164,7 @@ jobs:
         uses: cssnr/update-version-tags-action@v1
 ```
 
-Specifying the tags to update:
+Specifying the tags to update or create:
 
 ```yaml
 - name: 'Update Tags'
@@ -177,7 +177,7 @@ Specifying the tags to update:
       v1.0
 ```
 
-Specifying the tag to update too (target tag):
+Specifying the target tag to update too:
 
 ```yaml
 - name: 'Update Tags'
