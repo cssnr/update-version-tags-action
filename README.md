@@ -60,15 +60,9 @@ To override this behavior you can specify a target tag here from which the targe
 
 ---
 
-sha: `8e18b099561526c419cb5660e5f998f6c0e2bcfe`
-
-**Tags:**
-
-<pre lang="text"><code>v1
-v1.0</code></pre>
-<details><summary>Results</summary><table><tr><th>Tag</th><th>Result</th></tr><tr><td>v1</td><td><code>Updated</code></td></tr><tr><td>v1.0</td><td><code>Updated</code></td></tr></table>
-</details>
-<details><summary><strong>SemVer</strong></summary>
+<table><tr><td>Tag</td><td><code>v1.0.1</code></td></tr><tr><td>Sha</td><td><code>18141a903df47d330633e252b8c122c4469f3a4e</code></td></tr><tr><td>Tags</td><td><code>v1,v1.0</code></td></tr></table>
+<details><summary><strong>Tags</strong></summary><pre lang="text"><code>v1
+v1.0</code></pre></details><details><summary>Results</summary><table><tr><th>Tag</th><th>Result</th></tr><tr><td><code>v1</code></td><td>Updated</td></tr><tr><td><code>v1.0</code></td><td>Updated</td></tr></table></details><details><summary><strong>SemVer</strong></summary>
 
 ```json
 {
@@ -85,9 +79,7 @@ v1.0</code></pre>
 }
 ```
 
-</details>
-<details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td><code>v</code></td></tr><tr><td>major</td><td><code>true</code></td></tr><tr><td>minor</td><td><code>true</code></td></tr><tr><td>tags</td><td><code></code></td></tr><tr><td>summary</td><td><code>true</code></td></tr><tr><td>dry_run</td><td><code>false</code></td></tr></table>
-</details>
+</details><details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>prefix</td><td><code>v</code></td></tr><tr><td>major</td><td><code>true</code></td></tr><tr><td>minor</td><td><code>true</code></td></tr><tr><td>tags</td><td><code></code></td></tr><tr><td>summary</td><td><code>true</code></td></tr><tr><td>dry_run</td><td><code>false</code></td></tr></table></details>
 
 ---
 

@@ -32538,6 +32538,7 @@ class Tags {
             repo: this.repo,
             ref: `tags/${tag}`,
             sha,
+            force: true,
         })
     }
 }
