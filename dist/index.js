@@ -32533,7 +32533,7 @@ class Tags {
      * @param {boolean} force
      * @return {Promise<object>}
      */
-    async updateRef(tag, sha, force = false) {
+    async updateRef(tag, sha, force = true) {
         console.log(`ref: tags/${tag}`)
         console.log(`sha: ${sha}`)
         console.log('force:', force)
@@ -36379,6 +36379,7 @@ async function processTags(tags, allTags, sha) {
         // core.info(`Processing tag: \u001b[36m${tag}`)
         core.startGroup(`Processing tag: \u001b[36m${tag}`)
         const reference = await tags.getRef(tag)
+        console.log('reference:', reference)
         if (reference) {
             core.info(`Current:    ${reference.data.object.sha}`)
             // console.log('reference:', reference.data)

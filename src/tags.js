@@ -54,7 +54,7 @@ class Tags {
      * @param {boolean} force
      * @return {Promise<object>}
      */
-    async updateRef(tag, sha, force = false) {
+    async updateRef(tag, sha, force = true) {
         console.log(`ref: tags/${tag}`)
         console.log(`sha: ${sha}`)
         console.log('force:', force)
