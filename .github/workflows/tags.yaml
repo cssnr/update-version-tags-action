@@ -19,3 +19,4 @@ jobs:
         uses: cssnr/update-version-tags-action@manual
         with:
           tag: ${{ inputs.target }}
+          token: ${{ secrets.GH_PAT }}
