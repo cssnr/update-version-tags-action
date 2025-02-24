@@ -36275,11 +36275,25 @@ const Tags = __nccwpck_require__(800)
             : github.context.ref.replace('refs/tags/', '')
         core.info(`Target tag: \u001b[32m${tag}`)
 
+        // DEBUG
+        // const ref = await tags.getRef(inputs.manual)
+        // console.log('ref:', ref)
+
         // Set Sha - target sha for allTags
-        const sha = !inputs.manual
-            ? github.context.sha
-            : tags.getRef(inputs.manual).reference.data.object.sha
-        // const sha = github.context.sha
+        let sha = github.context.sha
+        if (inputs.manual) {
+            core.info(`Manual ref: \u001b[33m${inputs.manual}`)
+            const ref = await tags.getRef(inputs.manual)
+            // console.log('ref:', ref)
+            if (!ref) {
+                return core.setFailed(`Ref not found: ${inputs.manual}`)
+            }
+            sha = ref.data.object.sha
+        }
+        // const sha = !inputs.manual
+        //     ? github.context.sha
+        //     : tags.getRef(inputs.manual).data.object.sha
+        // // const sha = github.context.sha
         core.info(`Target sha: \u001b[32m${sha}`)
 
         // Set SemVer - if major or minor is true
