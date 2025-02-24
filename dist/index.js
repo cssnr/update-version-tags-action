@@ -44844,7 +44844,7 @@ const Tags = __nccwpck_require__(800)
     try {
         const version = process.env.GITHUB_ACTION_REF
             ? `\u001b[35;1m${process.env.GITHUB_ACTION_REF}`
-            : 'Local Version'
+            : '\u001b[34;1mLocal Version'
         core.info(`🏳️ Starting Update Version Tags Action - ${version}`)
 
         // Process Inputs
