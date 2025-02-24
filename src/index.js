@@ -106,7 +106,7 @@ const Tags = require('./tags')
         // Job Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, sha, results, parsed, allTags)
+            await writeSummary(inputs, tag, sha, results, parsed, allTags)
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -166,6 +166,8 @@ async function processTags(tags, allTags, sha) {
  * @return {Promise<void>}
  */
 async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
+    console.log('allTags:', allTags)
+
     core.summary.addRaw('## Update Version Tags Action\n')
     core.summary.addRaw(`Target tag: \`${tag}\`  \n`)
     core.summary.addRaw(`Target sha: \`${sha}\`  \n`)
