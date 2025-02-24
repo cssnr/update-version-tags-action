@@ -36270,9 +36270,15 @@ const Tags = __nccwpck_require__(800)
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
 
+        // DEBUG
+        console.log('inputs.tag:', inputs.tag)
+        console.log('ref1:', github.context.ref)
+        console.log('ref2:', github.context.ref.replace('refs/tags/', ''))
+
+        // const tag = inputs.tag
+        //     ? inputs.tag
+        //     : github.context.ref.replace('refs/tags/', '')
         const tag = inputs.tag
-            ? inputs.tag
-            : github.context.ref.replace('refs/tags/', '')
         core.info(`Target tag: \u001b[32m${tag}`)
 
         // DEBUG

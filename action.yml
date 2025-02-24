@@ -24,6 +24,7 @@ inputs:
   tag:
     description: "Target Tag"
     required: false
+    default: "${{ github.ref_name }}"
   summary:
     description: "Add Summary to Job"
     required: false
@@ -35,7 +36,7 @@ inputs:
   token:
     description: "GitHub Token"
     required: false
-    default: ${{ github.token }}
+    default: "${{ github.token }}"
 
 outputs:
   tags:
