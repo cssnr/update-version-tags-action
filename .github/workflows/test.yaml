@@ -108,7 +108,7 @@ jobs:
       #- name: "Cleanup Tag"
       #  if: ${{ always() }}
       #  continue-on-error: true
-      #  run: git push origin :refs/tags/test-tag
+      #  run: git push origin :refs/tags/${{ env.TAG }}
 
       - name: "Schedule Failure Notification"
         if: ${{ always() && failure() && github.event_name == 'schedule' }}
