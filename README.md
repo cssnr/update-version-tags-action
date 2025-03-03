@@ -98,8 +98,7 @@ dry_run: false
 </details>
 
 To see a workflow run you can view a recent
-[test.yaml run](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
-_(requires login)_.
+[test.yaml run](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml) _(requires login)_.
 
 **token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
 To do this you must create a PAT with the `repo` and `workflow` permissions, add it to secrets, and use it.
