@@ -99,7 +99,7 @@ dry_run: false
 </details>
 
 To see a workflow run you can view a recent
-[test.yaml workflow run](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
+[test.yaml run](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
 _(requires login)_.
 
 **token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
