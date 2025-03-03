@@ -29,8 +29,7 @@ For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to 
 For GitHub Actions, you can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
 
 > [!NOTE]  
-> Please submit
-> a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
+> Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/update-version-tags-action/issues) if you find any bugs.
 
 ## Inputs
