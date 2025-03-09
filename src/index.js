@@ -216,7 +216,7 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
     delete inputs.token
     // const yaml = stringify(inputs)
     const yaml = Object.entries(inputs)
-        .map(([k, v]) => `${k}: ${v}`)
+        .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')
 
     // core.summary.addRaw('<details><summary>Inputs</summary>')
