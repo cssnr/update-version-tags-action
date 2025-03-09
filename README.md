@@ -52,10 +52,10 @@ both to `false` and provide your own `tags`.
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
-**tag** - The target tag the `sha` is parsed from. Defaults to the tag that triggered the workflow.
+**tag** - This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
-This is the `sha` that all parsed or provided `tags` are updated too.
-If you plan on rolling back you need to use a PAT. See [Rolling Back](#rolling-back).
+This is the `sha` that all parsed or provided `tags` are updated too. Rolling back requires a PAT.
+See [Rolling Back](#rolling-back) for more details and a manual workflow example.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
@@ -96,9 +96,6 @@ dry_run: false
 ---
 
 </details>
-
-To view a workflow run, click on a recent
-[Test](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml) job _(requires login)_.
 
 **token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
 To do this you must create a PAT with the `repo` and `workflow` permissions, add it to secrets, and use it.
