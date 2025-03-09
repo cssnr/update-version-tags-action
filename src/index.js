@@ -1,7 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const { parse } = require('csv-parse/sync')
-// const { stringify } = require('yaml')
 const semver = require('semver')
 
 const Tags = require('./tags')
@@ -214,7 +213,6 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
 
     // inputs.token = '***'
     delete inputs.token
-    // const yaml = stringify(inputs)
     const yaml = Object.entries(inputs)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')

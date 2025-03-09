@@ -36245,7 +36245,6 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484)
 const github = __nccwpck_require__(3228)
 const { parse } = __nccwpck_require__(1110)
-// const { stringify } = require('yaml')
 const semver = __nccwpck_require__(2088)
 
 const Tags = __nccwpck_require__(800)
@@ -36458,7 +36457,6 @@ async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
 
     // inputs.token = '***'
     delete inputs.token
-    // const yaml = stringify(inputs)
     const yaml = Object.entries(inputs)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')
