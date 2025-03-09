@@ -52,10 +52,10 @@ both to `false` and provide your own `tags`.
 **tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
-**tag** - The target tag the `sha` is parsed from. Defaults to the tag that triggered the workflow.
+**tag** - This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
-This is the `sha` that all parsed or provided `tags` are updated too.
-If you plan on rolling back you need to use a PAT. See [Rolling Back](#rolling-back).
+This is the `sha` that all parsed or provided `tags` are updated too. Rolling back requires a PAT.
+See [Rolling Back](#rolling-back) for more details and a manual workflow example.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
@@ -97,9 +97,6 @@ dry_run: false
 
 </details>
 
-To see a workflow run you can view a recent
-[test.yaml run](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml) _(requires login)_.
-
 **token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
 To do this you must create a PAT with the `repo` and `workflow` permissions, add it to secrets, and use it.
 See [Rolling Back](#rolling-back) for more information and an example.
@@ -119,6 +116,10 @@ This action requires the following permissions:
 permissions:
   contents: write
 ```
+
+Permissions documentation for
+[Workflows](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token)
+and [Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication).
 
 ## Outputs
 
@@ -191,10 +192,16 @@ Specifying the target tag to update too:
 
 ### Rolling Back
 
-To rollback tags you must use a PAT with the `repo` permission.
+To rollback tags you must use a PAT with the `repo` and `workflow` permissions.
 The target `sha` will be parsed from the target `tag` provided in the UI.
 
 This is the workflow used by this Action to roll back tags: [tags.yaml](.github/workflows/tags.yaml)
+
+For example, if you releases `v1.0.1` but wanted to roll back to `v1.0.0`.
+You would run the workflow with tag `v1.0.0` it would update the `v1` and `v1.0` tags
+(or what ever tags you manually specify) to point back to the sha of tag `v1.0.0`.
+
+_This same workflow could be used to manually roll forward without a PAT._
 
 ```yaml
 name: 'Tags'
