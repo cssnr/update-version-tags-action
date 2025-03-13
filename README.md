@@ -38,8 +38,8 @@ GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflow
 
 ## Inputs
 
-| input   | required | default           | description                       |
-| ------- | :------: | ----------------- | --------------------------------- |
+| Input   | Required | Default           | Description                       |
+| :------ | :------: | :---------------- | :-------------------------------- |
 | prefix  |    -     | `v`               | Tag Prefix for Semantic Versions  |
 | major   |    -     | `true`            | Update Major Tag \*               |
 | minor   |    -     | `true`            | Update Minor Tag \*               |
@@ -127,8 +127,8 @@ and [Actions](https://docs.github.com/en/actions/security-for-github-actions/sec
 
 ## Outputs
 
-| output | description                           |
-| ------ | ------------------------------------- |
+| Output | Description                           |
+| :----- | :------------------------------------ |
 | tags   | Comma Seperated String of Parsed Tags |
 
 Example output:
@@ -238,7 +238,7 @@ jobs:
 The following rolling [tags](https://github.com/cssnr/update-version-tags-action/tags) are maintained.
 
 | Tag                                                                                                                                                                                                                                         | Example  | Target   | Bugs | Feat. | Description                                               |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | :--: | :---: | :-------------------------------------------------------- |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------- | :------- | :--: | :---: | :-------------------------------------------------------- |
 | [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=limegreen)](https://github.com/cssnr/update-version-tags-action/releases/latest)     | `vN`     | `vN.x.x` |  ✅  |  ✅   | Includes new features but is always backwards compatible. |
 | [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=yellowgreen)](https://github.com/cssnr/update-version-tags-action/releases/latest) | `vN.N`   | `vN.N.x` |  ✅  |  ❌   | Only receives bug fixes. This is the most stable tag.     |
 | [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=orange)](https://github.com/cssnr/update-version-tags-action/releases/latest)                               | `vN.N.N` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. **Not** recommended.                   |
@@ -258,6 +258,8 @@ Set `sort` to `semver` and `filter` to one of the below filters.
 | **Major** | `!v*.*`   | [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)   |
 | **Minor** | `!v*.*.*` | [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags) |
 | **Micro** | -         | [![GitHub Tag](https://img.shields.io/github/v/tag/cssnr/update-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)                                          |
+
+Note: To create a 2 color badge with icon and no text; set a `labelColor` with an empty `label`.
 
 # Support
 
