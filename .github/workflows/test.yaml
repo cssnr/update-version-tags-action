@@ -33,7 +33,7 @@ jobs:
       #    cat "${GITHUB_EVENT_PATH}"
 
       - name: "1: Test Manual"
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         id: test1
         uses: ./
         with:
@@ -43,7 +43,7 @@ jobs:
           tags: ${{ env.TAGS }}
 
       - name: "1: Verify Manual"
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
           echo "tags: '${{ steps.test1.outputs.tags }}'"
           if [ '${{ steps.test1.outputs.tags }}' != '${{ env.TAGS }}' ];then
@@ -52,7 +52,7 @@ jobs:
           fi
 
       - name: "2: Test Manual, Target"
-        if: ${{ always() && !github.event.act }}
+        if: ${{ !cancelled() && !github.event.act }}
         id: test2
         uses: ./
         with:
@@ -63,7 +63,7 @@ jobs:
           tag: "v1.0.0"
 
       - name: "2: Verify Manual, Target"
-        if: ${{ always() && !github.event.act }}
+        if: ${{ !cancelled() && !github.event.act }}
         run: |
           echo "tags: '${{ steps.test2.outputs.tags }}'"
           if [ '${{ steps.test2.outputs.tags }}' != '${{ env.TAGS }}' ];then
@@ -72,7 +72,7 @@ jobs:
           fi
 
       - name: "3: Test Manual, Target, Parsing"
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         id: test3
         uses: ./
         with:
@@ -81,7 +81,7 @@ jobs:
           tag: "v1.0.0"
 
       - name: "3: Verify Manual, Target, Parsing"
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: |
           echo "tags: '${{ steps.test3.outputs.tags }}'"
           if [ '${{ steps.test3.outputs.tags }}' != 'test-tag,v1,v1.0' ];then
@@ -90,7 +90,7 @@ jobs:
           fi
 
       - name: "4: Test Parsing"
-        if: ${{ always() && !github.event.act }}
+        if: ${{ !cancelled() && !github.event.act }}
         id: test4
         uses: ./
         with:
@@ -98,7 +98,7 @@ jobs:
           tag: "v1.0.0"
 
       - name: "4: Verify Parsing"
-        if: ${{ always() && !github.event.act }}
+        if: ${{ !cancelled() && !github.event.act }}
         run: |
           echo "tags: '${{ steps.test4.outputs.tags }}'"
           if [ '${{ steps.test4.outputs.tags }}' != 'v1,v1.0' ];then
