@@ -28,13 +28,15 @@ Update Version Tags on Push or Release for Semantic Versions or Custom Tags.
 Zero configuration to maintain both major `vN` -> `vN.x.x` and minor `vN.N` -> `vN.N.x` tags.
 
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
-For example, many GitHub Actions maintain a `vN` and `vN.N` tag that points to the latest release of the `v1.x.x` branch.
+For example, many GitHub Actions maintain a `vN` and `vN.N` tag that points to the latest release of the `vN.x.x` branch.
 
 GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
 
 > [!NOTE]  
 > Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/update-version-tags-action/issues) if you find any bugs.
+
+For more details see [action.yml](action.yml) and [src/index.js](src/index.js).
 
 ## Inputs
 
