@@ -1,8 +1,10 @@
+[![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)
+[![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)
+[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/releases/latest)
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
 [![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/update-version-tags-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
-[![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=github)](https://github.com/cssnr/update-version-tags-action/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/update-version-tags-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/update-version-tags-action/graphs/commit-activity)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/update-version-tags-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/update-version-tags-action)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/update-version-tags-action?logo=htmx&logoColor=white)](https://github.com/cssnr/update-version-tags-action)
@@ -16,17 +18,19 @@
 - [Outputs](#Outputs)
 - [Examples](#Examples)
   - [Rolling Back](#rolling-back)
+- [Tags](#Tags)
+- [Badges](#Badges)
 - [Support](#Support)
 - [Contributing](#Contributing)
 
 Update Version Tags on Push or Release for Semantic Versions or Custom Tags.
 
-Automatically maintain both Major `1.x.x` and/or Minor `1.1.x` Tags.
+Zero configuration to maintain both major `vN` -> `vN.x.x` and minor `vN.N` -> `vN.N.x` tags.
 
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
-For example, many GitHub Actions maintain a `v1` and `v1.x` tags that points to the latest release of the `v1.x.x` branch.
+For example, many GitHub Actions maintain a `vN` and `vN.N` tag that points to the latest release of the `v1.x.x` branch.
 
-For GitHub Actions, you can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
+GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
 
 > [!NOTE]  
 > Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
@@ -192,10 +196,10 @@ Specifying the target tag to update too:
 
 ### Rolling Back
 
+To roll back or manually update tags, copy this workflow: [tags.yaml](.github/workflows/tags.yaml)
+
 To rollback tags you must use a PAT with the `repo` and `workflow` permissions.
 The target `sha` will be parsed from the target `tag` provided in the UI.
-
-This is the workflow used by this Action to roll back tags: [tags.yaml](.github/workflows/tags.yaml)
 
 For example, if you releases `v1.0.1` but wanted to roll back to `v1.0.0`.
 You would run the workflow with tag `v1.0.0` it would update the `v1` and `v1.0` tags
@@ -229,6 +233,32 @@ jobs:
           token: ${{ secrets.GH_PAT }}
 ```
 
+## Tags
+
+The following rolling [tags](https://github.com/cssnr/update-version-tags-action/tags) are maintained.
+
+| Tag                                                                                                                                                                                                                                         | Example  | Target   | Bugs | Feat. | Description                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | :--: | :---: | --------------------------------------------------------- |
+| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=limegreen)](https://github.com/cssnr/update-version-tags-action/releases/latest)     | `vN`     | `vN.x.x` |  ✅  |  ✅   | Includes new features but is always backwards compatible. |
+| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=yellowgreen)](https://github.com/cssnr/update-version-tags-action/releases/latest) | `vN.N`   | `vN.N.x` |  ✅  |  ❌   | Only receives bug fixes. This is the most stable tag.     |
+| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=orange)](https://github.com/cssnr/update-version-tags-action/releases/latest)                               | `vN.N.N` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. **Not** recommended.                   |
+
+You can view the release notes for each version on the [releases](https://github.com/cssnr/update-version-tags-action/releases) page.
+
+## Badges
+
+You can use [shields.io](https://shields.io/) to generate dynamic badges that always point to the latest tags.
+
+Tag badges can be created here: https://shields.io/badges/git-hub-tag
+
+Set `sort` to `semver` and `filter` to one of the below filters.
+
+|  Version  |  filter   | Example                                                                                                                                                                                                                               |     |
+| :-------: | :-------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| **Major** |  `!v*.*`  | [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)   |     |
+| **Minor** | `!v*.*.*` | [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags) |     |
+| **Micro** |     -     | [![GitHub Tag](https://img.shields.io/github/v/tag/cssnr/update-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)                                          |     |
+
 # Support
 
 For general help or to request a feature, see:
@@ -242,9 +272,13 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
 - Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20Version%20Tags)
 
+For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.github/blob/master/.github/SUPPORT.md#support).
+
 # Contributing
 
 Currently, the best way to contribute to this project is to star this project on GitHub.
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Additionally, you can support other GitHub Actions I have published:
 
