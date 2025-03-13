@@ -1,14 +1,14 @@
 [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/releases/latest)
-[![Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
-[![Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
-[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/update-version-tags-action/actions/workflows/lint.yaml)
+[![Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=github&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
+[![Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=github&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/lint.yaml?logo=github&label=lint)](https://github.com/cssnr/update-version-tags-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/update-version-tags-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/update-version-tags-action/graphs/commit-activity)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/update-version-tags-action?logo=github&label=updated)](https://github.com/cssnr/update-version-tags-action/graphs/commit-activity)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/update-version-tags-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/update-version-tags-action)
-[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/update-version-tags-action?logo=htmx&logoColor=white)](https://github.com/cssnr/update-version-tags-action)
-[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
+[![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/update-version-tags-action?logo=htmx)](https://github.com/cssnr/update-version-tags-action)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
 # Update Version Tags Action
@@ -255,13 +255,21 @@ Tag badges can be created here: https://shields.io/badges/git-hub-tag
 
 Set **sort** to `semver` and **filter** to one of the following.
 
-| Version   | filter    | Example                                                                                                                                               | Example                                                                                                                                                                   | Example                                                                                                                                               | Example                                                                                                                              |
-| :-------- | :-------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| **Major** | `!v*.*`   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*&style=flat-square&label=major)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*&style=social)   |
-| **Minor** | `!v*.*.*` | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*.*&style=flat-square&label=minor) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&filter=!v*.*.*&style=social) |
-| **Micro** |           | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&style=flat-square&label=micro)                | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&logo=git&logoColor=white&labelColor=585858&label=%20)                | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&style=for-the-badge&label=%20)                | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/portainer-stack-deploy-action?sort=semver&style=social)                |
+| Version   | filter    | Example                                                                                                                                            | Example                                                                                                                                                                   | Example                                                                                                                                            | Example                                                                                                                           |
+| :-------- | :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
+| **Major** | `!v*.*`   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=flat-square&label=major)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=social)   |
+| **Minor** | `!v*.*.*` | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=flat-square&label=minor) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=social) |
+| **Micro** |           | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&style=flat-square&label=micro)                | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&logo=git&logoColor=white&labelColor=585858&label=%20)                | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&style=for-the-badge&label=%20)                | ![GitHub Tag Micro](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&style=social)                |
 
-Note: To create a 2 color badge with icon and no text; set a `labelColor` with an empty `label`.
+You may need to adjust the filter to match your tagging scheme.
+
+To create a 2 color badge with icon and no text; set a `labelColor` with an empty `label`.
+
+GitHub's media proxy caches images for 1 hour. You can purge the cache by sending a `PURGE` request.
+
+```shell
+curl -X PURGE 'https://camo.githubusercontent.com/xxx'
+```
 
 # Support
 
@@ -282,7 +290,7 @@ For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.githu
 
 Currently, the best way to contribute to this project is to star this project on GitHub.
 
-If you would like to submit a PR, please review the [CONTRIBUTING.md](CONTRIBUTING.md).
+For more information, see the CSSNR [CONTRIBUTING.md](https://github.com/cssnr/.github/blob/master/.github/CONTRIBUTING.md#contributing).
 
 Additionally, you can support other GitHub Actions I have published:
 
