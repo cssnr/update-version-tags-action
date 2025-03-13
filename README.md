@@ -238,7 +238,7 @@ jobs:
 The following rolling [tags](https://github.com/cssnr/update-version-tags-action/tags) are maintained.
 
 | Tag                                                                                                                                                                                                                                         | Example  | Target   | Bugs | Feat. | Description                                               |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | :--: | :---: | --------------------------------------------------------- |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | :--: | :---: | :-------------------------------------------------------- |
 | [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=limegreen)](https://github.com/cssnr/update-version-tags-action/releases/latest)     | `vN`     | `vN.x.x` |  ✅  |  ✅   | Includes new features but is always backwards compatible. |
 | [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=yellowgreen)](https://github.com/cssnr/update-version-tags-action/releases/latest) | `vN.N`   | `vN.N.x` |  ✅  |  ❌   | Only receives bug fixes. This is the most stable tag.     |
 | [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=orange)](https://github.com/cssnr/update-version-tags-action/releases/latest)                               | `vN.N.N` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. **Not** recommended.                   |
@@ -247,17 +247,17 @@ You can view the release notes for each version on the [releases](https://github
 
 ## Badges
 
-You can use [shields.io](https://shields.io/) to generate dynamic badges that always point to the latest tags.
+You can use [shields.io](https://shields.io/) to generate dynamic badges that always point to the latest tags for semantic versions.
 
 Tag badges can be created here: https://shields.io/badges/git-hub-tag
 
 Set `sort` to `semver` and `filter` to one of the below filters.
 
-|  Version  |  filter   | Example                                                                                                                                                                                                                               |     |
-| :-------: | :-------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| **Major** |  `!v*.*`  | [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)   |     |
-| **Minor** | `!v*.*.*` | [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags) |     |
-| **Micro** |     -     | [![GitHub Tag](https://img.shields.io/github/v/tag/cssnr/update-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)                                          |     |
+| Version   | filter    | Example                                                                                                                                                                                                                               |
+| :-------- | :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Major** | `!v*.*`   | [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)   |
+| **Minor** | `!v*.*.*` | [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags) |
+| **Micro** | -         | [![GitHub Tag](https://img.shields.io/github/v/tag/cssnr/update-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)                                          |
 
 # Support
 
