@@ -40,30 +40,30 @@ For more details see [action.yml](action.yml) and [src/index.js](src/index.js).
 
 ## Inputs
 
-| Input   | Required | Default           | Description                       |
-| :------ | :------: | :---------------- | :-------------------------------- |
-| prefix  |    -     | `v`               | Tag Prefix for Semantic Versions  |
-| major   |    -     | `true`            | Update Major Tag \*               |
-| minor   |    -     | `true`            | Update Minor Tag \*               |
-| tags    |    -     | -                 | Additional Tags to Update \*      |
-| tag     |    -     | `github.ref_name` | Manually Set Target Tag \*\*      |
-| summary |    -     | `true`            | Add Summary to Job \*             |
-| dry_run |    -     | `false`           | Do not create tags, outout only   |
-| token   |    -     | `github.token`    | For use with a PAT to rollback \* |
+| Input     | Req. | Default&nbsp;Value | Description                       |
+| :-------- | :--: | :----------------- | :-------------------------------- |
+| `prefix`  |  -   | `v`                | Tag Prefix for Semantic Versions  |
+| `major`   |  -   | `true`             | Update Major Tag \*               |
+| `minor`   |  -   | `true`             | Update Minor Tag \*               |
+| `tags`    |  -   | -                  | Additional Tags to Update \*      |
+| `tag`     |  -   | `github.ref_name`  | Manually Set Target Tag \*\*      |
+| `summary` |  -   | `true`             | Add Summary to Job \*             |
+| `dry_run` |  -   | `false`            | Do not Create Tags, Outout Only   |
+| `token`   |  -   | `github.token`     | For use with a PAT to Rollback \* |
 
-**major/minor** - Both major and minor versions are parsed from the release tag using `semver`. If you release
+**major/minor:** Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
 both to `false` and provide your own `tags`.
 
-**tags** - The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
+**tags:** The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
-**tag** - This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
+**tag:** This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
 This is the `sha` that all parsed or provided `tags` are updated too. Rolling back requires a PAT.
 See [Rolling Back](#rolling-back) for more details and a manual workflow example.
 
-**summary** - Write a Summary for the job. To disable this set to `false`.
+**summary:** Write a Summary for the job. To disable this set to `false`.
 
 <details><summary>👀 View Example Job Summary</summary>
 
@@ -103,7 +103,7 @@ dry_run: false
 
 </details>
 
-**token** - GitHub workflow tokens do not allow for rolling back or deleting tags.
+**token:** GitHub workflow tokens do not allow for rolling back or deleting tags.
 To do this you must create a PAT with the `repo` and `workflow` permissions, add it to secrets, and use it.
 See [Rolling Back](#rolling-back) for more information and an example.
 
@@ -239,11 +239,11 @@ jobs:
 
 The following rolling [tags](https://github.com/cssnr/update-version-tags-action/tags) are maintained.
 
-| Tag                                                                                                                                                                                                                                         | Example  | Target   | Bugs | Feat. | Description                                               |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------- | :------- | :--: | :---: | :-------------------------------------------------------- |
-| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=limegreen)](https://github.com/cssnr/update-version-tags-action/releases/latest)     | `vN`     | `vN.x.x` |  ✅  |  ✅   | Includes new features but is always backwards compatible. |
-| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=yellowgreen)](https://github.com/cssnr/update-version-tags-action/releases/latest) | `vN.N`   | `vN.N.x` |  ✅  |  ❌   | Only receives bug fixes. This is the most stable tag.     |
-| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=orange)](https://github.com/cssnr/update-version-tags-action/releases/latest)                               | `vN.N.N` | `vN.N.N` |  ❌  |  ❌   | Not a rolling tag. **Not** recommended.                   |
+| Version&nbsp;Tag                                                                                                                                                                                                                     | Rolling | Bugs | Feat. | Target   | Example  |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----: | :--: | :---: | :------- | :------- |
+| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=44cc10)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ✅   | `vN.x.x` | `vN`     |
+| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=blue)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ❌   | `vN.N.x` | `vN.N`   |
+| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=red)](https://github.com/cssnr/update-version-tags-action/releases/latest)                           |   ❌    |  ❌  |  ❌   | `vN.N.N` | `vN.N.N` |
 
 You can view the release notes for each version on the [releases](https://github.com/cssnr/update-version-tags-action/releases) page.
 
@@ -255,7 +255,7 @@ Tag badges can be created here: https://shields.io/badges/git-hub-tag
 
 Set **sort** to `semver` and **filter** to one of the following.
 
-| Version   | filter    | Example                                                                                                                                            | Example                                                                                                                                                                   | Example                                                                                                                                            | Example                                                                                                                           |
+| Version   | Filter    | Example&nbsp;Labels                                                                                                                                | Icons&nbsp;Only                                                                                                                                                           | For&nbsp;The&nbsp;Badge                                                                                                                            | Social&nbsp;Icons                                                                                                                 |
 | :-------- | :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
 | **Major** | `!v*.*`   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=flat-square&label=major)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20)   | ![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=social)   |
 | **Minor** | `!v*.*.*` | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=flat-square&label=minor) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20) | ![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=social) |
