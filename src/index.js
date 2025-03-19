@@ -106,10 +106,15 @@ const Tags = require('./tags')
         core.info('📩 Setting Outputs')
         core.setOutput('tags', allTags.join(','))
 
-        // Job Summary
+        // Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, tag, sha, results, parsed, allTags)
+            try {
+                await addSummary(inputs, tag, sha, results, parsed, allTags)
+            } catch (e) {
+                console.log(e)
+                core.error(`Error writing Job Summary ${e.message}`)
+            }
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -168,7 +173,7 @@ async function processTags(tags, allTags, sha) {
  * @param {Array} allTags
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
+async function addSummary(inputs, tag, sha, results, parsed, allTags) {
     core.summary.addRaw('## Update Version Tags Action\n')
 
     if (inputs.dry_run) {

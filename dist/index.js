@@ -3557,11 +3557,11 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // pkg/dist-src/index.js
-var dist_src_exports = {};
-__export(dist_src_exports, {
+var index_exports = {};
+__export(index_exports, {
   Octokit: () => Octokit
 });
-module.exports = __toCommonJS(dist_src_exports);
+module.exports = __toCommonJS(index_exports);
 var import_universal_user_agent = __nccwpck_require__(3843);
 var import_before_after_hook = __nccwpck_require__(2732);
 var import_request = __nccwpck_require__(8636);
@@ -3569,7 +3569,7 @@ var import_graphql = __nccwpck_require__(7);
 var import_auth_token = __nccwpck_require__(7864);
 
 // pkg/dist-src/version.js
-var VERSION = "5.2.0";
+var VERSION = "5.2.1";
 
 // pkg/dist-src/index.js
 var noop = () => {
@@ -36350,10 +36350,15 @@ const Tags = __nccwpck_require__(800)
         core.info('📩 Setting Outputs')
         core.setOutput('tags', allTags.join(','))
 
-        // Job Summary
+        // Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, tag, sha, results, parsed, allTags)
+            try {
+                await addSummary(inputs, tag, sha, results, parsed, allTags)
+            } catch (e) {
+                console.log(e)
+                core.error(`Error writing Job Summary ${e.message}`)
+            }
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -36412,7 +36417,7 @@ async function processTags(tags, allTags, sha) {
  * @param {Array} allTags
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, tag, sha, results, parsed, allTags) {
+async function addSummary(inputs, tag, sha, results, parsed, allTags) {
     core.summary.addRaw('## Update Version Tags Action\n')
 
     if (inputs.dry_run) {
