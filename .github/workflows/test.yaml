@@ -16,6 +16,10 @@ on:
 env:
   TAGS: test-tag
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: "Test"
