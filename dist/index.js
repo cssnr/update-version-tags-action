@@ -36256,33 +36256,33 @@ const Tags = __nccwpck_require__(800)
             : '\u001b[34;1mLocal Version'
         core.info(`🏳️ Starting Update Version Tags Action - ${version}`)
 
-        // Process Inputs
-        const inputs = parseInputs()
-        core.startGroup('Parsed Inputs')
-        console.log(inputs)
-        core.endGroup() // Inputs
+        // Process Config
+        const config = getConfig()
+        core.startGroup('Parsed Config')
+        console.log(config)
+        core.endGroup() // Config
 
-        const tags = new Tags(inputs.token, github.context.repo)
+        const tags = new Tags(config.token, github.context.repo)
 
         // Set Tag - used to parse semver
         if (
             !github.context.ref.startsWith('refs/tags/') &&
-            (inputs.major || inputs.minor) &&
-            !inputs.tag
+            (config.major || config.minor) &&
+            !config.tag
         ) {
             return core.notice(`Skipping event: ${github.context.eventName}`)
         }
-        const tag = inputs.tag || github.context.ref.replace('refs/tags/', '')
+        const tag = config.tag || github.context.ref.replace('refs/tags/', '')
         core.info(`Target tag: \u001b[32m${tag}`)
 
         // Set Sha - target sha for allTags
         let sha = github.context.sha
-        if (inputs.tag) {
-            core.info(`Getting sha for ref: \u001b[33m${inputs.tag}`)
-            const ref = await tags.getRef(inputs.tag)
+        if (config.tag) {
+            core.info(`Getting sha for ref: \u001b[33m${config.tag}`)
+            const ref = await tags.getRef(config.tag)
             // console.log('ref:', ref)
             if (!ref) {
-                return core.setFailed(`Ref not found: ${inputs.tag}`)
+                return core.setFailed(`Ref not found: ${config.tag}`)
             }
             sha = ref.data.object.sha
         }
@@ -36290,7 +36290,7 @@ const Tags = __nccwpck_require__(800)
 
         // Set SemVer - if major or minor is true
         let parsed
-        if (inputs.major || inputs.minor) {
+        if (config.major || config.minor) {
             core.startGroup('Parsed SemVer')
             parsed = semver.parse(tag, {})
             console.log(parsed)
@@ -36303,8 +36303,8 @@ const Tags = __nccwpck_require__(800)
         // Collect Tags - allTags
         core.startGroup('Processing Tags')
         const collectedTags = []
-        if (inputs.tags) {
-            const parsedTags = parse(inputs.tags, {
+        if (config.tags) {
+            const parsedTags = parse(config.tags, {
                 delimiter: ',',
                 trim: true,
                 relax_column_count: true,
@@ -36312,16 +36312,16 @@ const Tags = __nccwpck_require__(800)
             console.log('parsedTags:', parsedTags)
             collectedTags.push(...parsedTags)
         }
-        if (inputs.major) {
-            console.log(`Major Tag: ${inputs.prefix}${parsed.major}`)
-            collectedTags.push(`${inputs.prefix}${parsed.major}`)
+        if (config.major) {
+            console.log(`Major Tag: ${config.prefix}${parsed.major}`)
+            collectedTags.push(`${config.prefix}${parsed.major}`)
         }
-        if (inputs.minor) {
+        if (config.minor) {
             console.log(
-                `Minor Tag: ${inputs.prefix}${parsed.major}.${parsed.minor}`
+                `Minor Tag: ${config.prefix}${parsed.major}.${parsed.minor}`
             )
             collectedTags.push(
-                `${inputs.prefix}${parsed.major}.${parsed.minor}`
+                `${config.prefix}${parsed.major}.${parsed.minor}`
             )
         }
         console.log('collectedTags', collectedTags)
@@ -36336,7 +36336,7 @@ const Tags = __nccwpck_require__(800)
         // Process Tags
         /** @type {Object} */
         let results
-        if (!inputs.dry_run) {
+        if (!config.dry_run) {
             results = await processTags(tags, allTags, sha)
 
             core.startGroup('Results')
@@ -36351,10 +36351,10 @@ const Tags = __nccwpck_require__(800)
         core.setOutput('tags', allTags.join(','))
 
         // Summary
-        if (inputs.summary) {
+        if (config.summary) {
             core.info('📝 Writing Job Summary')
             try {
-                await addSummary(inputs, tag, sha, results, parsed, allTags)
+                await addSummary(config, tag, sha, results, parsed, allTags)
             } catch (e) {
                 console.log(e)
                 core.error(`Error writing Job Summary ${e.message}`)
@@ -36409,18 +36409,18 @@ async function processTags(tags, allTags, sha) {
 
 /**
  * Write Job Summary
- * @param {Object} inputs
+ * @param {Config} config
  * @param {String} tag
  * @param {String} sha
  * @param {Object} results
  * @param {String} parsed
- * @param {Array} allTags
+ * @param {String[]} allTags
  * @return {Promise<void>}
  */
-async function addSummary(inputs, tag, sha, results, parsed, allTags) {
+async function addSummary(config, tag, sha, results, parsed, allTags) {
     core.summary.addRaw('## Update Version Tags Action\n')
 
-    if (inputs.dry_run) {
+    if (config.dry_run) {
         core.summary.addRaw('⚠️ Dry Run! Nothing changed.\n\n')
     }
 
@@ -36460,30 +36460,30 @@ async function addSummary(inputs, tag, sha, results, parsed, allTags) {
         )
     }
 
-    // inputs.token = '***'
-    delete inputs.token
-    const yaml = Object.entries(inputs)
+    // config.token = '***'
+    delete config.token
+    const yaml = Object.entries(config)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')
 
-    // core.summary.addRaw('<details><summary>Inputs</summary>')
+    // core.summary.addRaw('<details><summary>Config</summary>')
     // core.summary.addTable([
     //     [
     //         { data: 'Input', header: true },
     //         { data: 'Value', header: true },
     //     ],
-    //     [{ data: 'prefix' }, { data: `<code>${inputs.prefix}</code>` }],
-    //     [{ data: 'major' }, { data: `<code>${inputs.major}</code>` }],
-    //     [{ data: 'minor' }, { data: `<code>${inputs.minor}</code>` }],
+    //     [{ data: 'prefix' }, { data: `<code>${config.prefix}</code>` }],
+    //     [{ data: 'major' }, { data: `<code>${config.major}</code>` }],
+    //     [{ data: 'minor' }, { data: `<code>${config.minor}</code>` }],
     //     [
     //         { data: 'tags' },
-    //         { data: `<code>${inputs.tags.replaceAll('\n', ',')}</code>` },
+    //         { data: `<code>${config.tags.replaceAll('\n', ',')}</code>` },
     //     ],
-    //     [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
-    //     [{ data: 'dry_run' }, { data: `<code>${inputs.dry_run}</code>` }],
+    //     [{ data: 'summary' }, { data: `<code>${config.summary}</code>` }],
+    //     [{ data: 'dry_run' }, { data: `<code>${config.dry_run}</code>` }],
     // ])
     // core.summary.addRaw('</details>\n')
-    core.summary.addRaw('<details><summary>Inputs</summary>')
+    core.summary.addRaw('<details><summary>Config</summary>')
     core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
 
@@ -36494,10 +36494,18 @@ async function addSummary(inputs, tag, sha, results, parsed, allTags) {
 }
 
 /**
- * Get inputs
- * @return {{prefix: string, major: boolean, minor: boolean, tags: string, tag: string, summary: boolean, dry_run: boolean, token: string}}
+ * Get Config
+ * @typedef {Object} Config
+ * @property {String} prefix
+ * @property {Boolean} major
+ * @property {Boolean} minor
+ * @property {String} tags
+ * @property {String} tag
+ * @property {Boolean} summary
+ * @property {Boolean} dry_run
+ * @property {String} token
  */
-function parseInputs() {
+function getConfig() {
     return {
         prefix: core.getInput('prefix'),
         major: core.getBooleanInput('major'),
