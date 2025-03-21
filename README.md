@@ -41,7 +41,7 @@ For more details see [action.yml](action.yml) and [src/index.js](src/index.js).
 
 ## Inputs
 
-| Input     | Req. | Default&nbsp;Value | Description                       |
+| Input     | Req. | Default&nbsp;Value | Input&nbsp;Description            |
 | :-------- | :--: | :----------------- | :-------------------------------- |
 | `prefix`  |  -   | `v`                | Tag Prefix for Semantic Versions  |
 | `major`   |  -   | `true`             | Update Major Tag \*               |
@@ -130,7 +130,7 @@ and [Actions](https://docs.github.com/en/actions/security-for-github-actions/sec
 
 ## Outputs
 
-| Output | Description                           |
+| Output | Output&nbsp;Description               |
 | :----- | :------------------------------------ |
 | tags   | Comma Seperated String of Parsed Tags |
 
