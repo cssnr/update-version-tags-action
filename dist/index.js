@@ -36460,29 +36460,10 @@ async function addSummary(config, tag, sha, results, parsed, allTags) {
         )
     }
 
-    // config.token = '***'
     delete config.token
     const yaml = Object.entries(config)
         .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
         .join('\n')
-
-    // core.summary.addRaw('<details><summary>Config</summary>')
-    // core.summary.addTable([
-    //     [
-    //         { data: 'Input', header: true },
-    //         { data: 'Value', header: true },
-    //     ],
-    //     [{ data: 'prefix' }, { data: `<code>${config.prefix}</code>` }],
-    //     [{ data: 'major' }, { data: `<code>${config.major}</code>` }],
-    //     [{ data: 'minor' }, { data: `<code>${config.minor}</code>` }],
-    //     [
-    //         { data: 'tags' },
-    //         { data: `<code>${config.tags.replaceAll('\n', ',')}</code>` },
-    //     ],
-    //     [{ data: 'summary' }, { data: `<code>${config.summary}</code>` }],
-    //     [{ data: 'dry_run' }, { data: `<code>${config.dry_run}</code>` }],
-    // ])
-    // core.summary.addRaw('</details>\n')
     core.summary.addRaw('<details><summary>Config</summary>')
     core.summary.addCodeBlock(yaml, 'yaml')
     core.summary.addRaw('</details>\n')
@@ -36504,6 +36485,7 @@ async function addSummary(config, tag, sha, results, parsed, allTags) {
  * @property {Boolean} summary
  * @property {Boolean} dry_run
  * @property {String} token
+ * @return {Config}
  */
 function getConfig() {
     return {
