@@ -1,6 +1,7 @@
 [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/releases/latest)
+[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/update-version-tags-action/dist%2Findex.js?label=dist%20size)](https://github.com/cssnr/update-version-tags-action/blob/master/src/index.js)
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=github&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=github&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
 [![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/lint.yaml?logo=github&label=lint)](https://github.com/cssnr/update-version-tags-action/actions/workflows/lint.yaml)
@@ -40,7 +41,7 @@ For more details see [action.yml](action.yml) and [src/index.js](src/index.js).
 
 ## Inputs
 
-| Input     | Req. | Default&nbsp;Value | Description                       |
+| Input     | Req. | Default&nbsp;Value | Input&nbsp;Description            |
 | :-------- | :--: | :----------------- | :-------------------------------- |
 | `prefix`  |  -   | `v`                | Tag Prefix for Semantic Versions  |
 | `major`   |  -   | `true`             | Update Major Tag \*               |
@@ -129,7 +130,7 @@ and [Actions](https://docs.github.com/en/actions/security-for-github-actions/sec
 
 ## Outputs
 
-| Output | Description                           |
+| Output | Output&nbsp;Description               |
 | :----- | :------------------------------------ |
 | tags   | Comma Seperated String of Parsed Tags |
 
@@ -196,6 +197,9 @@ Specifying the target tag to update too:
     tag: v1.0.1
 ```
 
+For more examples, you can check out other projects using this action:  
+https://github.com/cssnr/update-version-tags-action/network/dependents
+
 ### Rolling Back
 
 To roll back or manually update tags, copy this workflow: [tags.yaml](.github/workflows/tags.yaml)
@@ -239,13 +243,16 @@ jobs:
 
 The following rolling [tags](https://github.com/cssnr/update-version-tags-action/tags) are maintained.
 
-| Version&nbsp;Tag                                                                                                                                                                                                                     | Rolling | Bugs | Feat. | Target   | Example  |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----: | :--: | :---: | :------- | :------- |
-| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=44cc10)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ✅   | `vN.x.x` | `vN`     |
-| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=blue)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ❌   | `vN.N.x` | `vN.N`   |
-| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=red)](https://github.com/cssnr/update-version-tags-action/releases/latest)                           |   ❌    |  ❌  |  ❌   | `vN.N.N` | `vN.N.N` |
+| Version&nbsp;Tag                                                                                                                                                                                                                     | Rolling | Bugs | Feat. |   Name    |  Target  | Example  |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----: | :--: | :---: | :-------: | :------: | :------- |
+| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=44cc10)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ✅   | **Major** | `vN.x.x` | `vN`     |
+| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=blue)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ❌   | **Minor** | `vN.N.x` | `vN.N`   |
+| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=red)](https://github.com/cssnr/update-version-tags-action/releases/latest)                           |   ❌    |  ❌  |  ❌   | **Micro** | `vN.N.N` | `vN.N.N` |
 
 You can view the release notes for each version on the [releases](https://github.com/cssnr/update-version-tags-action/releases) page.
+
+The **Major** tag is recommended. It is the most up-to-date and always backwards compatible.
+Breaking changes would result in a **Major** version bump. At a minimum you should use a **Minor** tag.
 
 ## Badges
 
@@ -304,5 +311,7 @@ Additionally, you can support other GitHub Actions I have published:
 - [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
 - [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
+- [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
+- [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
