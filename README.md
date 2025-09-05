@@ -35,12 +35,12 @@ Zero configuration to maintain both major `vN` -> `vN.x.x` and minor `vN.N` -> `
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
 For example, many GitHub Actions maintain a `vN` and `vN.N` tag that points to the latest release of the `vN.x.x` branch.
 
-GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
-
 ```yaml
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
 ```
+
+GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
 
 Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples).
 
