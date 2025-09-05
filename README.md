@@ -2,15 +2,19 @@
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/tags)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/releases/latest)
 [![GitHub Dist Size](https://img.shields.io/github/size/cssnr/update-version-tags-action/dist%2Findex.js?label=dist%20size)](https://github.com/cssnr/update-version-tags-action/blob/master/src/index.js)
-[![Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=github&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
-[![Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=github&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
-[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/lint.yaml?logo=github&label=lint)](https://github.com/cssnr/update-version-tags-action/actions/workflows/lint.yaml)
+[![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=cachet&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
+[![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
+[![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/update-version-tags-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_update-version-tags-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_update-version-tags-action)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/update-version-tags-action?logo=github&label=updated)](https://github.com/cssnr/update-version-tags-action/graphs/commit-activity)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/update-version-tags-action?logo=github&label=updated)](https://github.com/cssnr/update-version-tags-action/pulse)
 [![Codeberg Last Commit](https://img.shields.io/gitea/last-commit/cssnr/update-version-tags-action/master?gitea_url=https%3A%2F%2Fcodeberg.org%2F&logo=codeberg&logoColor=white&label=updated)](https://codeberg.org/cssnr/update-version-tags-action)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/cssnr/update-version-tags-action?logo=bookstack&logoColor=white&label=repo%20size)](https://github.com/cssnr/update-version-tags-action)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/cssnr/update-version-tags-action?logo=htmx)](https://github.com/cssnr/update-version-tags-action)
-[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github)](https://cssnr.github.io/)
+[![GitHub Forks](https://img.shields.io/github/forks/cssnr/update-version-tags-action?style=flat&logo=github)](https://github.com/cssnr/update-version-tags-action/forks)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/cssnr/update-version-tags-action?style=flat&logo=github)](https://github.com/cssnr/update-version-tags-action/stargazers)
+[![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&label=org%20stars)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
 # Update Version Tags Action
 
@@ -31,13 +35,20 @@ Zero configuration to maintain both major `vN` -> `vN.x.x` and minor `vN.N` -> `
 This is useful if you want to automatically update additional tags, to point to your pushed/released tag.
 For example, many GitHub Actions maintain a `vN` and `vN.N` tag that points to the latest release of the `vN.x.x` branch.
 
+```yaml
+- name: 'Update Tags'
+  uses: cssnr/update-version-tags-action@v1
+```
+
 GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
+
+Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples).
+
+For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 > [!NOTE]  
 > Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/update-version-tags-action/issues) if you find any bugs.
-
-For more details see [action.yml](action.yml) and [src/index.js](src/index.js).
 
 ## Inputs
 
@@ -295,9 +306,12 @@ For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.githu
 
 # Contributing
 
-Currently, the best way to contribute to this project is to star this project on GitHub.
+Please consider making a donation to support the development of this project
+and [additional](https://cssnr.com/) open source projects.
 
-For more information, see the CSSNR [CONTRIBUTING.md](https://github.com/cssnr/.github/blob/master/.github/CONTRIBUTING.md#contributing).
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
 Additionally, you can support other GitHub Actions I have published:
 
@@ -314,4 +328,4 @@ Additionally, you can support other GitHub Actions I have published:
 - [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
 - [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
 
-For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
+For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)

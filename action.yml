@@ -1,5 +1,5 @@
 name: "Update Version Tags Action"
-description: "Update Version Tags on Push or Release for Semantic Versions"
+description: "Automatically Update Version Tags on Push or Release for Semantic Versions"
 author: "Shane"
 branding:
   icon: "tag"
