@@ -52,16 +52,16 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 ## Inputs
 
-| Input     | Req. | Default&nbsp;Value | Input&nbsp;Description            |
-| :-------- | :--: | :----------------- | :-------------------------------- |
-| `prefix`  |  -   | `v`                | Tag Prefix for Semantic Versions  |
-| `major`   |  -   | `true`             | Update Major Tag \*               |
-| `minor`   |  -   | `true`             | Update Minor Tag \*               |
-| `tags`    |  -   | -                  | Additional Tags to Update \*      |
-| `tag`     |  -   | `github.ref_name`  | Manually Set Target Tag \*\*      |
-| `summary` |  -   | `true`             | Add Summary to Job \*             |
-| `dry_run` |  -   | `false`            | Do not Create Tags, Outout Only   |
-| `token`   |  -   | `github.token`     | For use with a PAT to Rollback \* |
+|   Input   | Default&nbsp;Value | Description&nbsp;of&nbsp;Input   |
+| :-------: | :----------------- | :------------------------------- |
+| `prefix`  | `v`                | Tag Prefix for Semantic Versions |
+|  `major`  | `true`             | Update Major Tag \*              |
+|  `minor`  | `true`             | Update Minor Tag \*              |
+|  `tags`   | -                  | Additional Tags to Update \*     |
+|   `tag`   | `github.ref_name`  | Manually Set Target Tag \*\*     |
+| `summary` | `true`             | Add Summary to Job \*            |
+| `dry_run` | `false`            | Do not Create Tags, Outout Only  |
+|  `token`  | `github.token`     | For use with a PAT to Rollback   |
 
 **major/minor:** Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
@@ -327,5 +327,8 @@ Additionally, you can support other GitHub Actions I have published:
 - [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 - [Package Changelog Action](https://github.com/cssnr/package-changelog-action?tab=readme-ov-file#readme)
 - [NPM Outdated Check Action](https://github.com/cssnr/npm-outdated-action?tab=readme-ov-file#readme)
+- [Label Creator Action](https://github.com/cssnr/label-creator-action?tab=readme-ov-file#readme)
+- [Algolia Crawler Action](https://github.com/cssnr/algolia-crawler-action?tab=readme-ov-file#readme)
+- [Upload Release Action](https://github.com/cssnr/upload-release-action?tab=readme-ov-file#readme)
 
 For a full list of current projects visit: [https://cssnr.github.io/](https://cssnr.github.io/)
