@@ -54,30 +54,43 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 ## Inputs
 
-| Input     | Default&nbsp;Value | Description&nbsp;of&nbsp;Input   |
-| :-------- | :----------------- | :------------------------------- |
-| `prefix`  | `v`                | Tag Prefix for Semantic Versions |
-| `major`   | `true`             | Update Major Tag \*              |
-| `minor`   | `true`             | Update Minor Tag \*              |
-| `tags`    | -                  | Additional Tags to Update \*     |
-| `tag`     | `github.ref_name`  | Manually Set Target Tag \*\*     |
-| `summary` | `true`             | Add Summary to Job \*            |
-| `dry_run` | `false`            | Do not Create Tags, Outout Only  |
-| `token`   | `github.token`     | For use with a PAT to Rollback   |
+| Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input   |
+| :------------------- | :----------------- | :------------------------------- |
+| `prefix`             | `v`                | Tag Prefix for Semantic Versions |
+| [major](#majorminor) | `true`             | Update Major Tag                 |
+| [minor](#majorminor) | `true`             | Update Minor Tag                 |
+| [tags](#tags)        | -                  | Additional Tags to Update        |
+| [tag](#tag)          | `github.ref_name`  | Manually Set Target Tag          |
+| [create](#create)    | `false`            | Create Target Tag                |
+| [summary](#summary)  | `true`             | Add Summary to Job               |
+| [dry_run](#dry_run)  | `false`            | Do not Create Tags, Outout Only  |
+| [token](#token)      | `github.token`     | For use with a PAT to Rollback   |
 
-**major/minor:** Both major and minor versions are parsed from the release tag using `semver`. If you release
+### major/minor
+
+Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
 both to `false` and provide your own `tags`.
 
-**tags:** The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
+### tags
+
+The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
-**tag:** This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
+### tag
+
+This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
 This is the `sha` that all parsed or provided `tags` are updated too. Rolling back requires a PAT.
 See [Rolling Back](#rolling-back) for more details and a manual workflow example.
 
-**summary:** Write a Summary for the job. To disable this set to `false`.
+### create
+
+If `true` this will create the `tag` at the current `sha` of the workflow run.
+
+### summary
+
+Write a Summary for the job. To disable this set to `false`.
 
 <details><summary>👀 View Example Job Summary</summary>
 
@@ -117,7 +130,13 @@ dry_run: false
 
 </details>
 
-**token:** GitHub workflow tokens do not allow for rolling back or deleting tags.
+### dry_run
+
+If this is `true` no tags will be created/updated and will only output the results.
+
+### token
+
+GitHub workflow tokens do not allow for rolling back or deleting tags.
 To do this you must create a PAT with the `repo` and `workflow` permissions, add it to secrets, and use it.
 See [Rolling Back](#rolling-back) for more information and an example.
 

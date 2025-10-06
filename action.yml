@@ -8,33 +8,28 @@ branding:
 inputs:
   prefix:
     description: "Tag Prefix"
-    required: false
     default: "v"
   major:
     description: "Update Major Tag"
-    required: false
     default: "true"
   minor:
     description: "Update Minor Tag"
-    required: false
     default: "true"
   tags:
     description: "Extra Tags"
-    required: false
   tag:
     description: "Target Tag"
-    required: false
+  create:
+    description: "Create Target Tag"
+    default: "false"
   summary:
     description: "Add Summary to Job"
-    required: false
     default: "true"
   dry_run:
     description: "Dry Run"
-    required: false
     default: "false"
   token:
     description: "GitHub Token"
-    required: false
     default: "${{ github.token }}"
 
 outputs:
