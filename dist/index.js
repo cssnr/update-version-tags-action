@@ -36436,19 +36436,18 @@ const Tags = __nccwpck_require__(800)
             core.info(`Getting sha for ref: \u001b[33m${inputs.tag}`)
             const ref = await tags.getRef(inputs.tag)
             // console.log('ref:', ref)
-            if (!ref) {
-                if (inputs.create) {
-                    core.info(`Creating Target Tag: \u001b[32m${inputs.tag}`)
-                    if (!inputs.dry_run) {
-                        await tags.createRef(inputs.tag, sha)
-                    } else {
-                        core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
-                    }
+            if (ref?.data?.object?.sha) {
+                sha = ref.data.object.sha
+            } else if (inputs.create) {
+                core.info(`Creating Target Tag: \u001b[32m${inputs.tag}`)
+                if (!inputs.dry_run) {
+                    await tags.createRef(inputs.tag, sha)
                 } else {
-                    return core.setFailed(`Ref not found: ${inputs.tag}`)
+                    core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
                 }
+            } else {
+                return core.setFailed(`Ref not found: ${inputs.tag}`)
             }
-            sha = ref.data.object.sha
         }
         core.info(`Target sha: \u001b[32m${sha}`)
 
