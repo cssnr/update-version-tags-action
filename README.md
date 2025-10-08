@@ -56,7 +56,7 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 | Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input   |
 | :------------------- | :----------------- | :------------------------------- |
-| `prefix`             | `v`                | Tag Prefix for Semantic Versions |
+| [prefix](#prefix)    | `v`                | Tag Prefix for Semantic Versions |
 | [major](#majorminor) | `true`             | Update Major Tag                 |
 | [minor](#majorminor) | `true`             | Update Minor Tag                 |
 | [tags](#tags)        | -                  | Additional Tags to Update        |
@@ -66,29 +66,33 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 | [dry_run](#dry_run)  | `false`            | Do not Create Tags, Outout Only  |
 | [token](#token)      | `github.token`     | For use with a PAT to Rollback   |
 
-### major/minor
+#### prefix
+
+To disable the prefix, set it to an empty string `prefix: ''`
+
+#### major/minor
 
 Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
 both to `false` and provide your own `tags`.
 
-### tags
+#### tags
 
 The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
 delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
 
-### tag
+#### tag
 
 This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
 This is the `sha` that all parsed or provided `tags` are updated too. Rolling back requires a PAT.
 See [Rolling Back](#rolling-back) for more details and a manual workflow example.
 
-### create
+#### create
 
 If `true` this will create the `tag` at the current `sha` of the workflow run.
 
-### summary
+#### summary
 
 Write a Summary for the job. To disable this set to `false`.
 
@@ -130,11 +134,11 @@ dry_run: false
 
 </details>
 
-### dry_run
+#### dry_run
 
 If this is `true` no tags will be created/updated and will only output the results.
 
-### token
+#### token
 
 GitHub workflow tokens do not allow for rolling back or deleting tags.
 To do this you must create a PAT with the `repo` and `workflow` permissions, add it to secrets, and use it.
