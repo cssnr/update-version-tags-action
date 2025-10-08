@@ -37,10 +37,18 @@ const Tags = require('./tags')
             core.info(`Getting sha for ref: \u001b[33m${inputs.tag}`)
             const ref = await tags.getRef(inputs.tag)
             // console.log('ref:', ref)
-            if (!ref) {
+            if (ref?.data?.object?.sha) {
+                sha = ref.data.object.sha
+            } else if (inputs.create) {
+                core.info(`Creating Target Tag: \u001b[32m${inputs.tag}`)
+                if (!inputs.dry_run) {
+                    await tags.createRef(inputs.tag, sha)
+                } else {
+                    core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
+                }
+            } else {
                 return core.setFailed(`Ref not found: ${inputs.tag}`)
             }
-            sha = ref.data.object.sha
         }
         core.info(`Target sha: \u001b[32m${sha}`)
 
@@ -234,6 +242,7 @@ async function addSummary(inputs, tag, sha, results, parsed, allTags) {
  * @property {Boolean} minor
  * @property {String} tags
  * @property {String} tag
+ * @property {Boolean} create
  * @property {Boolean} summary
  * @property {Boolean} dry_run
  * @property {String} token
@@ -246,6 +255,7 @@ function getInputs() {
         minor: core.getBooleanInput('minor'),
         tags: core.getInput('tags'),
         tag: core.getInput('tag'),
+        create: core.getBooleanInput('create'),
         summary: core.getBooleanInput('summary'),
         dry_run: core.getBooleanInput('dry_run'),
         token: core.getInput('token', { required: true }),
