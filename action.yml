@@ -15,6 +15,9 @@ inputs:
   minor:
     description: "Update Minor Tag"
     default: "true"
+  release:
+    description: "Update Release Tag"
+    default: "false"
   tags:
     description: "Extra Tags"
   tag:

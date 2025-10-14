@@ -59,6 +59,7 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 | [prefix](#prefix)    | `v`                | Tag Prefix for Semantic Versions |
 | [major](#majorminor) | `true`             | Update Major Tag                 |
 | [minor](#majorminor) | `true`             | Update Minor Tag                 |
+| [release](#release)  | `false`            | Update Release Tag               |
 | [tags](#tags)        | -                  | Additional Tags to Update        |
 | [tag](#tag)          | `github.ref_name`  | Manually Set Target Tag          |
 | [create](#create)    | `false`            | Create Target Tag                |
@@ -75,6 +76,10 @@ To disable the prefix, set it to an empty string `prefix: ''`
 Both major and minor versions are parsed from the release tag using `semver`. If you release
 version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
 both to `false` and provide your own `tags`.
+
+#### release
+
+If `true` and you provide a non-release tag `1.2.3-release.1` this would create the release tag `1.2.3`.
 
 #### tags
 

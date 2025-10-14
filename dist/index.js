@@ -36495,12 +36495,19 @@ const Tags = __nccwpck_require__(800)
             collectedTags.push(...parsedTags)
         }
         if (inputs.major) {
-            console.log(`Major Tag: ${inputs.prefix}${parsed.major}`)
-            collectedTags.push(`${inputs.prefix}${parsed.major}`)
+            const current = `${inputs.prefix}${parsed.major}`
+            console.log(`Major Tag: ${current}`)
+            collectedTags.push(current)
         }
         if (inputs.minor) {
-            console.log(`Minor Tag: ${inputs.prefix}${parsed.major}.${parsed.minor}`)
-            collectedTags.push(`${inputs.prefix}${parsed.major}.${parsed.minor}`)
+            const current = `${inputs.prefix}${parsed.major}.${parsed.minor}`
+            console.log(`Minor Tag: ${current}`)
+            collectedTags.push(current)
+        }
+        if (inputs.release) {
+            const current = `${inputs.prefix}${parsed.major}.${parsed.minor}.${parsed.patch}`
+            console.log(`Release Tag: ${current}`)
+            collectedTags.push(current)
         }
         console.log('collectedTags', collectedTags)
         if (!collectedTags.length) {
@@ -36658,6 +36665,7 @@ async function addSummary(inputs, tag, sha, results, parsed, allTags) {
  * @property {String} prefix
  * @property {Boolean} major
  * @property {Boolean} minor
+ * @property {Boolean} release
  * @property {String} tags
  * @property {String} tag
  * @property {Boolean} create
@@ -36671,6 +36679,7 @@ function getInputs() {
         prefix: core.getInput('prefix'),
         major: core.getBooleanInput('major'),
         minor: core.getBooleanInput('minor'),
+        release: core.getBooleanInput('release'),
         tags: core.getInput('tags'),
         tag: core.getInput('tag'),
         create: core.getBooleanInput('create'),
