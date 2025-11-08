@@ -56,9 +56,9 @@ Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples
 | Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input&nbsp;Value            |
 | :------------------- | :----------------- | :--------------------------------------------------- |
 | [prefix](#prefix)    | `v`                | Tag Prefix for Semantic Versions                     |
-| [major](#majorminor) | `true`             | Update Major Tag                                     |
-| [minor](#majorminor) | `true`             | Update Minor Tag                                     |
-| [release](#release)  | `false`            | Update Release Tag                                   |
+| [major](#majorminor) | `true`             | Update Major Tag `vN`                                |
+| [minor](#majorminor) | `true`             | Update Minor Tag `vN.N`                              |
+| [release](#release)  | `false`            | Update Release Tag `vN.N.N`                          |
 | [tags](#tags)        | -                  | Additional Tags to Update                            |
 | [tag](#tag)          | `github.ref_name`  | Manually Set Target Tag                              |
 | [create](#create)    | `false`            | Create Target [tag](#tag)                            |
@@ -99,20 +99,32 @@ These can be a string list `"v1,v1.0"` or newline delimited.
 
 <details><summary>👀 View Example tags</summary>
 
-CSV.
+Extra Tag.
 
 ```yaml
 with:
-  tags: v1,v1.0
+  tags: latest
 ```
 
-Newline.
+CSV with [major/minor](#majorminor) disabled.
+
+```yaml
+with:
+  tags: v1,v1.0,latest
+  major: false
+  minor: false
+```
+
+Newline with [major/minor](#majorminor) disabled.
 
 ```yaml
 with:
   tags: |
     v1
     v1.0
+    latest
+  major: false
+  minor: false
 ```
 
 ---
