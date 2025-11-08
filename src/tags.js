@@ -15,7 +15,7 @@ class Tags {
     /**
      * Get ref by tag
      * @param {string} tag
-     * @return {Promise<object|null>}
+     * @return {Promise<InstanceType<typeof github.GitHub>|undefined>}
      */
     async getRef(tag) {
         try {
