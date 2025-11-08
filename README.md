@@ -55,48 +55,83 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 ## Inputs
 
-| Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input   |
-| :------------------- | :----------------- | :------------------------------- |
-| [prefix](#prefix)    | `v`                | Tag Prefix for Semantic Versions |
-| [major](#majorminor) | `true`             | Update Major Tag                 |
-| [minor](#majorminor) | `true`             | Update Minor Tag                 |
-| [release](#release)  | `false`            | Update Release Tag               |
-| [tags](#tags)        | -                  | Additional Tags to Update        |
-| [tag](#tag)          | `github.ref_name`  | Manually Set Target Tag          |
-| [create](#create)    | `false`            | Create Target Tag                |
-| [summary](#summary)  | `true`             | Add Summary to Job               |
-| [dry_run](#dry_run)  | `false`            | Do not Create Tags, Outout Only  |
-| [token](#token)      | `github.token`     | For use with a PAT to Rollback   |
+| Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input&nbsp;Value            |
+| :------------------- | :----------------- | :--------------------------------------------------- |
+| [prefix](#prefix)    | `v`                | Tag Prefix for Semantic Versions                     |
+| [major](#majorminor) | `true`             | Update Major Tag                                     |
+| [minor](#majorminor) | `true`             | Update Minor Tag                                     |
+| [release](#release)  | `false`            | Update Release Tag                                   |
+| [tags](#tags)        | -                  | Additional Tags to Update                            |
+| [tag](#tag)          | `github.ref_name`  | Manually Set Target Tag                              |
+| [create](#create)    | `false`            | Create Target [tag](#tag)                            |
+| [summary](#summary)  | `true`             | Add Summary to Job                                   |
+| [dry_run](#dry_run)  | `false`            | Will not Create/Update Tags, [Output](#outputs) Only |
+| [token](#token)      | `github.token`     | For use with a PAT to Rollback                       |
 
 #### prefix
 
+The `prefix` is not applied to specified tags.
+
 To disable the prefix, set it to an empty string `prefix: ''`
+
+Default: `v`
 
 #### major/minor
 
-Both major and minor versions are parsed from the release tag using `semver`. If you release
-version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
-both to `false` and provide your own `tags`.
+Both major and minor versions are parsed from the release tag using `semver`.
+If you release version `1.0.0` this will update or create a reference for `v1` and `v1.0`.
+If you are not using semantic versions, set both to `false` and provide your own [tags](#tags).
+
+Default: `true`
 
 #### release
 
 If `true` and you provide a non-release tag `1.2.3-release.1` this would create the release tag `1.2.3`.
 
+Default: `false`
+
 #### tags
 
-The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
-delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
+These are extra tags to set. For example, you could maintain a `latest` tag that always points to the latest release.
+
+These can be a string list `"v1,v1.0"` or newline delimited.
+
+<details><summary>👀 View Example tags</summary>
+
+CSV.
+
+```yaml
+with:
+  tags: v1,v1.0
+```
+
+Newline.
+
+```yaml
+with:
+  tags: |
+    v1
+    v1.0
+```
+
+</details>
+
+To **only** set these `tags` set both [major](#majorminor) and [minor](#majorminor) to `false`.
 
 #### tag
 
 This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
-This is the `sha` that all parsed or provided `tags` are updated too. Rolling back requires a PAT.
+This is the `sha` that all parsed or provided [tags](#tags) are updated too. Rolling back requires a PAT.
 See [Rolling Back](#rolling-back) for more details and a manual workflow example.
+
+Default: `${{ github.ref_name }}`
 
 #### create
 
 If `true` this will create the `tag` at the current `sha` of the workflow run.
+
+Default: `false`
 
 #### summary
 
@@ -140,9 +175,13 @@ dry_run: false
 
 </details>
 
+Default: `false`
+
 #### dry_run
 
-If this is `true` no tags will be created/updated and will only output the results.
+If this is `true` no tags will be created/updated and will only [output](#outputs) the results.
+
+Default: `false`
 
 #### token
 
@@ -156,6 +195,8 @@ For semantic versions, simply add this step to your release workflow:
 - name: 'Update Tags'
   uses: cssnr/update-version-tags-action@v1
 ```
+
+Default: `${{ github.token }}`
 
 ### Permissions
 
@@ -192,6 +233,8 @@ Using the outputs:
 - name: 'Echo Tags'
   run: echo ${{ steps.tags.outputs.tags }}
 ```
+
+[Let us know](#https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests) if you need more output formats...
 
 ## Examples
 
@@ -290,7 +333,7 @@ The following rolling [tags](https://github.com/cssnr/update-version-tags-action
 | [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=44cc10)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ✅   | **Major**  | `vN.x.x` | `vN`     |
 | [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=blue)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ❌   | **Minor**  | `vN.N.x` | `vN.N`   |
 | [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=red)](https://github.com/cssnr/update-version-tags-action/releases/latest)                           |   ❌    |  ❌  |  ❌   | **Micro**  | `vN.N.N` | `vN.N.N` |
-| [latest](https://github.com/cssnr/update-json-value-action/releases/latest)                                                                                                                                                          |   ✅    |  ✅  |  ✅   | **Latest** | `vX.X.X` | `latest` |
+| [latest](https://github.com/cssnr/update-version-tags-action/releases/latest)                                                                                                                                                        |   ✅    |  ✅  |  ✅   | **Latest** | `vX.X.X` | `latest` |
 
 You can view the release notes for each version on the [releases](https://github.com/cssnr/update-version-tags-action/releases) page.
 
