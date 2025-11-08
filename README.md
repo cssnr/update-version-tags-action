@@ -139,14 +139,16 @@ Note the [prefix](#prefix) is not applied to these tags...
 
 This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
-This is the `sha` that all parsed or provided [tags](#tags) are updated too. Rolling back requires a PAT.
-See [Rolling Back](#rolling-back) for more details and a manual workflow example.
+This is the `sha` that all parsed or provided [tags](#tags) are updated too.
+To create this tag at the current `sha` set [create](#create) to `true`.
+
+Rolling back requires a PAT. See [Rolling Back](#rolling-back) for more details and a manual workflow example.
 
 Default: `${{ github.ref_name }}`
 
 #### create
 
-If `true` this will create the `tag` at the current `sha` of the workflow run.
+If `true` this will create the [tag](#tag) at the current `sha` of the workflow run.
 
 Default: `false`
 
