@@ -70,9 +70,12 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 #### prefix
 
-The `prefix` is not applied to specified tags.
+The `prefix` is applied to the generated version tags. If you release `1.0.0` or `v1.0.0`,
+the parsed major/minor is `1` and `1.0` and then with the prefix added becomes `v1` and `v1.0`.
 
 To disable the prefix, set it to an empty string `prefix: ''`
+
+The `prefix` is not applied to the specified input [tags](#tags).
 
 Default: `v`
 
@@ -117,6 +120,8 @@ with:
 </details>
 
 To **only** set these `tags` set both [major](#majorminor) and [minor](#majorminor) to `false`.
+
+Note the [prefix](#prefix) is not applied to these tags...
 
 #### tag
 
