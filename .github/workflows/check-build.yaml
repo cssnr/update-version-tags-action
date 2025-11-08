@@ -1,6 +1,8 @@
 name: "Check Build"
 
 on:
+  push:
+    branches: [master]
   pull_request_target:
     paths:
       - "dist/**"
