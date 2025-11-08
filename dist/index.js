@@ -36471,8 +36471,8 @@ async function main() /* NOSONAR */ {
     core.info(`Target sha: \u001b[32m${sha}`)
 
     // Set SemVer - if major or minor is true
-    let parsed
-    if (inputs.major || inputs.minor) {
+    let parsed = ''
+    if (inputs.major || inputs.minor || inputs.release) {
         core.startGroup('Parsed SemVer')
         parsed = semver.parse(tag, {})
         console.log(parsed)
@@ -36534,6 +36534,7 @@ async function main() /* NOSONAR */ {
     // Set Output
     core.info('📩 Setting Outputs')
     core.setOutput('tags', allTags.join(','))
+    core.setOutput('semver', parsed)
 
     // Summary
     if (inputs.summary) {

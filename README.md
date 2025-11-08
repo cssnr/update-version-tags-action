@@ -233,14 +233,15 @@ and [Actions](https://docs.github.com/en/actions/security-for-github-actions/sec
 | Output | Output&nbsp;Description               |
 | :----- | :------------------------------------ |
 | tags   | Comma Seperated String of Parsed Tags |
+| semver | Parsed Semantic Version JSON          |
 
-Example output:
+Example output.
 
 ```text
 v1,v1.0
 ```
 
-Using the outputs:
+Using the outputs.
 
 ```yaml
 - name: 'Update Tags'
@@ -250,6 +251,27 @@ Using the outputs:
 - name: 'Echo Tags'
   run: echo ${{ steps.tags.outputs.tags }}
 ```
+
+<details><summary>👀 View Example semver</summary>
+
+```json
+{
+  "options": {},
+  "loose": false,
+  "includePrerelease": false,
+  "raw": "v1.0.1",
+  "major": 1,
+  "minor": 0,
+  "patch": 1,
+  "prerelease": [],
+  "build": [],
+  "version": "1.0.1"
+}
+```
+
+---
+
+</details>
 
 [Let us know](#https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests) if you need more output formats...
 

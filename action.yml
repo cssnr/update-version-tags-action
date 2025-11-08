@@ -37,7 +37,9 @@ inputs:
 
 outputs:
   tags:
-    description: "Parsed Tags"
+    description: "Comma Seperated String of Parsed Tags"
+  semver:
+    description: "Parsed Semantic Version JSON"
 
 runs:
   using: "node24"
