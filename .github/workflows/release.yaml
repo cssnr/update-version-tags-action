@@ -32,6 +32,7 @@ jobs:
         with:
           tags: ${{ steps.tags.outputs.tags }}
           location: tail
+          type: "actions"
 
       - name: "Package Changelog Action"
         continue-on-error: true

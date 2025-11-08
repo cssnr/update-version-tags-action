@@ -47,8 +47,6 @@ GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflow
 
 Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples).
 
-For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
-
 > [!NOTE]  
 > Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/update-version-tags-action/issues) if you find any bugs.
@@ -116,6 +114,8 @@ with:
     v1
     v1.0
 ```
+
+---
 
 </details>
 
