@@ -108,6 +108,11 @@ jobs:
             echo "Invalid Output: tags"
             exit 1
           fi
+          echo "semver: ${{ steps.test3.outputs.semver }}"
+          if [ -z '${{ steps.test3.outputs.semver }}' ];then
+            echo "Invalid Output: semver"
+            exit 1
+          fi
 
       - name: "4: Test Parsing"
         if: ${{ !cancelled() && !github.event.act }}
@@ -120,15 +125,13 @@ jobs:
 
       - name: "4: Verify Parsing"
         if: ${{ !cancelled() && !github.event.act }}
-        env:
-          semver: ${{ steps.test1.outputs.semver }}
         run: |
           echo "tags: '${{ steps.test4.outputs.tags }}'"
           if [ '${{ steps.test4.outputs.tags }}' != 'v1,v1.0' ];then
             echo "Invalid Output: tags"
             exit 1
           fi
-          echo "semver: ${semver}"
+          echo "semver: ${{ steps.test4.outputs.semver }}"
           if [ -z '${{ steps.test4.outputs.semver }}' ];then
             echo "Invalid Output: semver"
             exit 1
