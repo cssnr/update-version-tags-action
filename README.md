@@ -194,7 +194,7 @@ dry_run: false
 
 </details>
 
-Default: `false`
+Default: `true`
 
 #### dry_run
 
