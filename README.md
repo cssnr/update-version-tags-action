@@ -40,7 +40,7 @@ For example, many GitHub Actions maintain a `vN` and `vN.N` tag that points to t
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
 ```
 
 GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
@@ -212,7 +212,7 @@ For semantic versions, simply add this step to your release workflow:
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
 ```
 
 Default: `${{ github.token }}`
@@ -247,7 +247,7 @@ Using the outputs.
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
   id: tags
 
 - name: 'Echo Tags'
@@ -298,14 +298,14 @@ jobs:
 
     steps:
       - name: 'Update Tags'
-        uses: cssnr/update-version-tags-action@v1
+        uses: cssnr/update-version-tags-action@v2
 ```
 
 Specifying the tags to update or create:
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
   with:
     major: false
     minor: false
@@ -318,7 +318,7 @@ Specifying the target tag to update too:
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
   with:
     tag: v1.0.1
 ```
@@ -359,7 +359,7 @@ jobs:
 
     steps:
       - name: 'Update Tags'
-        uses: cssnr/update-version-tags-action@v1
+        uses: cssnr/update-version-tags-action@v2
         with:
           tag: ${{ inputs.tag }}
           token: ${{ secrets.GH_PAT }}
