@@ -2,6 +2,7 @@
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/releases)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/update-version-tags-action/releases/latest)
 [![GitHub Dist Size](https://img.shields.io/github/size/cssnr/update-version-tags-action/dist%2Findex.js?logo=bookstack&logoColor=white&label=dist%20size)](https://github.com/cssnr/update-version-tags-action/blob/master/src)
+[![Action Run Using](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcssnr%2Fupdate-version-tags-action%2Frefs%2Fheads%2Fmaster%2Faction.yml&query=%24.runs.using&logo=githubactions&logoColor=white&label=runs)](https://github.com/cssnr/update-version-tags-action/blob/master/action.yml)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/release.yaml?logo=cachet&label=release)](https://github.com/cssnr/update-version-tags-action/actions/workflows/release.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/update-version-tags-action/actions/workflows/test.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/update-version-tags-action/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/update-version-tags-action/actions/workflows/lint.yaml)
@@ -39,14 +40,12 @@ For example, many GitHub Actions maintain a `vN` and `vN.N` tag that points to t
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
 ```
 
 GitHub Actions can copy and paste this workflow: [release.yaml](.github/workflows/release.yaml)
 
 Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples).
-
-For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 > [!NOTE]  
 > Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
@@ -54,48 +53,104 @@ For more details see [src/index.js](src/index.js) and [action.yml](action.yml).
 
 ## Inputs
 
-| Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input   |
-| :------------------- | :----------------- | :------------------------------- |
-| [prefix](#prefix)    | `v`                | Tag Prefix for Semantic Versions |
-| [major](#majorminor) | `true`             | Update Major Tag                 |
-| [minor](#majorminor) | `true`             | Update Minor Tag                 |
-| [release](#release)  | `false`            | Update Release Tag               |
-| [tags](#tags)        | -                  | Additional Tags to Update        |
-| [tag](#tag)          | `github.ref_name`  | Manually Set Target Tag          |
-| [create](#create)    | `false`            | Create Target Tag                |
-| [summary](#summary)  | `true`             | Add Summary to Job               |
-| [dry_run](#dry_run)  | `false`            | Do not Create Tags, Outout Only  |
-| [token](#token)      | `github.token`     | For use with a PAT to Rollback   |
+| Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input&nbsp;Value            |
+| :------------------- | :----------------- | :--------------------------------------------------- |
+| [prefix](#prefix)    | `v`                | Tag Prefix for Semantic Versions                     |
+| [major](#majorminor) | `true`             | Update Major Tag `vN`                                |
+| [minor](#majorminor) | `true`             | Update Minor Tag `vN.N`                              |
+| [release](#release)  | `false`            | Update Release Tag `vN.N.N`                          |
+| [tags](#tags)        | -                  | Additional Tags to Update                            |
+| [tag](#tag)          | `github.ref_name`  | Manually Set Target Tag                              |
+| [create](#create)    | `false`            | Create Target [tag](#tag)                            |
+| [summary](#summary)  | `true`             | Add Summary to Job                                   |
+| [dry_run](#dry_run)  | `false`            | Will not Create/Update Tags, [Output](#outputs) Only |
+| [token](#token)      | `github.token`     | For use with a PAT to Rollback                       |
 
 #### prefix
 
+The `prefix` is applied to the generated version tags. If you release `1.0.0` or `v1.0.0`,
+the parsed major/minor is `1` and `1.0` and then with the prefix added becomes `v1` and `v1.0`.
+
 To disable the prefix, set it to an empty string `prefix: ''`
+
+The `prefix` is not applied to the specified input [tags](#tags).
+
+Default: `v`
 
 #### major/minor
 
-Both major and minor versions are parsed from the release tag using `semver`. If you release
-version `1.0.0` this will update or create a reference for `v1` and `v1.0`. If you are not using semantic versions, set
-both to `false` and provide your own `tags`.
+Both major and minor versions are parsed from the release tag using `semver`.
+If you release version `1.0.0` this will update or create a reference for `v1` and `v1.0`.
+If you are not using semantic versions, set both to `false` and provide your own [tags](#tags).
+
+Default: `true`
 
 #### release
 
 If `true` and you provide a non-release tag `1.2.3-release.1` this would create the release tag `1.2.3`.
 
+Default: `false`
+
 #### tags
 
-The `prefix` is not applied to specified tags. These can be a string list `"v1,v1.0"` or newline
-delimited `|`. If you only want to update the specified `tags` make sure to set both `major` and `minor` to `false`.
+These are extra tags to set. For example, you could maintain a `latest` tag that always points to the latest release.
+
+These can be a string list `"v1,v1.0"` or newline delimited.
+
+<details><summary>👀 View Example tags</summary>
+
+Extra Tag.
+
+```yaml
+with:
+  tags: latest
+```
+
+CSV with [major/minor](#majorminor) disabled.
+
+```yaml
+with:
+  tags: v1,v1.0,latest
+  major: false
+  minor: false
+```
+
+Newline with [major/minor](#majorminor) disabled.
+
+```yaml
+with:
+  tags: |
+    v1
+    v1.0
+    latest
+  major: false
+  minor: false
+```
+
+---
+
+</details>
+
+To **only** set these `tags` set both [major](#majorminor) and [minor](#majorminor) to `false`.
+
+Note the [prefix](#prefix) is not applied to these tags...
 
 #### tag
 
 This is the target tag to parse the `sha` from. Defaults to the `sha` that triggered the workflow.
 To override this behavior you can specify a target tag here from which the target `sha` will be parsed.
-This is the `sha` that all parsed or provided `tags` are updated too. Rolling back requires a PAT.
-See [Rolling Back](#rolling-back) for more details and a manual workflow example.
+This is the `sha` that all parsed or provided [tags](#tags) are updated too.
+To create this tag at the current `sha` set [create](#create) to `true`.
+
+Rolling back requires a PAT. See [Rolling Back](#rolling-back) for more details and a manual workflow example.
+
+Default: `${{ github.ref_name }}`
 
 #### create
 
-If `true` this will create the `tag` at the current `sha` of the workflow run.
+If `true` this will create the [tag](#tag) at the current `sha` of the workflow run.
+
+Default: `false`
 
 #### summary
 
@@ -139,9 +194,13 @@ dry_run: false
 
 </details>
 
+Default: `true`
+
 #### dry_run
 
-If this is `true` no tags will be created/updated and will only output the results.
+If this is `true` no tags will be created/updated and will only [output](#outputs) the results.
+
+Default: `false`
 
 #### token
 
@@ -153,8 +212,10 @@ For semantic versions, simply add this step to your release workflow:
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
 ```
+
+Default: `${{ github.token }}`
 
 ### Permissions
 
@@ -174,23 +235,47 @@ and [Actions](https://docs.github.com/en/actions/security-for-github-actions/sec
 | Output | Output&nbsp;Description               |
 | :----- | :------------------------------------ |
 | tags   | Comma Seperated String of Parsed Tags |
+| semver | Parsed Semantic Version JSON          |
 
-Example output:
+Example output.
 
 ```text
 v1,v1.0
 ```
 
-Using the outputs:
+Using the outputs.
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
   id: tags
 
 - name: 'Echo Tags'
   run: echo ${{ steps.tags.outputs.tags }}
 ```
+
+<details><summary>👀 View Example semver</summary>
+
+```json
+{
+  "options": {},
+  "loose": false,
+  "includePrerelease": false,
+  "raw": "v1.0.1",
+  "major": 1,
+  "minor": 0,
+  "patch": 1,
+  "prerelease": [],
+  "build": [],
+  "version": "1.0.1"
+}
+```
+
+---
+
+</details>
+
+[Let us know](#https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests) if you need more output formats...
 
 ## Examples
 
@@ -213,14 +298,14 @@ jobs:
 
     steps:
       - name: 'Update Tags'
-        uses: cssnr/update-version-tags-action@v1
+        uses: cssnr/update-version-tags-action@v2
 ```
 
 Specifying the tags to update or create:
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
   with:
     major: false
     minor: false
@@ -233,7 +318,7 @@ Specifying the target tag to update too:
 
 ```yaml
 - name: 'Update Tags'
-  uses: cssnr/update-version-tags-action@v1
+  uses: cssnr/update-version-tags-action@v2
   with:
     tag: v1.0.1
 ```
@@ -274,7 +359,7 @@ jobs:
 
     steps:
       - name: 'Update Tags'
-        uses: cssnr/update-version-tags-action@v1
+        uses: cssnr/update-version-tags-action@v2
         with:
           tag: ${{ inputs.tag }}
           token: ${{ secrets.GH_PAT }}
@@ -284,16 +369,19 @@ jobs:
 
 The following rolling [tags](https://github.com/cssnr/update-version-tags-action/tags) are maintained.
 
-| Version&nbsp;Tag                                                                                                                                                                                                                     | Rolling | Bugs | Feat. |   Name    |  Target  | Example  |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----: | :--: | :---: | :-------: | :------: | :------- |
-| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=44cc10)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ✅   | **Major** | `vN.x.x` | `vN`     |
-| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=blue)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ❌   | **Minor** | `vN.N.x` | `vN.N`   |
-| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=red)](https://github.com/cssnr/update-version-tags-action/releases/latest)                           |   ❌    |  ❌  |  ❌   | **Micro** | `vN.N.N` | `vN.N.N` |
+| Version&nbsp;Tag                                                                                                                                                                                                                     | Rolling | Bugs | Feat. |    Name    |  Target  | Example  |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----: | :--: | :---: | :--------: | :------: | :------- |
+| [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*&style=for-the-badge&label=%20&color=44cc10)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ✅   | **Major**  | `vN.x.x` | `vN`     |
+| [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/update-version-tags-action?sort=semver&filter=!v*.*.*&style=for-the-badge&label=%20&color=blue)](https://github.com/cssnr/update-version-tags-action/releases/latest) |   ✅    |  ✅  |  ❌   | **Minor**  | `vN.N.x` | `vN.N`   |
+| [![GitHub Release](https://img.shields.io/github/v/release/cssnr/update-version-tags-action?style=for-the-badge&label=%20&color=red)](https://github.com/cssnr/update-version-tags-action/releases/latest)                           |   ❌    |  ❌  |  ❌   | **Micro**  | `vN.N.N` | `vN.N.N` |
+| [latest](https://github.com/cssnr/update-version-tags-action/releases/latest)                                                                                                                                                        |   ✅    |  ✅  |  ✅   | **Latest** | `vX.X.X` | `latest` |
 
 You can view the release notes for each version on the [releases](https://github.com/cssnr/update-version-tags-action/releases) page.
 
 The **Major** tag is recommended. It is the most up-to-date and always backwards compatible.
 Breaking changes would result in a **Major** version bump. At a minimum you should use a **Minor** tag.
+
+The `latest` tag always points to the latest release regardless of the version number.
 
 ## Badges
 
@@ -336,18 +424,19 @@ For more information, see the CSSNR [SUPPORT.md](https://github.com/cssnr/.githu
 
 # Contributing
 
+If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
+
 Please consider making a donation to support the development of this project
 and [additional](https://cssnr.com/) open source projects.
 
 [![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/cssnr)
-
-If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
 Additionally, you can support other GitHub Actions I have published:
 
 - [Stack Deploy Action](https://github.com/cssnr/stack-deploy-action?tab=readme-ov-file#readme)
 - [Portainer Stack Deploy Action](https://github.com/cssnr/portainer-stack-deploy-action?tab=readme-ov-file#readme)
 - [Docker Context Action](https://github.com/cssnr/docker-context-action?tab=readme-ov-file#readme)
+- [Actions Up Action](https://github.com/cssnr/actions-up-action?tab=readme-ov-file#readme)
 - [VirusTotal Action](https://github.com/cssnr/virustotal-action?tab=readme-ov-file#readme)
 - [Mirror Repository Action](https://github.com/cssnr/mirror-repository-action?tab=readme-ov-file#readme)
 - [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
@@ -370,6 +459,7 @@ Additionally, you can support other GitHub Actions I have published:
 
 These actions are not published on the Marketplace, but may be useful.
 
+- [cssnr/create-files-action](https://github.com/cssnr/create-files-action?tab=readme-ov-file#readme) - Create various files from templates.
 - [cssnr/draft-release-action](https://github.com/cssnr/draft-release-action?tab=readme-ov-file#readme) - Keep a draft release ready to publish.
 - [cssnr/env-json-action](https://github.com/cssnr/env-json-action?tab=readme-ov-file#readme) - Convert env file to json or vice versa.
 - [cssnr/push-artifacts-action](https://github.com/cssnr/push-artifacts-action?tab=readme-ov-file#readme) - Sync files to a remote host with rsync.
@@ -385,9 +475,9 @@ These actions are not published on the Marketplace, but may be useful.
 These are basic action templates that I use for creating new actions.
 
 - [js-test-action](https://github.com/smashedr/js-test-action?tab=readme-ov-file#readme) - JavaScript
-- [py-test-action](https://github.com/smashedr/py-test-action?tab=readme-ov-file#readme) - Python
 - [ts-test-action](https://github.com/smashedr/ts-test-action?tab=readme-ov-file#readme) - TypeScript
-- [docker-test-action](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#readme) - Docker Image
+- [py-test-action](https://github.com/smashedr/py-test-action?tab=readme-ov-file#readme) - Python (Dockerfile)
+- [docker-test-action](https://github.com/smashedr/docker-test-action?tab=readme-ov-file#readme) - Docker (Image)
 
 Note: The `docker-test-action` builds, runs and pushes images to [GitHub Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 

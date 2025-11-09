@@ -1,5 +1,5 @@
 name: "Update Version Tags Action"
-description: "Automatically Update Version Tags on Push or Release for Semantic Versions"
+description: "Automatically Update Version Tags on Push or Release for Semantic Versions. Maintain Release, Major, Minor and Custom Tags."
 author: "Shane"
 branding:
   icon: "tag"
@@ -37,8 +37,10 @@ inputs:
 
 outputs:
   tags:
-    description: "Parsed Tags"
+    description: "Comma Seperated String of Parsed Tags"
+  semver:
+    description: "Parsed Semantic Version JSON"
 
 runs:
-  using: "node20"
+  using: "node24"
   main: "dist/index.js"

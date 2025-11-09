@@ -32657,7 +32657,7 @@ class Tags {
     /**
      * Get ref by tag
      * @param {string} tag
-     * @return {Promise<object|null>}
+     * @return {Promise<InstanceType<typeof github.GitHub>|undefined>}
      */
     async getRef(tag) {
         try {
@@ -36418,148 +36418,144 @@ exports.parse = parse;
 var __webpack_exports__ = {};
 const core = __nccwpck_require__(7484)
 const github = __nccwpck_require__(3228)
-const { parse } = __nccwpck_require__(1110)
 const semver = __nccwpck_require__(2088)
+
+const { parse } = __nccwpck_require__(1110)
 
 const Tags = __nccwpck_require__(800)
 
-;(async () => {
-    try {
-        const version = process.env.GITHUB_ACTION_REF
-            ? `\u001b[35;1m${process.env.GITHUB_ACTION_REF}`
-            : '\u001b[34;1mLocal Version'
-        core.info(`🏳️ Starting Update Version Tags Action - ${version}`)
+async function main() /* NOSONAR */ {
+    const version = process.env.GITHUB_ACTION_REF
+        ? `\u001b[35;1m${process.env.GITHUB_ACTION_REF}`
+        : '\u001b[34;1mLocal Version'
+    core.info(`🏳️ Starting Update Version Tags Action - ${version}`)
 
-        // Process Inputs
-        const inputs = getInputs()
-        core.startGroup('Parsed Inputs')
-        console.log(inputs)
-        core.endGroup() // Inputs
+    // Process Inputs
+    const inputs = getInputs()
+    core.startGroup('Parsed Inputs')
+    console.log(inputs)
+    core.endGroup() // Inputs
 
-        const tags = new Tags(inputs.token, github.context.repo)
+    const tags = new Tags(inputs.token, github.context.repo)
 
-        // Set Tag - used to parse semver
-        if (
-            !github.context.ref.startsWith('refs/tags/') &&
-            (inputs.major || inputs.minor) &&
-            !inputs.tag
-        ) {
-            return core.notice(`Skipping event: ${github.context.eventName}`)
-        }
-        const tag = inputs.tag || github.context.ref.replace('refs/tags/', '')
-        core.info(`Target tag: \u001b[32m${tag}`)
-
-        // Set Sha - target sha for allTags
-        let sha = github.context.sha
-        if (inputs.tag) {
-            core.info(`Getting sha for ref: \u001b[33m${inputs.tag}`)
-            const ref = await tags.getRef(inputs.tag)
-            // console.log('ref:', ref)
-            if (ref?.data?.object?.sha) {
-                sha = ref.data.object.sha
-            } else if (inputs.create) {
-                core.info(`Creating Target Tag: \u001b[32m${inputs.tag}`)
-                if (!inputs.dry_run) {
-                    await tags.createRef(inputs.tag, sha)
-                } else {
-                    core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
-                }
-            } else {
-                return core.setFailed(`Ref not found: ${inputs.tag}`)
-            }
-        }
-        core.info(`Target sha: \u001b[32m${sha}`)
-
-        // Set SemVer - if major or minor is true
-        let parsed
-        if (inputs.major || inputs.minor) {
-            core.startGroup('Parsed SemVer')
-            parsed = semver.parse(tag, {})
-            console.log(parsed)
-            core.endGroup() // SemVer
-            if (!parsed) {
-                return core.setFailed(`Unable to parse ${tag} to a semver.`)
-            }
-        }
-
-        // Collect Tags - allTags
-        core.startGroup('Processing Tags')
-        const collectedTags = []
-        if (inputs.tags) {
-            const parsedTags = parse(inputs.tags, {
-                delimiter: ',',
-                trim: true,
-                relax_column_count: true,
-            }).flat()
-            console.log('parsedTags:', parsedTags)
-            collectedTags.push(...parsedTags)
-        }
-        if (inputs.major) {
-            const current = `${inputs.prefix}${parsed.major}`
-            console.log(`Major Tag: ${current}`)
-            collectedTags.push(current)
-        }
-        if (inputs.minor) {
-            const current = `${inputs.prefix}${parsed.major}.${parsed.minor}`
-            console.log(`Minor Tag: ${current}`)
-            collectedTags.push(current)
-        }
-        if (inputs.release) {
-            const current = `${inputs.prefix}${parsed.major}.${parsed.minor}.${parsed.patch}`
-            console.log(`Release Tag: ${current}`)
-            collectedTags.push(current)
-        }
-        console.log('collectedTags', collectedTags)
-        if (!collectedTags.length) {
-            return core.warning('No Tags to Process!')
-        }
-        core.endGroup() // Processing
-
-        const allTags = [...new Set(collectedTags)]
-        console.log('Tags:', allTags)
-
-        // Process Tags
-        /** @type {Object} */
-        let results
-        if (!inputs.dry_run) {
-            results = await processTags(tags, allTags, sha)
-
-            core.startGroup('Results')
-            console.log(results)
-            core.endGroup() // Results
-        } else {
-            core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
-        }
-
-        // Set Output
-        core.info('📩 Setting Outputs')
-        core.setOutput('tags', allTags.join(','))
-
-        // Summary
-        if (inputs.summary) {
-            core.info('📝 Writing Job Summary')
-            try {
-                await addSummary(inputs, tag, sha, results, parsed, allTags)
-            } catch (e) {
-                console.log(e)
-                core.error(`Error writing Job Summary ${e.message}`)
-            }
-        }
-
-        core.info('✅ \u001b[32;1mFinished Success')
-    } catch (e) {
-        core.debug(e)
-        core.info(e.message)
-        core.setFailed(e.message)
+    // Set Tag - used to parse semver
+    if (
+        !github.context.ref.startsWith('refs/tags/') &&
+        (inputs.major || inputs.minor) &&
+        !inputs.tag
+    ) {
+        return core.notice(`Skipping event: ${github.context.eventName}`)
     }
-})()
+    const tag = inputs.tag || github.context.ref.replace('refs/tags/', '')
+    core.info(`Target tag: \u001b[32m${tag}`)
+
+    // Set Sha - target sha for allTags
+    let sha = github.context.sha
+    if (inputs.tag) {
+        core.info(`Getting sha for ref: \u001b[33m${inputs.tag}`)
+        const ref = await tags.getRef(inputs.tag)
+        // console.log('ref:', ref)
+        if (ref?.data?.object?.sha) {
+            sha = ref.data.object.sha
+        } else if (inputs.create) {
+            core.info(`Creating Target Tag: \u001b[32m${inputs.tag}`)
+            if (!inputs.dry_run) {
+                await tags.createRef(inputs.tag, sha)
+            } else {
+                core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
+            }
+        } else {
+            return core.setFailed(`Ref not found: ${inputs.tag}`)
+        }
+    }
+    core.info(`Target sha: \u001b[32m${sha}`)
+
+    // Set SemVer - if major or minor is true
+    let parsed = ''
+    if (inputs.major || inputs.minor || inputs.release) {
+        core.startGroup('Parsed SemVer')
+        parsed = semver.parse(tag, {})
+        console.log(parsed)
+        core.endGroup() // SemVer
+        if (!parsed) {
+            return core.setFailed(`Unable to parse ${tag} to a semver.`)
+        }
+    }
+
+    // Collect Tags - allTags
+    core.startGroup('Processing Tags')
+    const collectedTags = []
+    if (inputs.tags) {
+        const parsedTags = parse(inputs.tags, {
+            delimiter: ',',
+            trim: true,
+            relax_column_count: true,
+        }).flat()
+        console.log('parsedTags:', parsedTags)
+        collectedTags.push(...parsedTags)
+    }
+    if (inputs.major) {
+        const current = `${inputs.prefix}${parsed.major}`
+        console.log(`Major Tag: ${current}`)
+        collectedTags.push(current)
+    }
+    if (inputs.minor) {
+        const current = `${inputs.prefix}${parsed.major}.${parsed.minor}`
+        console.log(`Minor Tag: ${current}`)
+        collectedTags.push(current)
+    }
+    if (inputs.release) {
+        const current = `${inputs.prefix}${parsed.major}.${parsed.minor}.${parsed.patch}`
+        console.log(`Release Tag: ${current}`)
+        collectedTags.push(current)
+    }
+    console.log('collectedTags', collectedTags)
+    if (!collectedTags.length) {
+        return core.warning('No Tags to Process!')
+    }
+    core.endGroup() // Processing
+
+    const allTags = [...new Set(collectedTags)]
+    console.log('Tags:', allTags)
+
+    // Process Tags
+    /** @type {object} */
+    let results
+    if (!inputs.dry_run) {
+        results = await processTags(tags, allTags, sha)
+
+        core.startGroup('Results')
+        console.log(results)
+        core.endGroup() // Results
+    } else {
+        core.info('⏩ \u001b[33;1mDry Run Skipping Creation')
+    }
+
+    // Set Output
+    core.info('📩 Setting Outputs')
+    core.setOutput('tags', allTags.join(','))
+    core.setOutput('semver', parsed)
+
+    // Summary
+    if (inputs.summary) {
+        core.info('📝 Writing Job Summary')
+        try {
+            await addSummary(inputs, tag, sha, results, parsed, allTags)
+        } catch (e) {
+            console.log(e)
+            core.error(`Error writing Job Summary ${e.message}`)
+        }
+    }
+
+    core.info('✅ \u001b[32;1mFinished Success')
+}
 
 /**
  * Process Tags
  * @param {Tags} tags
- * @param {String[]} allTags
- * @param {String} sha
- * @return {Object}
+ * @param {string[]} allTags
+ * @param {string} sha
+ * @return {object}
  */
 async function processTags(tags, allTags, sha) {
     const results = {}
@@ -36595,11 +36591,11 @@ async function processTags(tags, allTags, sha) {
 /**
  * Write Job Summary
  * @param {Inputs} inputs
- * @param {String} tag
- * @param {String} sha
- * @param {Object} results
- * @param {String} parsed
- * @param {String[]} allTags
+ * @param {string} tag
+ * @param {string} sha
+ * @param {object} results
+ * @param {string} parsed
+ * @param {string[]} allTags
  * @return {Promise<void>}
  */
 async function addSummary(inputs, tag, sha, results, parsed, allTags) {
@@ -36661,17 +36657,17 @@ async function addSummary(inputs, tag, sha, results, parsed, allTags) {
 
 /**
  * Get Inputs
- * @typedef {Object} Inputs
- * @property {String} prefix
- * @property {Boolean} major
- * @property {Boolean} minor
- * @property {Boolean} release
- * @property {String} tags
- * @property {String} tag
- * @property {Boolean} create
- * @property {Boolean} summary
- * @property {Boolean} dry_run
- * @property {String} token
+ * @typedef {object} Inputs
+ * @property {string} prefix
+ * @property {boolean} major
+ * @property {boolean} minor
+ * @property {boolean} release
+ * @property {string} tags
+ * @property {string} tag
+ * @property {boolean} create
+ * @property {boolean} summary
+ * @property {boolean} dry_run
+ * @property {string} token
  * @return {Inputs}
  */
 function getInputs() {
@@ -36688,6 +36684,12 @@ function getInputs() {
         token: core.getInput('token', { required: true }),
     }
 }
+
+main().catch((e) => {
+    core.debug(e)
+    core.info(e.message)
+    core.setFailed(e.message)
+})
 
 module.exports = __webpack_exports__;
 /******/ })()
