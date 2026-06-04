@@ -53,6 +53,7 @@ Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples
 
 > [!WARNING]  
 > This action no longer works on the `master` branch.  
+> The `latest` tag is also being sunset very soon.  
 > If you need a rolling tag use the [@release](https://github.com/cssnr/update-version-tags-action/tree/release) branch.
 
 ## Inputs
