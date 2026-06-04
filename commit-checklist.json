@@ -1,4 +1,0 @@
-[
-  { "value": "Run Build", "fileMask": "*src\\*.js" },
-  { "value": "Check main in action.yml", "fileMask": "*action.yml" }
-]

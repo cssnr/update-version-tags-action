@@ -51,6 +51,10 @@ Make sure to review the [Inputs](#inputs) and checkout more [Examples](#examples
 > Please submit a [Feature Request](https://github.com/cssnr/update-version-tags-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/update-version-tags-action/issues) if you find any bugs.
 
+> [!WARNING]  
+> This action no longer works on the `master` branch.  
+> If you need a rolling tag use the [@release](https://github.com/cssnr/update-version-tags-action/tree/release) branch.
+
 ## Inputs
 
 | Input                | Default&nbsp;Value | Description&nbsp;of&nbsp;Input&nbsp;Value            |
