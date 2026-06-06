@@ -47,6 +47,8 @@ outputs:
     description: "Comma Seperated String of Parsed Tags"
   semver:
     description: "Parsed Semantic Version JSON"
+  sha:
+    description: "SHA Used to Update Tags"
 
 runs:
   using: "node24"

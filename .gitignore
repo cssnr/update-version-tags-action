@@ -2,13 +2,15 @@
 .idea/
 *.iml
 .vscode/
-node_modules/
-.*cache
-*.log
-eslint_report.json
-# App
+cache/
 dist/
-.env
+build/
+node_modules/
+eslint_report.json
+*.log
+*.tgz
+*.zip
+# App
 .secrets
 .vars
-*.zip
+*.env

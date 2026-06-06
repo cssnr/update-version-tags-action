@@ -120,6 +120,7 @@ async function main() /* NOSONAR */ {
   core.info('📩 Setting Outputs')
   core.setOutput('tags', allTags.join(','))
   core.setOutput('semver', parsed)
+  core.setOutput('sha', sha)
 
   // Summary
   if (inputs.summary) {
@@ -280,7 +281,6 @@ function getInputs() {
 try {
   await main()
 } catch (e) {
-  core.debug(e)
-  core.info(e.message)
-  core.setFailed(e.message)
+  const message = e instanceof Error ? e.message : 'Unknown Error'
+  core.setFailed(message)
 }
