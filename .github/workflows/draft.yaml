@@ -39,7 +39,7 @@ jobs:
           prerelease: false
           prefix: v
           previous_tag_name: ${{ steps.tag.outputs.name }}
-          notes_strip_prefix: true
+          notes_prefix: "${{ github.ref_name }}-"
 
       - name: "Process Release Draft URL"
         run: |

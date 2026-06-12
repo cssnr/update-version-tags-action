@@ -1,7 +1,5 @@
 name: "Test"
 
-# actions-up-ignore-file
-
 on:
   workflow_dispatch:
   #schedule:

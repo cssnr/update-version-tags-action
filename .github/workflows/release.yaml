@@ -82,18 +82,18 @@ jobs:
       - name: "Create Tracking Tag"
         uses: cssnr/update-version-tags-action@v2
         with:
-          prefix: ""
           major: false
           minor: false
           release: true
+          prefix: "${{ github.event.release.target_commitish }}-"
 
       - name: "Update Version Tags"
         id: tags
         uses: cssnr/update-version-tags-action@v2
         with:
           ref: refs/heads/${{ env.release }}
-          prefix: "v"
           release: true
+          prefix: "v"
           force: true
 
       - name: "Update Release Notes"
