@@ -21,6 +21,15 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: "Get Previous Tag"
+        id: tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "TAG: ${TAG}"
+          echo "name=${TAG}" >> "${GITHUB_OUTPUT}"
 
       - name: "Draft Release Action"
         id: draft
@@ -29,6 +38,8 @@ jobs:
           semver: patch
           prerelease: false
           prefix: v
+          previous_tag_name: ${{ steps.tag.outputs.name }}
+          notes_strip_prefix: true
 
       - name: "Process Release Draft URL"
         run: |
