@@ -30,12 +30,12 @@ jobs:
           echo "env.release: ${{ env.release }}"
 
       - name: "Checkout Source"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: ${{ env.source }}
 
       - name: "Setup Node"
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
@@ -46,7 +46,7 @@ jobs:
           npm ci
 
       - name: "Checkout Release"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: ${{ env.release }}
           ref: ${{ env.release }}
@@ -70,7 +70,7 @@ jobs:
           sha256sum "${{ env.release }}/${{ env.dist }}/index.js"
 
       - name: "Commit and Push"
-        uses: suzuki-shunsuke/commit-action@06e3b49d4706498d325d29bd85adc82ecf2f5d8f # v1.0.0
+        uses: suzuki-shunsuke/commit-action@v1.0.0
         with:
           commit_message: ${{ env.tag }}
           branch: ${{ env.release }}
@@ -111,7 +111,7 @@ jobs:
 
       - name: "Send Failure Notification"
         if: ${{ failure() }}
-        uses: sarisia/actions-status-discord@eb045afee445dc055c18d3d90bd0f244fd062708 # v1.16.0
+        uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           description: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
